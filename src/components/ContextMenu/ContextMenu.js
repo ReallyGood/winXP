@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useState } from 'react';
 import styled from 'styled-components';
 
 export default function ContextMenu(props) {
@@ -11,14 +11,22 @@ export default function ContextMenu(props) {
     hideMenu,
     contextMenuItems,
   } = props;
+  const [hovering, setHovering] = useState('');
 
-  const handleMenuItemClick = n => () => {
-    onClickContextMenuItem(n);
+  const handleMenuItemClick = menuItem => () => {
+    onClickContextMenuItem(menuItem);
     hideMenu();
+    setHovering('');
   };
 
+  function onMouseOver(e) {
+    const item = e.target.closest('.menu__item');
+    if (!item) return;
+    setHovering(item.querySelector('.menu__item__text').textContent);
+  }
+
   return (
-    <StyledContextMenu {...bindMenu} className="menu">
+    <StyledContextMenu {...bindMenu} onMouseOver={onMouseOver} className="menu">
       {contextMenuItems.map(item => {
         return (
           <StyledContextMenuItem
@@ -26,20 +34,20 @@ export default function ContextMenu(props) {
             {...bindMenuAction}
             {...item}
             onClick={handleMenuItemClick(item)}
+            className="menu__item"
           >
-            <span>{item.label}</span>
-            {/*
-            {item.subMenu && (
+            <span className="menu__item__text ">{item.label}</span>
+            {hovering === item.label && item.subMenu && (
               <StyledContextMenu>
                 {item.subMenu.map(subMenuItem => {
                   return (
-                    <StyledContextMenuItem>
+                    <StyledContextMenuItem key={subMenuItem.label}>
                       <span>{subMenuItem.label}</span>
                     </StyledContextMenuItem>
                   );
                 })}
               </StyledContextMenu>
-            )} */}
+            )}
           </StyledContextMenuItem>
         );
       })}
@@ -99,6 +107,8 @@ const getAdditionalStyles = props => {
 
 const StyledContextMenu = styled('ul')`
   z-index: 50;
+  width: 100%;
+  max-width: 140px;
   background-color: #fff;
   position: absolute;
   list-style: none;
@@ -129,7 +139,7 @@ const StyledContextMenuItem = styled('li')`
   }}
 
   &&:hover {
-    span {
+    > span {
       background-color: rgb(47, 113, 205);
       color: rgb(255, 255, 255);
     }
@@ -138,5 +148,15 @@ const StyledContextMenuItem = styled('li')`
     &&:before {
       border-left-color: #fff;
     }
+  }
+
+  &&:focus {
+    outline: 1px solid red;
+  }
+
+  ${StyledContextMenu} {
+    position: absolute;
+    right: -100%;
+    top: -3px;
   }
 `;
