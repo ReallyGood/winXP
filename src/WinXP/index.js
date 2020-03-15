@@ -1,6 +1,7 @@
-import React, { useReducer, useRef, useCallback } from 'react';
+import React, { useReducer, useRef, useCallback, useState } from 'react';
 import styled, { keyframes } from 'styled-components';
 import useMouse from 'react-use/lib/useMouse';
+import useContextMenu from 'react-use-context-menu';
 import ga from 'react-ga';
 
 import {
@@ -24,6 +25,7 @@ import Footer from './Footer';
 import Windows from './Windows';
 import Icons from './Icons';
 import { DashedBox } from 'components';
+import ContextMenu from '../components/ContextMenu/ContextMenu';
 
 const initState = {
   apps: defaultAppState,
@@ -182,6 +184,17 @@ function WinXP() {
   const [state, dispatch] = useReducer(reducer, initState);
   const ref = useRef(null);
   const mouse = useMouse(ref);
+  const [
+    bindMenu,
+    bindMenuItem,
+    useContextTrigger,
+    { data, coords, setVisible },
+  ] = useContextMenu();
+  const [clickedContextMenuItem, setClickedContextMenuItem] = useState();
+  const [bindTrigger] = useContextTrigger({
+    collect: () => 'Title',
+  });
+  const hideMenu = () => setVisible(false);
   const focusedAppId = getFocusedAppId();
   const onFocusApp = useCallback(id => {
     dispatch({ type: FOCUS_APP, payload: id });
@@ -285,13 +298,26 @@ function WinXP() {
   function onModalClose() {
     dispatch({ type: CANCEL_POWER_OFF });
   }
+
   return (
     <Container
       ref={ref}
       onMouseUp={onMouseUpDesktop}
       onMouseDown={onMouseDownDesktop}
       state={state.powerState}
+      {...bindTrigger}
     >
+      <ContextMenu
+        bindMenu={bindMenu}
+        data={data}
+        bindMenuItem={bindMenuItem}
+        coords={coords}
+        setClickedContextMenuItem={clickedItem => {
+          console.log('clickedItem ', clickedItem);
+          setClickedContextMenuItem(clickedItem);
+        }}
+        hideMenu={hideMenu}
+      />
       <Icons
         icons={state.icons}
         onMouseDown={onMouseDownIcon}
