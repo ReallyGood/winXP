@@ -41,7 +41,10 @@ export default function ContextMenu(props) {
               <StyledContextMenu>
                 {item.subMenu.map(subMenuItem => {
                   return (
-                    <StyledContextMenuItem key={subMenuItem.label}>
+                    <StyledContextMenuItem
+                      key={subMenuItem.label}
+                      {...subMenuItem}
+                    >
                       <span>{subMenuItem.label}</span>
                     </StyledContextMenuItem>
                   );

@@ -5,7 +5,7 @@ export const contextMenuItems = [
     subMenu: [
       {
         label: 'Name',
-        disabled: true,
+        disabled: false,
       },
       {
         label: 'Size',
