@@ -28,6 +28,18 @@ export default function ContextMenu(props) {
             onClick={handleMenuItemClick(item)}
           >
             <span>{item.label}</span>
+            {/*
+            {item.subMenu && (
+              <StyledContextMenu>
+                {item.subMenu.map(subMenuItem => {
+                  return (
+                    <StyledContextMenuItem>
+                      <span>{subMenuItem.label}</span>
+                    </StyledContextMenuItem>
+                  );
+                })}
+              </StyledContextMenu>
+            )} */}
           </StyledContextMenuItem>
         );
       })}
