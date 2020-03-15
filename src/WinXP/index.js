@@ -195,6 +195,47 @@ function WinXP() {
     collect: () => 'Title',
   });
   const hideMenu = () => setVisible(false);
+  const contextMenuItems = [
+    {
+      label: 'Arrange Icons By',
+      disabled: false,
+      subMenu: [
+        {
+          label: 'Name',
+          disabled: true,
+        },
+      ],
+    },
+    {
+      label: 'Refresh',
+      disabled: false,
+      saperator: true,
+    },
+    {
+      label: 'Paste',
+      disabled: true,
+    },
+    {
+      label: 'Paste Shortcut',
+      disabled: true,
+      saperator: true,
+    },
+    {
+      label: 'New',
+      disabled: true,
+      saperator: true,
+      subMenu: [
+        {
+          label: 'Folder',
+          disabled: true,
+        },
+      ],
+    },
+    {
+      label: 'Properties',
+      disabled: false,
+    },
+  ];
   const focusedAppId = getFocusedAppId();
   const onFocusApp = useCallback(id => {
     dispatch({ type: FOCUS_APP, payload: id });
@@ -298,7 +339,10 @@ function WinXP() {
   function onModalClose() {
     dispatch({ type: CANCEL_POWER_OFF });
   }
-
+  function handleClickedContextMenuItem(menuItem) {
+    console.log('handleClickedContextMenuItem menuItem ', menuItem);
+    setClickedContextMenuItem(menuItem);
+  }
   return (
     <Container
       ref={ref}
@@ -312,11 +356,9 @@ function WinXP() {
         data={data}
         bindMenuItem={bindMenuItem}
         coords={coords}
-        setClickedContextMenuItem={clickedItem => {
-          console.log('clickedItem ', clickedItem);
-          setClickedContextMenuItem(clickedItem);
-        }}
+        onClickContextMenuItem={handleClickedContextMenuItem}
         hideMenu={hideMenu}
+        contextMenuItems={contextMenuItems}
       />
       <Icons
         icons={state.icons}
