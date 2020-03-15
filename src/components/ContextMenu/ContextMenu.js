@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import styled from 'styled-components';
 
 export default function ContextMenu(props) {
@@ -10,6 +10,7 @@ export default function ContextMenu(props) {
     onClickContextMenuItem,
     hideMenu,
     contextMenuItems,
+    isVisible,
   } = props;
   const [hovering, setHovering] = useState('');
 
@@ -19,11 +20,17 @@ export default function ContextMenu(props) {
     setHovering('');
   };
 
-  function onMouseOver(e) {
+  const onMouseOver = e => {
     const item = e.target.closest('.menu__item');
     if (!item) return;
     setHovering(item.querySelector('.menu__item__text').textContent);
-  }
+  };
+
+  useEffect(() => {
+    if (!isVisible) {
+      setHovering('');
+    }
+  }, [isVisible]);
 
   return (
     <StyledContextMenu {...bindMenu} onMouseOver={onMouseOver} className="menu">

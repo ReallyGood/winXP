@@ -189,7 +189,7 @@ function WinXP() {
     bindMenu,
     bindMenuItem,
     useContextTrigger,
-    { data, coords, setVisible },
+    { data, coords, setVisible, isVisible },
   ] = useContextMenu();
   const [clickedContextMenuItem, setClickedContextMenuItem] = useState();
   const [bindTrigger] = useContextTrigger({
@@ -322,6 +322,7 @@ function WinXP() {
           onClickContextMenuItem={handleClickedContextMenuItem}
           hideMenu={hideMenu}
           contextMenuItems={contextMenuItems}
+          isVisible={isVisible}
         />
       </ContextMenuArea>
       <Icons
