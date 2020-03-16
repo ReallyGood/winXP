@@ -84,10 +84,7 @@ export default function ContextMenu(props) {
             {...bindMenuAction}
             {...restItem}
             subMenuStyles={subMenuPositionStyles}
-            onClick={e => {
-              e.stopPropagation();
-              handleMenuItemClick(item);
-            }}
+            onClick={handleMenuItemClick(item)}
             className="menu__item"
           >
             <span className="menu__item__text ">{item.label}</span>
@@ -186,6 +183,10 @@ const StyledContextMenu = styled('ul')`
   margin: 0;
   border: 1px solid #a7a394;
   box-shadow: 2px 2px 4px rgba(0, 0, 0, 0.5);
+
+  &&:focus {
+    outline: none;
+  }
 `;
 
 const StyledContextMenuItem = styled('li')`

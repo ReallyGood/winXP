@@ -1,4 +1,4 @@
-import React, { useReducer, useRef, useCallback, useState } from 'react';
+import React, { useReducer, useRef, useCallback } from 'react';
 import styled, { keyframes } from 'styled-components';
 import useMouse from 'react-use/lib/useMouse';
 import useContextMenu from 'react-use-context-menu';
@@ -26,7 +26,7 @@ import Windows from './Windows';
 import Icons from './Icons';
 import { DashedBox } from 'components';
 import ContextMenu from '../components/ContextMenu/ContextMenu';
-import { contextMenuItems } from './contextMenu';
+import { contextMenuItems } from './WinXPContextMenuUtils';
 
 const initState = {
   apps: defaultAppState,
@@ -191,8 +191,6 @@ function WinXP() {
     useContextTrigger,
     { data, coords, setVisible, isVisible },
   ] = useContextMenu();
-  const [clickedContextMenuItem, setClickedContextMenuItem] = useState();
-
   const [bindTrigger] = useContextTrigger({
     collect: () => {
       return {
@@ -310,9 +308,8 @@ function WinXP() {
   function onModalClose() {
     dispatch({ type: CANCEL_POWER_OFF });
   }
-
   function handleClickedContextMenuItem(menuItem) {
-    setClickedContextMenuItem(menuItem);
+    console.log('handleClickedContextMenuItem menuItem', menuItem);
     if (menuItem.action) {
       const newState = menuItem.action(state);
       dispatch(newState);

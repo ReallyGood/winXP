@@ -23,23 +23,23 @@ export const contextMenuItems = [
       {
         label: 'Name',
         disabled: false,
-        action: state => arrangeIconsBy('title', state),
+        action: state => {
+          console.log('User pressed on Arrange Icons By Name');
+          return arrangeIconsBy('title', state);
+        },
       },
       {
         label: 'Size',
         disabled: true,
-        action: state => arrangeIconsBy('size', state),
       },
       {
         label: 'Type',
         disabled: true,
-        action: state => arrangeIconsBy('type', state),
       },
       {
         label: 'Modified',
         disabled: true,
         separator: true,
-        action: state => arrangeIconsBy('mpdified', state),
       },
       {
         label: 'Show in Groups',
@@ -64,6 +64,10 @@ export const contextMenuItems = [
     label: 'Refresh',
     disabled: false,
     separator: true,
+    action: state => {
+      console.log('User pressed on Refresh');
+      return state;
+    },
   },
   {
     label: 'Paste',
@@ -88,5 +92,9 @@ export const contextMenuItems = [
   {
     label: 'Properties',
     disabled: false,
+    action: state => {
+      console.log('User pressed on Properties');
+      return state;
+    },
   },
 ];
