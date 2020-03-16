@@ -18,7 +18,7 @@ export const contextMenuItems = [
       {
         label: 'Modified',
         disabled: true,
-        saperator: true,
+        separator: true,
       },
       {
         label: 'Show in Groups',
@@ -31,7 +31,7 @@ export const contextMenuItems = [
       {
         label: 'Align to Grid',
         disabled: true,
-        saperator: true,
+        separator: true,
       },
       {
         label: 'Show Desktop Icons',
@@ -42,7 +42,7 @@ export const contextMenuItems = [
   {
     label: 'Refresh',
     disabled: false,
-    saperator: true,
+    separator: true,
   },
   {
     label: 'Paste',
@@ -51,12 +51,12 @@ export const contextMenuItems = [
   {
     label: 'Paste Shortcut',
     disabled: true,
-    saperator: true,
+    separator: true,
   },
   {
     label: 'New',
     disabled: true,
-    saperator: true,
+    separator: true,
     subMenu: [
       {
         label: 'Folder',

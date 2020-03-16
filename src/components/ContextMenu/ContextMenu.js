@@ -66,7 +66,7 @@ export default function ContextMenu(props) {
 }
 
 const getAdditionalStyles = props => {
-  const { disabled, saperator, subMenu } = props;
+  const { disabled, separator, subMenu } = props;
 
   const subMenuStyles = subMenu
     ? ` &:before {
@@ -91,7 +91,7 @@ const getAdditionalStyles = props => {
     `
     : '';
 
-  const saperatorStyles = saperator
+  const separatorStyles = separator
     ? ` &:after {
               content: '';
               display: block;
@@ -111,7 +111,7 @@ const getAdditionalStyles = props => {
   return `
       ${subMenuStyles}
       ${disabledStyles}
-      ${saperatorStyles}
+      ${separatorStyles}
     `;
 };
 
