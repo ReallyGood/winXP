@@ -1,3 +1,6 @@
+import { ADD_APP, FOCUS_DESKTOP } from './constants/actions';
+import { appSettings } from './apps';
+
 function arrangeIconsBy(value, state) {
   const sortedIcons = state.icons.sort(function(a, b) {
     if (a[value] < b[value]) {
@@ -10,8 +13,11 @@ function arrangeIconsBy(value, state) {
   });
 
   return {
-    icons: sortedIcons,
-    ...state,
+    state: {
+      icons: sortedIcons,
+      ...state,
+    },
+    config: { type: FOCUS_DESKTOP },
   };
 }
 
@@ -66,7 +72,10 @@ export const contextMenuItems = [
     separator: true,
     action: state => {
       console.log('User pressed on Refresh');
-      return state;
+      return {
+        state,
+        config: { type: FOCUS_DESKTOP },
+      };
     },
   },
   {
@@ -94,7 +103,13 @@ export const contextMenuItems = [
     disabled: false,
     action: state => {
       console.log('User pressed on Properties');
-      return state;
+      return {
+        state,
+        config: {
+          type: ADD_APP,
+          payload: appSettings['Properties'],
+        },
+      };
     },
   },
 ];

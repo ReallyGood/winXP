@@ -113,8 +113,8 @@ function FooterWindow({ id, icon, title, onMouseDown, isFocus }) {
       onMouseDown={_onMouseDown}
       className={`footer__window ${isFocus ? 'focus' : 'cover'}`}
     >
-      <img className="footer__icon" src={icon} alt={title} />
-      <div className="footer__text">{title}</div>
+      {icon && <img className="footer__icon" src={icon} alt={title} />}
+      <div className={`footer__text ${!icon ? 'no-icon' : ''}`}>{title}</div>
     </div>
   );
 }
@@ -222,6 +222,10 @@ const Container = styled.footer`
     white-space: nowrap;
     overflow: hidden;
     text-overflow: ellipsis;
+
+    &.no-icon {
+      left: 8px;
+    }
   }
   .footer__window.cover:hover {
     background-color: #53a3ff;

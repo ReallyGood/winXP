@@ -47,6 +47,9 @@ const reducer = (state, action = { type: '' }) => {
       const app = state.apps.find(
         _app => _app.component === action.payload.component,
       );
+
+      console.log('ADD_APP app => ', app);
+
       if (action.payload.multiInstance || !app) {
         return {
           ...state,
@@ -311,8 +314,8 @@ function WinXP() {
   function handleClickedContextMenuItem(menuItem) {
     console.log('handleClickedContextMenuItem menuItem', menuItem);
     if (menuItem.action) {
-      const newState = menuItem.action(state);
-      dispatch(newState);
+      const action = menuItem.action(state);
+      dispatch(action.config);
     }
   }
 
