@@ -315,6 +315,7 @@ function WinXP() {
     setClickedContextMenuItem(menuItem);
     if (menuItem.action) {
       const newState = menuItem.action(state);
+      dispatch(newState);
     }
   }
 
