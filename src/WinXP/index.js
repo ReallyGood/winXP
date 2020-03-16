@@ -192,9 +192,19 @@ function WinXP() {
     { data, coords, setVisible, isVisible },
   ] = useContextMenu();
   const [clickedContextMenuItem, setClickedContextMenuItem] = useState();
+
   const [bindTrigger] = useContextTrigger({
-    collect: () => 'Title',
+    collect: () => {
+      return {
+        contextContaner: {
+          root: ref.current,
+          height: ref.current.offsetHeight,
+          width: ref.current.offsetWidth,
+        },
+      };
+    },
   });
+
   const hideMenu = () => setVisible(false);
 
   const focusedAppId = getFocusedAppId();
@@ -304,6 +314,9 @@ function WinXP() {
   function handleClickedContextMenuItem(menuItem) {
     console.log('handleClickedContextMenuItem menuItem ', menuItem);
     setClickedContextMenuItem(menuItem);
+    if (menuItem.action) {
+      menuItem.action(state);
+    }
   }
 
   return (

@@ -4,8 +4,8 @@ import styled from 'styled-components';
 export default function ContextMenu(props) {
   const {
     bindMenu,
-    data,
     bindMenuAction,
+    data,
     coords,
     onClickContextMenuItem,
     hideMenu,
@@ -13,11 +13,20 @@ export default function ContextMenu(props) {
     isVisible,
   } = props;
   const [hovering, setHovering] = useState('');
+  const subMenuPositionStylesDefault = {
+    right: '-100%',
+    left: 'auto',
+    top: '-3px',
+    bottom: 'auto',
+  };
+
+  const [subMenuPositionStyles, setSubMenuPositionStyles] = useState(
+    subMenuPositionStylesDefault,
+  );
 
   const handleMenuItemClick = menuItem => () => {
     onClickContextMenuItem(menuItem);
     hideMenu();
-    setHovering('');
   };
 
   const onMouseOver = e => {
@@ -32,25 +41,52 @@ export default function ContextMenu(props) {
     }
   }, [isVisible]);
 
+
+  useEffect(() => {
+    if (data) {
+      const { contextContaner } = data;
+      const hasEnoughSpaceWidth =
+        coords[0] + menuContainerMaxWidth < contextContaner.width;
+      const hasEnoughSpaceHeight =
+        coords[1] + menuContainerMaxWidth < contextContaner.width;
+
+      setSubMenuPositionStyles({
+        right: hasEnoughSpaceWidth ? '-100%' : 'auto',
+        left: !hasEnoughSpaceWidth ? '-100%' : 'auto',
+        top: hasEnoughSpaceHeight ? '-3px' : 'auto',
+        bottom: !hasEnoughSpaceHeight ? '-3px' : 'auto',
+      });
+    }
+  }, [data, coords]);
+
   return (
     <StyledContextMenu {...bindMenu} onMouseOver={onMouseOver} className="menu">
       {contextMenuItems.map(item => {
+        const { action, ...restItem } = item;
         return (
           <StyledContextMenuItem
             key={item.label}
             {...bindMenuAction}
-            {...item}
-            onClick={handleMenuItemClick(item)}
+            {...restItem}
+            subMenuStyles={subMenuPositionStyles}
+            onClick={e => {
+              e.stopPropagation();
+              handleMenuItemClick(item);
+            }}
             className="menu__item"
           >
             <span className="menu__item__text ">{item.label}</span>
             {hovering === item.label && item.subMenu && (
               <StyledContextMenu>
                 {item.subMenu.map(subMenuItem => {
+                  const { action, ...restSubMenuItem } = subMenuItem;
+
                   return (
                     <StyledContextMenuItem
                       key={subMenuItem.label}
-                      {...subMenuItem}
+                      onClick={handleMenuItemClick(subMenuItem)}
+                      subMenuStyles={subMenuPositionStyles}
+                      {...restSubMenuItem}
                     >
                       <span>{subMenuItem.label}</span>
                     </StyledContextMenuItem>
@@ -64,23 +100,25 @@ export default function ContextMenu(props) {
     </StyledContextMenu>
   );
 }
+const menuContainerMaxWidth = 140;
 
 const getAdditionalStyles = props => {
-  const { disabled, separator, subMenu } = props;
+  const { disabled, separator, subMenu, subMenuStyles } = props;
+  const { top, bottom, left, right } = subMenuStyles;
 
-  const subMenuStyles = subMenu
+  const subMenuArrowStyles = subMenu
     ? ` &:before {
-              content: '';
-              display: block;
-              height: 0;
-              width: 0;
-              border-top: 5px solid transparent;
-              border-bottom: 5px solid transparent;
-              border-left: 5px solid ${disabled ? '#ddd' : '#000'};
-              position: absolute;
-              right: 3px;
-              top: 50%;
-              transform: translateY(-50%);
+          content: '';
+          display: block;
+          height: 0;
+          width: 0;
+          border-top: 5px solid transparent;
+          border-bottom: 5px solid transparent;
+          border-left: 5px solid ${disabled ? '#ddd' : '#000'};
+          position: absolute;
+          right: 3px;
+          top: 50%;
+          transform: translateY(-50%);
         }`
     : '';
 
@@ -93,32 +131,39 @@ const getAdditionalStyles = props => {
 
   const separatorStyles = separator
     ? ` &:after {
-              content: '';
-              display: block;
-              height: 1px;
-              width: 100%;
-              background: #ddd;
-              position: absolute;
-              right: 0;
-              left: 0;
-              bottom: -5px;
-            }
-    
-            margin-bottom: 10px;
+          content: '';
+          display: block;
+          height: 1px;
+          width: 100%;
+          background: #ddd;
+          position: absolute;
+          right: 0;
+          left: 0;
+          bottom: -5px;
+        }
+
+        margin-bottom: 10px;
         `
     : '';
 
   return `
-      ${subMenuStyles}
+      ${subMenuArrowStyles}
       ${disabledStyles}
       ${separatorStyles}
+      ${StyledContextMenu} {
+        position: absolute;
+        top: ${top};
+        bottom: ${bottom};
+        right: ${right};
+        left: ${left};
+      }
     `;
 };
 
 const StyledContextMenu = styled('ul')`
   z-index: 50;
   width: 100%;
-  max-width: 140px;
+  max-width: ${`${menuContainerMaxWidth}px`};
   background-color: #fff;
   position: absolute;
   list-style: none;
@@ -162,11 +207,5 @@ const StyledContextMenuItem = styled('li')`
 
   &&:focus {
     outline: 1px solid red;
-  }
-
-  ${StyledContextMenu} {
-    position: absolute;
-    right: -100%;
-    top: -3px;
   }
 `;

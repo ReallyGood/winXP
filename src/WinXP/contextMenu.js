@@ -1,3 +1,8 @@
+function arrangeIconsBy(value, state) {
+  console.log('arrangeIconsBy value => ', value);
+  console.log('arrangeIconsBy state.icons => ', state.icons);
+}
+
 export const contextMenuItems = [
   {
     label: 'Arrange Icons By',
@@ -6,19 +11,23 @@ export const contextMenuItems = [
       {
         label: 'Name',
         disabled: false,
+        action: state => arrangeIconsBy('name', state),
       },
       {
         label: 'Size',
         disabled: true,
+        action: state => arrangeIconsBy('size', state),
       },
       {
         label: 'Type',
         disabled: true,
+        action: state => arrangeIconsBy('type', state),
       },
       {
         label: 'Modified',
         disabled: true,
         separator: true,
+        action: state => arrangeIconsBy('mpdified', state),
       },
       {
         label: 'Show in Groups',
