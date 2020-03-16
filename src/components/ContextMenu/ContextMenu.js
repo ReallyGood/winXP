@@ -41,14 +41,29 @@ export default function ContextMenu(props) {
     }
   }, [isVisible]);
 
-
   useEffect(() => {
-    if (data) {
+    if (data && bindMenu) {
+      const { style, ref } = bindMenu;
       const { contextContaner } = data;
+      const contextMenuWidth = ref.current.offsetWidth;
+      const contextMenuHeight = ref.current.offsetHeight;
+
+      const coordsX = () => {
+        const x = style.left
+          ? parseInt(style.left.replace('px', ''))
+          : coords[0];
+        return x === coords[0]
+          ? coords[0] + contextMenuWidth
+          : x + contextMenuWidth;
+      };
+
+      const coordsY = () => {
+        return coords[1] + contextMenuHeight;
+      };
+
       const hasEnoughSpaceWidth =
-        coords[0] + menuContainerMaxWidth < contextContaner.width;
-      const hasEnoughSpaceHeight =
-        coords[1] + menuContainerMaxWidth < contextContaner.width;
+        coordsX() + menuContainerMaxWidth < contextContaner.width;
+      const hasEnoughSpaceHeight = coordsY() < contextContaner.height;
 
       setSubMenuPositionStyles({
         right: hasEnoughSpaceWidth ? '-100%' : 'auto',
@@ -57,7 +72,7 @@ export default function ContextMenu(props) {
         bottom: !hasEnoughSpaceHeight ? '-3px' : 'auto',
       });
     }
-  }, [data, coords]);
+  }, [data, coords, bindMenu]);
 
   return (
     <StyledContextMenu {...bindMenu} onMouseOver={onMouseOver} className="menu">
