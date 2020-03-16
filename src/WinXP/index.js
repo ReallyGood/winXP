@@ -312,10 +312,9 @@ function WinXP() {
   }
 
   function handleClickedContextMenuItem(menuItem) {
-    console.log('handleClickedContextMenuItem menuItem ', menuItem);
     setClickedContextMenuItem(menuItem);
     if (menuItem.action) {
-      menuItem.action(state);
+      const newState = menuItem.action(state);
     }
   }
 

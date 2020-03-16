@@ -1,6 +1,21 @@
 function arrangeIconsBy(value, state) {
   console.log('arrangeIconsBy value => ', value);
   console.log('arrangeIconsBy state.icons => ', state.icons);
+
+  const sortedIcons = state.icons.sort(function(a, b) {
+    if (a.title < b.title) {
+      return -1;
+    }
+    if (a.title > b.title) {
+      return 1;
+    }
+    return 0;
+  });
+
+  return {
+    icons: sortedIcons,
+    ...state,
+  };
 }
 
 export const contextMenuItems = [

@@ -206,6 +206,6 @@ const StyledContextMenuItem = styled('li')`
   }
 
   &&:focus {
-    outline: 1px solid red;
+    outline: none;
   }
 `;
