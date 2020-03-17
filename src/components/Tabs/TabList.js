@@ -1,11 +1,13 @@
 import React from 'react';
 
+import { StyledTabList } from './tabs.styles';
+
 export default function TabList(props) {
   const { className = '', children, ...restProps } = props;
 
   return (
-    <div className={`tab-list ${className}`} {...restProps}>
+    <StyledTabList className={`tab-list ${className}`} {...restProps}>
       {children}
-    </div>
+    </StyledTabList>
   );
 }

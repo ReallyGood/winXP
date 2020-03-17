@@ -6,11 +6,7 @@ import PropertiesTabs from './PropertiesTabs';
 function DisplayProperties() {
   return (
     <Div>
-      <div className="com__content">
-        <div className="com__content__inner">
-          <PropertiesTabs />
-        </div>
-      </div>
+      <PropertiesTabs />
     </Div>
   );
 }
@@ -23,6 +19,7 @@ const Div = styled.div`
   overflow: hidden;
   flex-direction: column;
   background: linear-gradient(to right, #edede5 0%, #ede8cd 100%);
+  padding: 8px;
 `;
 
 export default DisplayProperties;

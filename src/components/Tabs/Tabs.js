@@ -1,5 +1,7 @@
 import React, { createContext, useState } from 'react';
 
+import { StyledTabs } from './tabs.styles';
+
 export const TabContext = createContext();
 
 export default function Tabs(props) {
@@ -10,9 +12,9 @@ export default function Tabs(props) {
 
   return (
     <TabContext.Provider value={tabProviderValue}>
-      <div className={`tabs ${className}`} {...restProps}>
+      <StyledTabs className={`tabs ${className}`} {...restProps}>
         {children}
-      </div>
+      </StyledTabs>
     </TabContext.Provider>
   );
 }

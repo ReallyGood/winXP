@@ -1,6 +1,8 @@
 import React, { useContext } from 'react';
 import { TabContext } from './index';
 
+import { StyledTabPanel } from './tabs.styles';
+
 export default function TabPanel(props) {
   const { name, className = '', children, ...restProps } = props;
 
@@ -8,9 +10,9 @@ export default function TabPanel(props) {
 
   return (
     tabContext.activeTab === name && (
-      <div className={`tab-panel ${className}`} {...restProps}>
+      <StyledTabPanel className={`tab-panel ${className}`} {...restProps}>
         {children}
-      </div>
+      </StyledTabPanel>
     )
   );
 }
