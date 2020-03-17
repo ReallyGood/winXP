@@ -1,14 +1,17 @@
 import React from 'react';
 import styled from 'styled-components';
 
-export default function Button({ onClicked, className, disabled, children }) {
+export default function Button(props) {
+  const { onClick, className, disabled, children, label = '' } = props;
   return (
     <StyledButton
       className={`button ${className}`}
-      onClick={onClicked}
+      onClick={() => {
+        onClick(props);
+      }}
       disabled={disabled}
     >
-      {children}
+      {children || label}
     </StyledButton>
   );
 }
@@ -29,4 +32,9 @@ const StyledButton = styled('button')`
     #e9ecec 70%,
     #fff 100%
   );
+
+  &:focus {
+    outline-offset: -4px;
+    outline-width: 3px;
+  }
 `;

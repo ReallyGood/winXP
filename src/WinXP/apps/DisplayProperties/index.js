@@ -4,14 +4,60 @@ import styled from 'styled-components';
 import PropertiesTabs from './PropertiesTabs';
 import Button from '../../../components/Button';
 
-function DisplayProperties() {
+function DisplayProperties(props) {
+  const { onSave, onClose } = props;
+
+  const handleActionClicked = action => {
+    const { actionProp } = action;
+    const { apply, close } = actionProp;
+
+    console.log('handleActionClicked ', action);
+
+    if (apply) {
+      console.log('apply changes');
+      onSave({
+        imageSrc: './images/bg.jbg',
+        color: 'red',
+      });
+    }
+
+    if (close) {
+      console.log('close display properties');
+      onClose();
+    }
+  };
+
+  const actions = [
+    {
+      label: 'OK',
+      actionProp: { apply: true, close: true },
+      disabled: false,
+    },
+    {
+      label: 'Cancel',
+      actionProp: { apply: false, close: true },
+      disabled: false,
+    },
+    {
+      label: 'Apply',
+      actionProp: { apply: true, close: false },
+      disabled: false,
+    },
+  ];
+
   return (
     <Div>
       <PropertiesTabs />
       <StyledFooter>
-        <FooterButton>OK</FooterButton>
-        <FooterButton>Cancel</FooterButton>
-        <FooterButton>Apply</FooterButton>
+        {actions.map(action => (
+          <FooterAction
+            key={action.label}
+            onClick={handleActionClicked}
+            {...action}
+          >
+            {action.label}
+          </FooterAction>
+        ))}
       </StyledFooter>
     </Div>
   );
@@ -28,7 +74,7 @@ const Div = styled.div`
   padding: 9px 8px;
 `;
 
-const FooterButton = styled(Button)`
+const FooterAction = styled(Button)`
   margin-right: 9px;
 `;
 
@@ -37,7 +83,7 @@ const StyledFooter = styled('div')`
   justify-content: flex-end;
   padding: 9px 0;
 
-  ${FooterButton} {
+  ${FooterAction} {
     &:last-child {
       margin-right: 0;
     }

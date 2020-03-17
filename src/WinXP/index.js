@@ -48,8 +48,6 @@ const reducer = (state, action = { type: '' }) => {
         _app => _app.component === action.payload.component,
       );
 
-      console.log('ADD_APP app => ', app);
-
       if (action.payload.multiInstance || !app) {
         return {
           ...state,
@@ -356,6 +354,9 @@ function WinXP() {
         onMinimize={onMinimizeWindow}
         onMaximize={onMaximizeWindow}
         focusedAppId={focusedAppId}
+        onSave={data => {
+          console.log('save changes data => ', data);
+        }}
       />
       <Footer
         apps={state.apps}
