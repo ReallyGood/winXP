@@ -116,8 +116,8 @@ export const defaultAppState = [
       buttons: ['close'],
     },
     defaultSize: {
-      width: 445,
-      height: 480,
+      width: 438,
+      height: 465,
     },
     defaultOffset: {
       x: 600,
@@ -320,8 +320,8 @@ export const appSettings = {
     },
     component: DisplayProperties,
     defaultSize: {
-      width: 445,
-      height: 480,
+      width: 438,
+      height: 465,
     },
     defaultOffset: {
       x: 600,
