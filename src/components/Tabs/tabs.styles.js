@@ -3,7 +3,7 @@ import styled from 'styled-components';
 export const StyledTabs = styled('div')`
   display: grid;
   grid-template-rows: auto 1fr;
-  height: 395px;
+  height: 387px;
 `;
 
 export const StyledTabList = styled('div')`
