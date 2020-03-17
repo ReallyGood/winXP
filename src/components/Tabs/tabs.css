@@ -1,0 +1,35 @@
+.tabs {
+    display: grid;
+    grid-row-gap: 18px;
+  }
+  
+  .tab-list {
+    display: flex;
+  }
+  
+  .tab {
+    cursor: pointer;
+    grid-row: 1;
+    display: grid;
+    grid-row-gap: 6px;
+    place-items: center;
+    padding-right: 18px;
+    font-size: 1.2em;
+  }
+  
+  .tab-divider {
+    height: 3px;
+    min-width: 100%;
+    width: 80px;
+    background-color: #999;
+    transition: 0.2s ease-in;
+  }
+  
+  .tab:not(.active):hover .tab-divider {
+    background-color: #777;
+  }
+  
+  .tab.active .tab-divider {
+    background-color: #333;
+  }
+  

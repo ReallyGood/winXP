@@ -1,11 +1,15 @@
 import React from 'react';
 import styled from 'styled-components';
 
+import PropertiesTabs from './PropertiesTabs';
+
 function DisplayProperties() {
   return (
     <Div>
       <div className="com__content">
-        <div className="com__content__inner">Properties Content here</div>
+        <div className="com__content__inner">
+          <PropertiesTabs />
+        </div>
       </div>
     </Div>
   );
