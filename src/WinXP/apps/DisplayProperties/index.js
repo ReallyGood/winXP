@@ -1,16 +1,7 @@
 import React from 'react';
 import styled from 'styled-components';
 
-function DisplayProperties({ onClose }) {
-  // function onClickOptionItem(item) {
-  //   switch (item) {
-  //     case 'Close':
-  //       onClose();
-  //       break;
-  //     default:
-  //   }
-  // }
-
+function DisplayProperties() {
   return (
     <Div>
       <div className="com__content">
