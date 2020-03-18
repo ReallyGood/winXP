@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { memo, useState } from 'react';
 
 import ThemesTab from './ThemesTab';
 import DesktopTab from './DesktopTab';
@@ -7,41 +7,55 @@ import AppearanceTab from './AppearanceTab';
 import SettingsTab from './SettingsTab';
 
 import { Tabs, Tab, TabList, TabPanel } from '../../../../components/Tabs';
-export default function PropertiesTabs() {
-  const getTabName = title => title.toLowerCase().replace(' ', '-');
 
-  const tabs = [
-    {
-      title: 'Themes',
-      component: ThemesTab,
-    },
-    {
-      title: 'Desktop',
-      component: DesktopTab,
-    },
-    {
-      title: 'Screen Saver',
-      component: ScreenSaverTab,
-    },
-    {
-      title: 'Appearance',
-      component: AppearanceTab,
-    },
-    {
-      title: 'Settings',
-      component: SettingsTab,
-    },
-  ];
+const tabs = [
+  {
+    title: 'Themes',
+    component: ThemesTab,
+    data: { id: '2' },
+  },
+  {
+    title: 'Desktop',
+    component: DesktopTab,
+    data: { id: '2' },
+  },
+  {
+    title: 'Screen Saver',
+    component: ScreenSaverTab,
+    data: { id: '3' },
+  },
+  {
+    title: 'Appearance',
+    component: AppearanceTab,
+    data: { id: '4' },
+  },
+  {
+    title: 'Settings',
+    component: SettingsTab,
+    data: { id: '5' },
+  },
+];
+
+export default memo(function PropertiesTabs() {
+  const getTabName = title => title.toLowerCase().replace(' ', '-');
+  const initialData = tabs.map(tab => tab.data);
+  const [data, setData] = useState(initialData);
+
+  const handleDataChanged = data => {
+    console.log('handleDataChanged data => ', data);
+  };
 
   const getPanels = () =>
     tabs.map(tab => {
-      const { title, component } = tab;
+      const { title, component, data } = tab;
       const name = `tab-${getTabName(title)}`;
-      console.log('name ***', name);
+
       return (
         <TabPanel key={name} name={name}>
           {component({
-            ...tab,
+            title,
+            data,
+            dataChanged: handleDataChanged,
           })}
         </TabPanel>
       );
@@ -66,4 +80,4 @@ export default function PropertiesTabs() {
       </Tabs>
     </div>
   );
-}
+});

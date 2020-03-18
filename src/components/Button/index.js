@@ -2,12 +2,19 @@ import React from 'react';
 import styled from 'styled-components';
 
 export default function Button(props) {
-  const { onClick, className, disabled, children, label = '' } = props;
+  const {
+    onClick,
+    className,
+    disabled,
+    children,
+    label = '',
+    actionProps,
+  } = props;
   return (
     <StyledButton
       className={`button ${className}`}
       onClick={() => {
-        onClick(props);
+        onClick(actionProps);
       }}
       disabled={disabled}
     >

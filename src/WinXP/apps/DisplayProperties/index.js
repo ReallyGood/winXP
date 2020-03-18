@@ -7,40 +7,41 @@ import Button from '../../../components/Button';
 function DisplayProperties(props) {
   const { onSave, onClose } = props;
 
-  const handleActionClicked = action => {
-    const { actionProp } = action;
-    const { apply, close } = actionProp;
+  const handleActionClicked = data => {
+    console.log('handleActionClicked data', data);
 
-    console.log('handleActionClicked ', action);
+    if (data) {
+      const { apply, close } = data;
 
-    if (apply) {
-      console.log('apply changes');
-      onSave({
-        imageSrc: './images/bg.jbg',
-        color: 'red',
-      });
-    }
+      if (apply) {
+        console.log('apply changes');
+        onSave({
+          imageSrc: './images/bg.jbg',
+          color: 'red',
+        });
+      }
 
-    if (close) {
-      console.log('close display properties');
-      onClose();
+      if (close) {
+        console.log('close display properties');
+        onClose();
+      }
     }
   };
 
   const actions = [
     {
       label: 'OK',
-      actionProp: { apply: true, close: true },
+      props: { apply: true, close: true },
       disabled: false,
     },
     {
       label: 'Cancel',
-      actionProp: { apply: false, close: true },
+      props: { apply: false, close: true },
       disabled: false,
     },
     {
       label: 'Apply',
-      actionProp: { apply: true, close: false },
+      props: { apply: true, close: false },
       disabled: false,
     },
   ];
@@ -53,7 +54,7 @@ function DisplayProperties(props) {
           <FooterAction
             key={action.label}
             onClick={handleActionClicked}
-            {...action}
+            actionProps={action.props}
           >
             {action.label}
           </FooterAction>

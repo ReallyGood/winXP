@@ -1,7 +1,19 @@
 import React from 'react';
+import Button from 'components/Button';
 
 export default function DesktopTab(props) {
-  const { title } = props;
+  const { title, data, dataChanged } = props;
 
-  return <div>{title}</div>;
+  const handleOnChanged = () => {
+    dataChanged({ type: '3', ...data });
+  };
+
+  return (
+    <div>
+      <Button
+        actionProps={data}
+        onClick={handleOnChanged}
+      >{`change ${title} data`}</Button>
+    </div>
+  );
 }
