@@ -1,7 +1,8 @@
 import React from 'react';
 
 export default function ScreenSaverTab(props) {
-  const { title } = props;
+  const { data } = props;
+  const { title } = data;
 
   return <div>{title}</div>;
 }

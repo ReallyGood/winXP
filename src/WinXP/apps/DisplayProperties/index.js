@@ -1,59 +1,71 @@
-import React from 'react';
+import React, { useState } from 'react';
 import styled from 'styled-components';
 
-import PropertiesTabs from './Tabs';
+import PropertiesTabs, { tabs } from './Tabs';
 import Button from '../../../components/Button';
 
-function DisplayProperties(props) {
+export default function DisplayProperties(props) {
   const { onSave, onClose } = props;
+  const initialPropertiesData = tabs.map(tab => tab.data);
+  const [propertiesData, setPropertiesData] = useState(initialPropertiesData);
 
   const handleActionClicked = action => {
-    const { actionProp } = action;
-    const { apply, close } = actionProp;
+    console.log('handleActionClicked data', action);
 
-    console.log('handleActionClicked ', action);
+    if (action) {
+      const { apply, close } = action;
 
-    if (apply) {
-      console.log('apply changes');
-      onSave({
-        imageSrc: './images/bg.jbg',
-        color: 'red',
-      });
-    }
+      if (apply) {
+        console.log('apply changes');
+        onSave(propertiesData);
+      }
 
-    if (close) {
-      console.log('close display properties');
-      onClose();
+      if (close) {
+        console.log('close display properties');
+        onClose();
+      }
     }
   };
 
   const actions = [
     {
       label: 'OK',
-      actionProp: { apply: true, close: true },
+      props: { apply: true, close: true },
       disabled: false,
     },
     {
       label: 'Cancel',
-      actionProp: { apply: false, close: true },
+      props: { apply: false, close: true },
       disabled: false,
     },
     {
       label: 'Apply',
-      actionProp: { apply: true, close: false },
+      onClick: { apply: true, close: false },
       disabled: false,
     },
   ];
 
+  const handlePropertiesDataChanged = newData => {
+    console.log('propertiesDataChanged newData ', newData);
+    console.log('propertiesDataChanged propertiesData ', propertiesData);
+
+    const updated = propertiesData.map(data =>
+      data.id === newData.id ? newData : data,
+    );
+
+    console.log('propertiesDataChanged updated', updated);
+    setPropertiesData(updated);
+  };
+
   return (
     <Div>
-      <PropertiesTabs />
+      <PropertiesTabs propertiesDataChanged={handlePropertiesDataChanged} />
       <StyledFooter>
         {actions.map(action => (
           <FooterAction
             key={action.label}
             onClick={handleActionClicked}
-            {...action}
+            action={action.onClick}
           >
             {action.label}
           </FooterAction>
@@ -89,5 +101,3 @@ const StyledFooter = styled('div')`
     }
   }
 `;
-
-export default DisplayProperties;

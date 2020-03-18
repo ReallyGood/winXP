@@ -1,47 +1,70 @@
-import React from 'react';
+import React, { memo, useState } from 'react';
 
 import ThemesTab from './ThemesTab';
 import DesktopTab from './DesktopTab';
 import ScreenSaverTab from './ScreenSaverTab';
 import AppearanceTab from './AppearanceTab';
 import SettingsTab from './SettingsTab';
-
 import { Tabs, Tab, TabList, TabPanel } from '../../../../components/Tabs';
-export default function PropertiesTabs() {
-  const getTabName = title => title.toLowerCase().replace(' ', '-');
 
-  const tabs = [
-    {
+export const tabs = [
+  {
+    component: ThemesTab,
+    data: {
       title: 'Themes',
-      component: ThemesTab,
+      id: '1',
     },
-    {
+  },
+  {
+    component: DesktopTab,
+    data: {
       title: 'Desktop',
-      component: DesktopTab,
+      counter: 0,
+      id: '2',
     },
-    {
+  },
+  {
+    component: ScreenSaverTab,
+    data: {
       title: 'Screen Saver',
-      component: ScreenSaverTab,
+      id: '3',
     },
-    {
+  },
+  {
+    component: AppearanceTab,
+    data: {
       title: 'Appearance',
-      component: AppearanceTab,
+      id: '4',
     },
-    {
+  },
+  {
+    component: SettingsTab,
+    data: {
       title: 'Settings',
-      component: SettingsTab,
+      id: '5',
     },
-  ];
+  },
+];
+
+const getTabName = title => title.toLowerCase().replace(' ', '-');
+
+export default memo(function PropertiesTabs(props) {
+  const { propertiesDataChanged = () => {} } = props;
+
+  const handleDataChanged = data => {
+    propertiesDataChanged(data);
+  };
 
   const getPanels = () =>
     tabs.map(tab => {
-      const { title, component } = tab;
-      const name = `tab-${getTabName(title)}`;
-      console.log('name ***', name);
+      const { component, data } = tab;
+      const name = `tab-${getTabName(data.title)}`;
+
       return (
         <TabPanel key={name} name={name}>
           {component({
-            ...tab,
+            data,
+            dataChanged: handleDataChanged,
           })}
         </TabPanel>
       );
@@ -49,11 +72,12 @@ export default function PropertiesTabs() {
 
   const getTabsList = () =>
     tabs.map(tab => {
-      const name = `tab-${getTabName(tab.title)}`;
+      const { title } = tab.data;
+      const name = `tab-${getTabName(title)}`;
 
       return (
         <Tab key={name} name={name}>
-          {tab.title}
+          {title}
         </Tab>
       );
     });
@@ -66,4 +90,4 @@ export default function PropertiesTabs() {
       </Tabs>
     </div>
   );
-}
+});
