@@ -1,7 +1,7 @@
 import React from 'react';
 import styled from 'styled-components';
 
-import PropertiesTabs from './PropertiesTabs';
+import PropertiesTabs from './Tabs';
 import Button from '../../../components/Button';
 
 function DisplayProperties(props) {
