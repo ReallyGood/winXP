@@ -107,7 +107,10 @@ export const contextMenuItems = [
         state,
         config: {
           type: ADD_APP,
-          payload: appSettings['Properties'],
+          payload: {
+            ...appSettings['Properties'],
+            injectProps: { tabs: state.displayProperties },
+          },
         },
       };
     },

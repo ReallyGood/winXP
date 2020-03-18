@@ -7,41 +7,41 @@ import AppearanceTab from './AppearanceTab';
 import SettingsTab from './SettingsTab';
 import { Tabs, Tab, TabList, TabPanel } from '../../../../components/Tabs';
 
-export const tabs = [
+export const defaultPropertiesTabs = [
   {
+    title: 'Themes',
     component: ThemesTab,
     data: {
-      title: 'Themes',
-      id: '1',
+      id: 'themes',
     },
   },
   {
+    title: 'Desktop',
     component: DesktopTab,
     data: {
-      title: 'Desktop',
       counter: 0,
-      id: '2',
+      id: 'desktop',
     },
   },
   {
+    title: 'Screen Saver',
     component: ScreenSaverTab,
     data: {
-      title: 'Screen Saver',
-      id: '3',
+      id: 'screen-saver',
     },
   },
   {
+    title: 'Appearance',
     component: AppearanceTab,
     data: {
-      title: 'Appearance',
-      id: '4',
+      id: 'appearance',
     },
   },
   {
+    title: 'Settings',
     component: SettingsTab,
     data: {
-      title: 'Settings',
-      id: '5',
+      id: 'Settings',
     },
   },
 ];
@@ -49,44 +49,65 @@ export const tabs = [
 const getTabName = title => title.toLowerCase().replace(' ', '-');
 
 export default memo(function PropertiesTabs(props) {
-  const { propertiesDataChanged = () => {} } = props;
-
+  const { propertiesDataChanged = () => {}, tabs } = props;
   const handleDataChanged = data => {
     propertiesDataChanged(data);
   };
 
-  const getPanels = () =>
-    tabs.map(tab => {
-      const { component, data } = tab;
-      const name = `tab-${getTabName(data.title)}`;
+  // const getPanels = tabs.map(tab => {
+  //   const { component, data, title } = tab;
+  //   const name = `tab-${getTabName(title)}`;
 
-      return (
-        <TabPanel key={name} name={name}>
-          {component({
-            data,
-            dataChanged: handleDataChanged,
-          })}
-        </TabPanel>
-      );
-    });
+  //   return (
+  //     <TabPanel key={name} name={name}>
+  //       {component({
+  //         data,
+  //         dataChanged: handleDataChanged,
+  //       })}
+  //     </TabPanel>
+  //   );
+  // });
 
-  const getTabsList = () =>
-    tabs.map(tab => {
-      const { title } = tab.data;
-      const name = `tab-${getTabName(title)}`;
+  // const getTabsList = tabs.map(tab => {
+  //   const { title } = tab;
+  //   const name = `tab-${getTabName(title)}`;
 
-      return (
-        <Tab key={name} name={name}>
-          {title}
-        </Tab>
-      );
-    });
+  //   return (
+  //     <Tab key={name} name={name}>
+  //       {title}
+  //     </Tab>
+  //   );
+  // });
 
   return (
     <div className="display-properties-tabs">
       <Tabs initialValue="tab-desktop">
-        <TabList>{getTabsList()}</TabList>
-        {getPanels()}
+        <TabList>
+          {tabs.map(tab => {
+            const { title } = tab;
+            const name = `tab-${getTabName(title)}`;
+
+            return (
+              <Tab key={name} name={name}>
+                {title}
+              </Tab>
+            );
+          })}
+        </TabList>
+        {tabs.map(tab => {
+          const { component, data, title } = tab;
+          const name = `tab-${getTabName(title)}`;
+
+          return (
+            <TabPanel key={name} name={name}>
+              {component({
+                title,
+                data,
+                dataChanged: handleDataChanged,
+              })}
+            </TabPanel>
+          );
+        })}
       </Tabs>
     </div>
   );

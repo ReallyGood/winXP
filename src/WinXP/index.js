@@ -27,6 +27,7 @@ import Icons from './Icons';
 import { DashedBox } from 'components';
 import ContextMenu from '../components/ContextMenu/ContextMenu';
 import { contextMenuItems } from './WinXPContextMenuUtils';
+import { defaultPropertiesTabs } from './apps/DisplayProperties/Tabs';
 
 const initState = {
   apps: defaultAppState,
@@ -36,6 +37,7 @@ const initState = {
   icons: defaultIconState,
   selecting: false,
   powerState: POWER_STATE.START,
+  displayProperties: defaultPropertiesTabs,
 };
 const reducer = (state, action = { type: '' }) => {
   ga.event({
@@ -316,6 +318,20 @@ function WinXP() {
       dispatch(action.config);
     }
   }
+  function onSave(data) {
+    console.log('save changes data => ', data);
+    // const action = () => {
+    //   state[data.stateProp] = data.state;
+    //   return {
+    //     state,
+    //     config: {
+    //       type: FOCUS_DESKTOP,
+    //     },
+    //   };
+    // };
+
+    // dispatch(action);
+  }
 
   return (
     <Container
@@ -354,9 +370,7 @@ function WinXP() {
         onMinimize={onMinimizeWindow}
         onMaximize={onMaximizeWindow}
         focusedAppId={focusedAppId}
-        onSave={data => {
-          console.log('save changes data => ', data);
-        }}
+        onSave={onSave}
       />
       <Footer
         apps={state.apps}

@@ -16,23 +16,25 @@ function Windows({
 }) {
   return (
     <div style={{ position: 'relative', zIndex: 0 }}>
-      {apps.map(app => (
-        <StyledWindow
-          show={!app.minimized}
-          key={app.id}
-          id={app.id}
-          onMouseDown={onMouseDown}
-          onMouseUpClose={onClose}
-          onMouseUpMinimize={onMinimize}
-          onMouseUpMaximize={onMaximize}
-          isFocus={focusedAppId === app.id} // for styledWindow
-          onSave={data => {
-            console.log('Windows onSave ', data);
-            onSave(data);
-          }}
-          {...app}
-        />
-      ))}
+      {apps.map(app => {
+        return (
+          <StyledWindow
+            show={!app.minimized}
+            key={app.id}
+            id={app.id}
+            onMouseDown={onMouseDown}
+            onMouseUpClose={onClose}
+            onMouseUpMinimize={onMinimize}
+            onMouseUpMaximize={onMaximize}
+            isFocus={focusedAppId === app.id} // for styledWindow
+            onSave={data => {
+              console.log('Windows onSave ', data);
+              onSave(data);
+            }}
+            {...app}
+          />
+        );
+      })}
     </div>
   );
 }

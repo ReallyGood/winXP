@@ -5,6 +5,7 @@ import MyComputer from './MyComputer';
 import Notepad from './Notepad';
 import Winamp from './Winamp';
 import Paint from './Paint';
+import { defaultPropertiesTabs } from './DisplayProperties/Tabs';
 import iePaper from 'assets/windowsIcons/ie-paper.png';
 import ie from 'assets/windowsIcons/ie.png';
 import mine from 'assets/minesweeper/mine-icon.png';
@@ -128,6 +129,7 @@ export const defaultAppState = [
     maximized: window.innerWidth < 800,
     id: genId(),
     zIndex: genIndex(),
+    injectProps: { tabs: defaultPropertiesTabs },
   },
 ];
 
@@ -327,9 +329,9 @@ export const appSettings = {
       x: 600,
       y: 40,
     },
-    resizable: true,
+    resizable: false,
     minimized: false,
-    maximized: window.innerWidth < 800,
+    maximized: false,
     multiInstance: false,
   },
 };

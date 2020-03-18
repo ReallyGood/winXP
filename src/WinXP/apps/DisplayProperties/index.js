@@ -1,13 +1,13 @@
 import React, { useState } from 'react';
 import styled from 'styled-components';
 
-import PropertiesTabs, { tabs } from './Tabs';
+import PropertiesTabs from './Tabs';
 import Button from '../../../components/Button';
 
 export default function DisplayProperties(props) {
-  const { onSave, onClose } = props;
+  const { onSave, onClose, tabs } = props;
   const initialPropertiesData = tabs.map(tab => tab.data);
-  const [propertiesData, setPropertiesData] = useState(initialPropertiesData);
+  const [propertiesData, setPropertiesData] = useState(initialPropertiesData);  
 
   const handleActionClicked = action => {
     console.log('handleActionClicked data', action);
@@ -17,7 +17,7 @@ export default function DisplayProperties(props) {
 
       if (apply) {
         console.log('apply changes');
-        onSave(propertiesData);
+        onSave({ stateProp: 'displayProperties', state: propertiesData });
       }
 
       if (close) {
@@ -30,12 +30,12 @@ export default function DisplayProperties(props) {
   const actions = [
     {
       label: 'OK',
-      props: { apply: true, close: true },
+      onClick: { apply: true, close: true },
       disabled: false,
     },
     {
       label: 'Cancel',
-      props: { apply: false, close: true },
+      onClick: { apply: false, close: true },
       disabled: false,
     },
     {
@@ -59,7 +59,10 @@ export default function DisplayProperties(props) {
 
   return (
     <Div>
-      <PropertiesTabs propertiesDataChanged={handlePropertiesDataChanged} />
+      <PropertiesTabs
+        tabs={tabs}
+        propertiesDataChanged={handlePropertiesDataChanged}
+      />
       <StyledFooter>
         {actions.map(action => (
           <FooterAction
