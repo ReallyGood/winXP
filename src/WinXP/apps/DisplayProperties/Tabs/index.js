@@ -107,31 +107,6 @@ export default memo(function PropertiesTabs(props) {
     propertiesDataChanged(data);
   };
 
-  // const getPanels = tabs.map(tab => {
-  //   const { component, data, title } = tab;
-  //   const name = `tab-${getTabName(title)}`;
-
-  //   return (
-  //     <TabPanel key={name} name={name}>
-  //       {component({
-  //         data,
-  //         dataChanged: handleDataChanged,
-  //       })}
-  //     </TabPanel>
-  //   );
-  // });
-
-  // const getTabsList = tabs.map(tab => {
-  //   const { title } = tab;
-  //   const name = `tab-${getTabName(title)}`;
-
-  //   return (
-  //     <Tab key={name} name={name}>
-  //       {title}
-  //     </Tab>
-  //   );
-  // });
-
   return (
     <div className="display-properties-tabs">
       <Tabs initialValue="tab-desktop">
