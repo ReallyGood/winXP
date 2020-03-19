@@ -23,12 +23,13 @@ export const defaultPropertiesTabs = [
     data: {
       id: 'desktop',
       backgroundIsImage: true,
-      backgroundSrc: reallyGoodBackground,
-      solidColor: 'red',
+      backgroundSrc: defaultBackground,
+      solidColor: '#2c2a94',
+      backgroundPositions: ['top', 'right', 'left'],
       backgroundOptions: [
         {
           name: '(None)',
-          src: null,
+          src: '',
         },
         {
           name: 'windows',

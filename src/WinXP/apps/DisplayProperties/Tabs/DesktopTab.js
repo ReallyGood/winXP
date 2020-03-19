@@ -6,14 +6,15 @@ import noneIcon from '../../../../assets/displayProperties/icons/none.png';
 import imageIcon from '../../../../assets/displayProperties/icons/image.png';
 
 export default function DesktopTab(props) {
-  const { title, data, dataChanged } = props;
+  const { data, dataChanged } = props;
   const {
     backgroundSrc,
     solidColor,
     backgroundIsImage,
     backgroundOptions,
   } = data;
-  // const [count, setCount] = useState(counter);
+  const [selectedBackground, setSelectedBackground] = useState(backgroundSrc);
+  const [imageSelected, setImageSelected] = useState(backgroundIsImage);
   // const handleOnChanged = () => {
   //   const newCount = count + 1;
   //   const newData = { ...data, ...{ counter: newCount } };
@@ -21,12 +22,18 @@ export default function DesktopTab(props) {
   //   setCount(newCount);
   // };
 
+  const handleSelectedBackground = e => {
+    const { value } = e.target;
+    setImageSelected(Boolean(value));
+    setSelectedBackground(value);
+  };
+
   return (
     <Container>
       <DisplayWrapper className="display-warapper">
         <Display className="display" src={display} alt="" />
-        {backgroundIsImage ? (
-          <Image className="background" src={backgroundSrc} alt="" />
+        {imageSelected ? (
+          <Image className="background" src={selectedBackground} alt="" />
         ) : (
           <SolidColor color={solidColor}></SolidColor>
         )}
@@ -34,20 +41,52 @@ export default function DesktopTab(props) {
       <DisplaySettings className="display-settings">
         <BackgroundSelection>
           <span className="header">Background:</span>
-          <Select size="5">
+          <StyledSelect
+            size="5"
+            height={'118px'}
+            defaultValue={selectedBackground}
+            onChange={handleSelectedBackground}
+          >
             {backgroundOptions.map(option => {
               return (
-                <Option
+                <SelectOption
+                  key={option.name}
                   value={option.src}
                   icon={Boolean(option.src) ? imageIcon : noneIcon}
                 >
                   {option.name}
-                </Option>
+                </SelectOption>
               );
             })}
-          </Select>
+          </StyledSelect>
         </BackgroundSelection>
-        <BackgroundOptions>options</BackgroundOptions>
+        <BackgroundActions>
+          <Button
+            minWidth={'50px'}
+            padding={'2px 12px'}
+            onClick={() => {
+              console.log('Browse... ');
+            }}
+          >
+            Browse...
+          </Button>
+          <div>
+            <span>Position:</span>
+            <StyledSelect
+              defaultValue={selectedBackground}
+              onChange={handleSelectedBackground}
+            >
+              {backgroundOptions.map(option => {
+                return (
+                  <SelectOption key={option.name} value={option}>
+                    {option.name}
+                  </SelectOption>
+                );
+              })}
+            </StyledSelect>
+          </div>
+          <div>Color: </div>
+        </BackgroundActions>
       </DisplaySettings>
     </Container>
   );
@@ -98,9 +137,9 @@ const DisplaySettings = styled('div')`
   padding-top: 5px;
   width: 100%;
   display: grid;
-  grid-template-columns: 4.3fr 1fr;
+  grid-template-columns: 3.3fr 1fr;
   grid-template-rows: repeat(2, 1fr);
-  grid-column-gap: 20px;
+  grid-column-gap: 0;
   grid-row-gap: 0px;
 `;
 
@@ -115,25 +154,28 @@ const BackgroundSelection = styled('div')`
   }
 `;
 
-const BackgroundOptions = styled('div')`
+const BackgroundActions = styled('div')`
   grid-area: 1 / 2 / 6 / 3;
-  display: grid;
-  grid-template-columns: 1fr;
-  grid-template-rows: 20px, 1fr;
+  padding-top: 20px;
+  padding-left: 12px;
 `;
 
-const Select = styled('select')`
+const StyledSelect = styled('select')`
+  -webkit-appearance: none;
+  width: 100%;
+  padding: 3px;
   overflow-y: scroll;
-  height: 118px;
+  border-radius: 0;
+  height: ${props => props.height || 'auto'}118px;
   &:focus {
     outline: none;
   }
 `;
 
-const Option = styled('option')`
+const SelectOption = styled('option')`
   position: relative;
   height: 15px;
-  padding: 2px 0 3px 25px;
+  padding: ${props => (Boolean(props.icon) ? '2px 0 3px 25px' : '3px')};
   font-size: 12px;
 
   &&:before {

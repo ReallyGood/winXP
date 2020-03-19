@@ -10,6 +10,7 @@ export default function Button(props) {
         onClick(action);
       }}
       disabled={disabled}
+      {...props}
     >
       {children || label}
     </StyledButton>
@@ -20,8 +21,8 @@ const StyledButton = styled('button')`
   position: relative;
   display: inline-flex;
   font-size: 12px;
-  padding: 2px 22px;
-  min-width: 76px;
+  padding: ${props => props.padding || '2px 22px'};
+  min-width: ${props => props.minWidth || '76px'};
   justify-content: center;
   border: 1px solid #a1a1a1;
   border-radius: 4px;
