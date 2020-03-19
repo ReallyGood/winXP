@@ -258,7 +258,7 @@ function WinXP() {
         type: ADD_APP,
         payload: {
           ...appSettings.Error,
-          injectProps: { message: 'C:\\\nApplication not found' },
+          injectProps: { message: 'C:\\\nApplication not found test test' },
         },
       });
   }
