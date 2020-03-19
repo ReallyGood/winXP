@@ -6,6 +6,8 @@ import ScreenSaverTab from './ScreenSaverTab';
 import AppearanceTab from './AppearanceTab';
 import SettingsTab from './SettingsTab';
 import { Tabs, Tab, TabList, TabPanel } from '../../../../components/Tabs';
+import defaultBackground from '../../../../assets/displayProperties/backgrounds/default.jpg';
+import reallyGoodBackground from '../../../../assets/displayProperties/backgrounds/really-good.png';
 
 export const defaultPropertiesTabs = [
   {
@@ -21,6 +23,10 @@ export const defaultPropertiesTabs = [
     data: {
       counter: 0,
       id: 'desktop',
+      backgroundIsImage: true,
+      backgroundSrc: defaultBackground,
+      solidColor: 'red',
+      backgroundOptions: [defaultBackground, reallyGoodBackground],
     },
   },
   {
