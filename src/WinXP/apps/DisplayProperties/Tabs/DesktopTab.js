@@ -7,39 +7,42 @@ import imageIcon from '../../../../assets/displayProperties/icons/image.png';
 
 export default function DesktopTab(props) {
   const { data, dataChanged } = props;
-  const {
-    backgroundSrc,
-    solidColor,
-    backgroundIsImage,
-    backgroundImages,
-  } = data;
-  const [selectedBackground, setSelectedBackground] = useState(backgroundSrc);
-  const [imageSelected, setImageSelected] = useState(backgroundIsImage);
+  const { imageSrc, solidColor, images, positions, imagePosition } = data;
+  const [selectedBackground, setSelectedBackground] = useState(imageSrc);
+  const [selectedPosition, setSelectedPosition] = useState(imagePosition);
+  const [selectedColor, setSelectedColor] = useState(solidColor);
+
   const [dataState, setDataState] = useState(data);
 
   const handleDataChanged = (target, value) => {
     const updated = Object.assign({}, dataState);
     updated[target] = value;
-    updated.backgroundIsImage = Boolean(updated[target]);
     dataChanged(updated);
     setDataState(updated);
   };
 
   const handleSelectedBackground = e => {
     const { value } = e.target;
-    handleDataChanged('backgroundSrc', value);
-    setImageSelected(Boolean(value));
+    handleDataChanged('imageSrc', value);
     setSelectedBackground(value);
   };
+
+  const handleSelectedPosition = e => {
+    const { value } = e.target;
+    handleDataChanged('imagePosition', value);
+    setSelectedPosition(value);
+  };
+
+  const isImage = Boolean(selectedBackground);
 
   return (
     <Container>
       <DisplayWrapper className="display-warapper">
         <Display className="display" src={display} alt="" />
-        {imageSelected ? (
+        {isImage ? (
           <Image className="background" src={selectedBackground} alt="" />
         ) : (
-          <SolidColor color={solidColor}></SolidColor>
+          <SolidColor color={selectedColor}></SolidColor>
         )}
       </DisplayWrapper>
       <DisplaySettings className="display-settings">
@@ -51,7 +54,7 @@ export default function DesktopTab(props) {
             defaultValue={selectedBackground}
             onChange={handleSelectedBackground}
           >
-            {backgroundImages.map(option => {
+            {images.map(option => {
               return (
                 <SelectOption
                   key={option.name}
@@ -75,21 +78,35 @@ export default function DesktopTab(props) {
             Browse...
           </Button>
           <div>
-            <span>Position:</span>
+            <span className="header">Position:</span>
             <StyledSelect
-              defaultValue={selectedBackground}
-              onChange={handleSelectedBackground}
+              defaultValue={selectedPosition}
+              onChange={handleSelectedPosition}
             >
-              {backgroundImages.map(option => {
+              {positions.map(position => {
                 return (
-                  <SelectOption key={option.name} value={option}>
-                    {option.name}
+                  <SelectOption key={position} value={position}>
+                    {position}
                   </SelectOption>
                 );
               })}
             </StyledSelect>
           </div>
-          <div>Color: </div>
+          <div>
+            <span>Color:</span>
+            <input
+              type="color"
+              id="favcolor"
+              name="favcolor"
+              value={selectedColor}
+              onChange={e => {
+                const { value } = e.target;
+                console.log('changed color value ', value);
+                setSelectedColor(value);
+                handleDataChanged('solidColor', value);
+              }}
+            />
+          </div>
         </BackgroundActions>
       </DisplaySettings>
     </Container>

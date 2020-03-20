@@ -22,11 +22,11 @@ export const defaultPropertiesTabs = [
     component: DesktopTab,
     data: {
       id: 'desktop',
-      backgroundIsImage: true,
-      backgroundSrc: defaultBackground,
+      imageSrc: defaultBackground,
+      imagePosition: 'top',
       solidColor: '#2c2a94',
-      backgroundPositions: ['top', 'right', 'left'],
-      backgroundImages: [
+      positions: ['top', 'right', 'left'],
+      images: [
         {
           name: '(None)',
           src: '',
