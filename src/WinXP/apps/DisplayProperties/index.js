@@ -7,7 +7,7 @@ import Button from '../../../components/Button';
 export default function DisplayProperties(props) {
   const { onSave, onClose, tabs } = props;
   const initialPropertiesData = tabs.map(tab => tab.data);
-  const [propertiesData, setPropertiesData] = useState(initialPropertiesData);  
+  const [propertiesData, setPropertiesData] = useState(initialPropertiesData);
 
   const handleActionClicked = action => {
     console.log('handleActionClicked data', action);

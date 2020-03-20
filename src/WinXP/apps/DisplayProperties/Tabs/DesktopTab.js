@@ -68,16 +68,16 @@ export default function DesktopTab(props) {
           </StyledSelect>
         </BackgroundSelection>
         <BackgroundActions>
-          <Button
+          <BrowseButton
             minWidth={'50px'}
             padding={'2px 12px'}
             onClick={() => {
-              console.log('Browse... ');
+              console.log('user pressed Browse... ');
             }}
           >
             Browse...
-          </Button>
-          <div>
+          </BrowseButton>
+          <PositionSelection>
             <span className="header">Position:</span>
             <StyledSelect
               defaultValue={selectedPosition}
@@ -91,9 +91,9 @@ export default function DesktopTab(props) {
                 );
               })}
             </StyledSelect>
-          </div>
-          <div>
-            <span>Color:</span>
+          </PositionSelection>
+          <ColorSelection>
+            <span className="header">Color:</span>
             <input
               type="color"
               id="favcolor"
@@ -106,7 +106,7 @@ export default function DesktopTab(props) {
                 handleDataChanged('solidColor', value);
               }}
             />
-          </div>
+          </ColorSelection>
         </BackgroundActions>
       </DisplaySettings>
     </Container>
@@ -120,6 +120,12 @@ const Container = styled('div')`
   flex-direction: column;
   align-items: center;
   padding-top: 2px;
+
+  .header {
+    font-size: 12px;
+    margin-bottom: 5px;
+    display: flex;
+  }
 `;
 
 const DisplayWrapper = styled('div')`
@@ -169,16 +175,28 @@ const BackgroundSelection = styled('div')`
   display: grid;
   grid-template-columns: 1fr;
   grid-template-rows: 20px 1fr;
+`;
 
-  .header {
-    font-size: 12px;
-  }
+const BrowseButton = styled(Button)`
+  grid-area: 1 / 1 / 1 / 3;
+  height: max-content;
+`;
+
+const PositionSelection = styled('div')`
+  grid-area: 2 / 1 / 2 / 3;
+`;
+
+const ColorSelection = styled('div')`
+  grid-area: 3 / 1 / 3 / 3;
 `;
 
 const BackgroundActions = styled('div')`
   grid-area: 1 / 2 / 6 / 3;
   padding-top: 20px;
   padding-left: 12px;
+  display: grid;
+  grid-template-columns: 1fr;
+  grid-template-rows: 30px 1fr 1fr;
 `;
 
 const StyledSelect = styled('select')`
@@ -187,7 +205,7 @@ const StyledSelect = styled('select')`
   padding: 3px;
   overflow-y: scroll;
   border-radius: 0;
-  height: ${props => props.height || 'auto'}118px;
+  height: ${props => props.height || 'auto'};
   &:focus {
     outline: none;
   }
