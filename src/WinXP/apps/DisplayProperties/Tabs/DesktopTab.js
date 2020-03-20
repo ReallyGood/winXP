@@ -11,19 +11,23 @@ export default function DesktopTab(props) {
     backgroundSrc,
     solidColor,
     backgroundIsImage,
-    backgroundOptions,
+    backgroundImages,
   } = data;
   const [selectedBackground, setSelectedBackground] = useState(backgroundSrc);
   const [imageSelected, setImageSelected] = useState(backgroundIsImage);
-  // const handleOnChanged = () => {
-  //   const newCount = count + 1;
-  //   const newData = { ...data, ...{ counter: newCount } };
-  //   dataChanged(newData);
-  //   setCount(newCount);
-  // };
+  const [dataState, setDataState] = useState(data);
+
+  const handleDataChanged = (target, value) => {
+    const updated = Object.assign({}, dataState);
+    updated[target] = value;
+    updated.backgroundIsImage = Boolean(updated[target]);
+    dataChanged(updated);
+    setDataState(updated);
+  };
 
   const handleSelectedBackground = e => {
     const { value } = e.target;
+    handleDataChanged('backgroundSrc', value);
     setImageSelected(Boolean(value));
     setSelectedBackground(value);
   };
@@ -47,7 +51,7 @@ export default function DesktopTab(props) {
             defaultValue={selectedBackground}
             onChange={handleSelectedBackground}
           >
-            {backgroundOptions.map(option => {
+            {backgroundImages.map(option => {
               return (
                 <SelectOption
                   key={option.name}
@@ -76,7 +80,7 @@ export default function DesktopTab(props) {
               defaultValue={selectedBackground}
               onChange={handleSelectedBackground}
             >
-              {backgroundOptions.map(option => {
+              {backgroundImages.map(option => {
                 return (
                   <SelectOption key={option.name} value={option}>
                     {option.name}

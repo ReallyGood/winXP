@@ -26,7 +26,7 @@ export const defaultPropertiesTabs = [
       backgroundSrc: defaultBackground,
       solidColor: '#2c2a94',
       backgroundPositions: ['top', 'right', 'left'],
-      backgroundOptions: [
+      backgroundImages: [
         {
           name: '(None)',
           src: '',
