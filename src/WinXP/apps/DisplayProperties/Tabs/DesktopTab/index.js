@@ -1,12 +1,11 @@
 import React, { useState } from 'react';
 import styled from 'styled-components';
 import Button from 'components/Button';
-import display from '../../../../assets/displayProperties/display.png';
-import noneIcon from '../../../../assets/displayProperties/icons/none.png';
-import imageIcon from '../../../../assets/displayProperties/icons/image.png';
+import display from '../../../../../assets/displayProperties/display.png';
+import noneIcon from '../../../../../assets/displayProperties/icons/none.png';
+import imageIcon from '../../../../../assets/displayProperties/icons/image.png';
 
-export default function DesktopTab(props) {
-  const { data, dataChanged } = props;
+export default function DesktopTab({ data, dataChanged }) {
   const [dataState, setDataState] = useState(data);
   const { imageSrc, solidColor, images, positions, imagePosition } = dataState;
 
