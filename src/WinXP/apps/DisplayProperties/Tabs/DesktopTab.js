@@ -7,42 +7,27 @@ import imageIcon from '../../../../assets/displayProperties/icons/image.png';
 
 export default function DesktopTab(props) {
   const { data, dataChanged } = props;
-  const { imageSrc, solidColor, images, positions, imagePosition } = data;
-  const [selectedBackground, setSelectedBackground] = useState(imageSrc);
-  const [selectedPosition, setSelectedPosition] = useState(imagePosition);
-  const [selectedColor, setSelectedColor] = useState(solidColor);
-
   const [dataState, setDataState] = useState(data);
+  const { imageSrc, solidColor, images, positions, imagePosition } = dataState;
 
-  const handleDataChanged = (target, value) => {
+  const handleDataChanged = (event, target) => {
+    const { value } = event.target;
     const updated = Object.assign({}, dataState);
     updated[target] = value;
-    dataChanged(updated);
     setDataState(updated);
+    dataChanged(updated);
   };
 
-  const handleSelectedBackground = e => {
-    const { value } = e.target;
-    handleDataChanged('imageSrc', value);
-    setSelectedBackground(value);
-  };
-
-  const handleSelectedPosition = e => {
-    const { value } = e.target;
-    handleDataChanged('imagePosition', value);
-    setSelectedPosition(value);
-  };
-
-  const isImage = Boolean(selectedBackground);
+  const isImage = Boolean(imageSrc);
 
   return (
     <Container>
       <DisplayWrapper className="display-warapper">
         <Display className="display" src={display} alt="" />
         {isImage ? (
-          <Image className="background" src={selectedBackground} alt="" />
+          <Image className="background" src={imageSrc} alt="" />
         ) : (
-          <SolidColor color={selectedColor}></SolidColor>
+          <SolidColor color={solidColor}></SolidColor>
         )}
       </DisplayWrapper>
       <DisplaySettings className="display-settings">
@@ -51,8 +36,8 @@ export default function DesktopTab(props) {
           <StyledSelect
             size="5"
             height={'118px'}
-            defaultValue={selectedBackground}
-            onChange={handleSelectedBackground}
+            defaultValue={imageSrc}
+            onChange={e => handleDataChanged(e, 'imageSrc')}
           >
             {images.map(option => {
               return (
@@ -80,8 +65,8 @@ export default function DesktopTab(props) {
           <PositionSelection>
             <span className="header">Position:</span>
             <StyledSelect
-              defaultValue={selectedPosition}
-              onChange={handleSelectedPosition}
+              defaultValue={imagePosition}
+              onChange={e => handleDataChanged(e, 'imagePosition')}
             >
               {positions.map(position => {
                 return (
@@ -98,13 +83,8 @@ export default function DesktopTab(props) {
               type="color"
               id="favcolor"
               name="favcolor"
-              value={selectedColor}
-              onChange={e => {
-                const { value } = e.target;
-                console.log('changed color value ', value);
-                setSelectedColor(value);
-                handleDataChanged('solidColor', value);
-              }}
+              value={solidColor}
+              onChange={e => handleDataChanged(e, 'solidColor')}
             />
           </ColorSelection>
         </BackgroundActions>
