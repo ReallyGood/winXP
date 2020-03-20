@@ -27,10 +27,7 @@ function Windows({
             onMouseUpMinimize={onMinimize}
             onMouseUpMaximize={onMaximize}
             isFocus={focusedAppId === app.id} // for styledWindow
-            onSave={data => {
-              console.log('Windows onSave ', data);
-              onSave(data);
-            }}
+            onSave={onSave}
             {...app}
           />
         );
@@ -134,10 +131,7 @@ const Window = memo(function({
           onClose: _onMouseUpClose,
           onMinimize: _onMouseUpMinimize,
           isFocus,
-          onSave: data => {
-            console.log('Window onSave data => ', data);
-            onSave(data);
-          },
+          onSave: onSave,
           ...injectProps,
         })}
       </div>

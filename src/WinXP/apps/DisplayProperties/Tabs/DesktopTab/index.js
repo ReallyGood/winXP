@@ -19,16 +19,17 @@ import {
   ColorSelection,
 } from './styles';
 
-export default function DesktopTab({ data, dataChanged }) {
+export default function DesktopTab({ tab, dataChanged }) {
+  const { data } = tab;
   const [dataState, setDataState] = useState(data);
   const { imageSrc, solidColor, images, positions, imagePosition } = dataState;
 
   const handleDataChanged = (event, target) => {
     const { value } = event.target;
-    const updated = Object.assign({}, dataState);
-    updated[target] = value;
-    setDataState(updated);
-    dataChanged(updated);
+    const changedData = Object.assign({}, dataState);
+    changedData[target] = value;
+    setDataState(changedData);
+    dataChanged({ ...tab, data: changedData });
   };
 
   const isImage = Boolean(imageSrc);
@@ -69,8 +70,8 @@ export default function DesktopTab({ data, dataChanged }) {
           <BrowseButton
             minWidth={'50px'}
             padding={'2px 12px'}
-            onClick={() => {
-              console.log('user pressed Browse... ');
+            handleOnClick={action => {
+              console.log('user pressed Browse... ', action);
             }}
           >
             Browse...

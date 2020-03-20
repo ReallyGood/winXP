@@ -3,25 +3,21 @@ import styled from 'styled-components';
 
 import PropertiesTabs from './Tabs';
 import Button from '../../../components/Button';
+import { SAVE_DISPLAY_PROPERTIES } from '../../constants/actions';
 
 export default function DisplayProperties(props) {
   const { onSave, onClose, tabs } = props;
-  const initialPropertiesData = tabs.map(tab => tab.data);
-  const [propertiesData, setPropertiesData] = useState(initialPropertiesData);
+  const [propertiesData, setPropertiesData] = useState(tabs);
 
   const handleActionClicked = action => {
-    console.log('handleActionClicked data', action);
-
     if (action) {
       const { apply, close } = action;
 
       if (apply) {
-        console.log('apply changes');
-        onSave({ stateProp: 'displayProperties', state: propertiesData });
+        onSave({ action: SAVE_DISPLAY_PROPERTIES, stateData: propertiesData });
       }
 
       if (close) {
-        console.log('close display properties');
         onClose();
       }
     }
@@ -45,15 +41,10 @@ export default function DisplayProperties(props) {
     },
   ];
 
-  const handlePropertiesDataChanged = newData => {
-    console.log('propertiesDataChanged newData ', newData);
-    console.log('propertiesDataChanged propertiesData ', propertiesData);
-
-    const updated = propertiesData.map(data =>
-      data.id === newData.id ? newData : data,
-    );
-
-    console.log('propertiesDataChanged updated', updated);
+  const handlePropertiesDataChanged = newTab => {
+    const updated = propertiesData.map(tab => {
+      return tab.data.id === newTab.data.id ? newTab : tab;
+    });
     setPropertiesData(updated);
   };
 
@@ -67,7 +58,7 @@ export default function DisplayProperties(props) {
         {actions.map(action => (
           <FooterAction
             key={action.label}
-            onClick={handleActionClicked}
+            handleOnClick={handleActionClicked}
             action={action.onClick}
           >
             {action.label}

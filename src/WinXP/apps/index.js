@@ -5,7 +5,7 @@ import MyComputer from './MyComputer';
 import Notepad from './Notepad';
 import Winamp from './Winamp';
 import Paint from './Paint';
-import { defaultPropertiesTabs } from './DisplayProperties/Tabs';
+import { defaultPropertiesTabs } from './DisplayProperties/Tabs/propertiesData';
 import iePaper from 'assets/windowsIcons/ie-paper.png';
 import ie from 'assets/windowsIcons/ie.png';
 import mine from 'assets/minesweeper/mine-icon.png';
