@@ -1,3 +1,26 @@
 #root {
   height: 100%;
 }
+
+/* width */
+::-webkit-scrollbar {
+  width: 17px;
+}
+
+/* Track */
+::-webkit-scrollbar-track {
+  background: #f7f7f3;
+  box-shadow: inset 1px 1px 3px rgba(0,0,0,0.1);
+}
+ 
+/* Handle */
+::-webkit-scrollbar-thumb {
+  width: 5px;
+  background: #b7cafd;
+  border-radius: 2px;
+  box-shadow: inset 1px 1px 1px rgba(0,0,0,0.15),
+  inset -1px -1px 1px rgba(0,0,0,0.15),
+  inset 2px 2px 1px rgba(255,255,255,1),
+  inset -2px -2px 1px rgba(255,255,255,1),
+  inset 1px 1px 5px rgba(255,255,255,0.5);
+}

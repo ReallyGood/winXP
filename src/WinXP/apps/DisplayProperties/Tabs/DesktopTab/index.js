@@ -78,28 +78,32 @@ export default function DesktopTab({ tab, dataChanged }) {
           </BrowseButton>
           <PositionSelection>
             <span className="header">Position:</span>
-            <StyledSelect
-              defaultValue={imagePosition}
-              onChange={e => handleDataChanged(e, 'imagePosition')}
-            >
-              {positions.map(position => {
-                return (
-                  <SelectOption key={position} value={position}>
-                    {position}
-                  </SelectOption>
-                );
-              })}
-            </StyledSelect>
+            <div className="position-select">
+              <StyledSelect
+                defaultValue={imagePosition}
+                onChange={e => handleDataChanged(e, 'imagePosition')}
+              >
+                {positions.map(position => {
+                  return (
+                    <SelectOption key={position} value={position}>
+                      {position}
+                    </SelectOption>
+                  );
+                })}
+              </StyledSelect>
+            </div>
           </PositionSelection>
           <ColorSelection>
             <span className="header">Color:</span>
-            <input
-              type="color"
-              id="favcolor"
-              name="favcolor"
-              value={solidColor}
-              onChange={e => handleDataChanged(e, 'solidColor')}
-            />
+            <div className="color-picker">
+              <input
+                type="color"
+                id="favcolor"
+                name="favcolor"
+                value={solidColor}
+                onChange={e => handleDataChanged(e, 'solidColor')}
+              />
+            </div>
           </ColorSelection>
         </BackgroundActions>
       </DisplaySettings>

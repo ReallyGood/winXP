@@ -1,5 +1,44 @@
 import styled from 'styled-components';
 import Button from 'components/Button';
+import arrowDown from '../../../../../assets/displayProperties/icons/arrowDown.png';
+import arrowUp from '../../../../../assets/displayProperties/icons/arrowUp.png';
+
+export const StyledSelect = styled('select')`
+  -webkit-appearance: none;
+  -moz-appearance: none; /* for firefox compatibility */
+  appearance: none;
+  width: 100%;
+  padding: 3px;
+  overflow-y: scroll;
+  border-radius: 0;
+  height: ${props => props.height || 'auto'};
+
+  &:focus {
+    outline: none;
+  }
+`;
+
+export const SelectOption = styled('option')`
+  position: relative;
+  height: 15px;
+  padding: ${props => (Boolean(props.icon) ? '2px 0 2px 25px' : '3px')};
+  font-size: 12px;
+
+  &&:before {
+    content: '';
+    width: 20px;
+    height: 20px;
+    background-image: url(${props => props.icon});
+    background-repeat: no-repeat;
+    background-size: 80%;
+    background-position: 50% 50%;
+    position: absolute;
+    top: 0;
+    right: 0;
+    left: 2px;
+    bottom: 0;
+  }
+`;
 
 export const Container = styled('div')`
   width: 100%;
@@ -72,10 +111,79 @@ export const BrowseButton = styled(Button)`
 
 export const PositionSelection = styled('div')`
   grid-area: 2 / 1 / 2 / 3;
+
+  .position-select {
+    position: relative;
+    border: 1px solid #a6a6a6;
+    height: 22px;
+    &:before {
+      content: '';
+      height: 100%;
+      width: 20px;
+      background-color: #fff;
+      display: block;
+      position: absolute;
+      right: 0;
+      top: 0;
+      pointer-events: none;
+      background-image: url(${arrowDown});
+      background-position: 100% 100%;
+      background-repeat: no-repeat;
+    }
+  }
+
+  ${StyledSelect} {
+    border: none;
+  }
 `;
 
 export const ColorSelection = styled('div')`
   grid-area: 3 / 1 / 3 / 3;
+
+  .color-picker {
+    position: relative;
+    border: 1px solid #a6a6a6;
+    border-radius: 4px;
+    overflow: hidden;
+
+    &:before {
+      content: '';
+      height: 100%;
+      width: 20px;
+      background-color: #fff;
+      display: block;
+      position: absolute;
+      right: 0;
+      top: 0;
+      pointer-events: none;
+      pointer-events: none;
+      background-image: url(${arrowDown});
+      background-position: 100% 100%;
+      background-repeat: no-repeat;
+    }
+
+    &:after {
+      content: '';
+      height: 100%;
+      width: 2px;
+      background-color: #fff;
+      display: block;
+      position: absolute;
+      right: 20px;
+      top: 0;
+      pointer-events: none;
+    }
+
+    input {
+      border: none;
+      width: 100%;
+      height: 20px;
+
+      &:focus {
+        outline: none;
+      }
+    }
+  }
 `;
 
 export const BackgroundActions = styled('div')`
@@ -87,36 +195,4 @@ export const BackgroundActions = styled('div')`
   grid-template-rows: 30px 1fr 1fr;
 `;
 
-export const StyledSelect = styled('select')`
-  -webkit-appearance: none;
-  width: 100%;
-  padding: 3px;
-  overflow-y: scroll;
-  border-radius: 0;
-  height: ${props => props.height || 'auto'};
-  &:focus {
-    outline: none;
-  }
-`;
 
-export const SelectOption = styled('option')`
-  position: relative;
-  height: 15px;
-  padding: ${props => (Boolean(props.icon) ? '2px 0 3px 25px' : '3px')};
-  font-size: 12px;
-
-  &&:before {
-    content: '';
-    width: 20px;
-    height: 20px;
-    background-image: url(${props => props.icon});
-    background-repeat: no-repeat;
-    background-size: 80%;
-    background-position: 50% 50%;
-    position: absolute;
-    top: 0;
-    right: 0;
-    left: 2px;
-    bottom: 0;
-  }
-`;
