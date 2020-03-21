@@ -5,7 +5,6 @@ import MyComputer from './MyComputer';
 import Notepad from './Notepad';
 import Winamp from './Winamp';
 import Paint from './Paint';
-import { defaultPropertiesTabs } from './DisplayProperties/Tabs/propertiesData';
 import iePaper from 'assets/windowsIcons/ie-paper.png';
 import ie from 'assets/windowsIcons/ie.png';
 import mine from 'assets/minesweeper/mine-icon.png';
@@ -109,27 +108,6 @@ export const defaultAppState = [
     maximized: window.innerWidth < 800,
     id: genId(),
     zIndex: genIndex(),
-  },
-  {
-    component: DisplayProperties,
-    header: {
-      title: 'Display Properties',
-      buttons: ['close'],
-    },
-    defaultSize: {
-      width: 438,
-      height: 465,
-    },
-    defaultOffset: {
-      x: 600,
-      y: 40,
-    },
-    resizable: true,
-    minimized: false,
-    maximized: window.innerWidth < 800,
-    id: genId(),
-    zIndex: genIndex(),
-    injectProps: { tabs: defaultPropertiesTabs },
   },
 ];
 
