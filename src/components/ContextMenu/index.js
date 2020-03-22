@@ -1,32 +1,52 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, memo, useEffect, useRef } from 'react';
 import styled from 'styled-components';
+const defaultRootPositions = {
+  top: 0,
+  right: 0,
+  left: 'auto',
+  bottom: 'auto',
+};
 
-export default function ContextMenu(props) {
+const defaultSubMenuPositions = {
+  right: '-100%',
+  left: 'auto',
+  top: '-3px',
+  bottom: 'auto',
+};
+
+export default memo(function ContextMenu(props) {
   const {
-    bindMenu,
-    bindMenuAction,
-    data,
-    coords,
-    onClickContextMenuItem,
-    hideMenu,
     contextMenuItems,
-    isVisible,
+    outerRef,
+    contextMenu,
+    onClickContextMenuItem,
+    onHide,
   } = props;
+  const ref = useRef(null);
   const [hovering, setHovering] = useState('');
-  const subMenuPositionStylesDefault = {
-    right: '-100%',
-    left: 'auto',
-    top: '-3px',
-    bottom: 'auto',
-  };
-
-  const [subMenuPositionStyles, setSubMenuPositionStyles] = useState(
-    subMenuPositionStylesDefault,
+  const [rootPositions, setRootPositions] = useState(defaultRootPositions);
+  const [subMenuPositions, setSubMenuPositions] = useState(
+    defaultSubMenuPositions,
   );
+
+  useEffect(() => {
+    if (!contextMenu) {
+      setHovering('');
+      setRootPositions(defaultRootPositions);
+    }
+  }, [contextMenu]);
+
+  function handleClick(e) {
+    e.preventDefault();
+    const isRightClick = e.which === 3 || e.button === 2;
+    if (!isRightClick || e.target !== ref.current) {
+      onHide();
+    }
+  }
 
   const handleMenuItemClick = menuItem => () => {
     onClickContextMenuItem(menuItem);
-    hideMenu();
+    onHide();
   };
 
   const onMouseOver = e => {
@@ -36,60 +56,69 @@ export default function ContextMenu(props) {
   };
 
   useEffect(() => {
-    if (!isVisible) {
-      setHovering('');
-    }
-  }, [isVisible]);
+    setHovering('');
 
-  useEffect(() => {
-    if (data && bindMenu) {
-      const { style, ref } = bindMenu;
-      const { contextContaner } = data;
-      const contextMenuWidth = ref.current.offsetWidth;
-      const contextMenuHeight = ref.current.offsetHeight;
+    if (contextMenu) {
+      const { xPos, yPos } = contextMenu;
+      const outerRefWidth = outerRef.current && outerRef.current.offsetWidth;
+      const outerRefHeight = outerRef.current && outerRef.current.offsetHeight;
+      const contextMenuWidth = ref.current && ref.current.offsetWidth;
+      const contextMenuHeight = ref.current && ref.current.offsetHeight;
+      const hasSpaceX = xPos + contextMenuWidth < outerRefWidth;
+      const hasSpaceY = yPos + contextMenuHeight < outerRefHeight;
+      const hasSpaceForSubMenuX =
+        hasSpaceX ||
+        xPos + contextMenuWidth + menuContainerMaxWidth < outerRefWidth;
+      const hasSpaceForSubMenuY =
+        hasSpaceY || yPos + contextMenuHeight < outerRefHeight;
 
-      const coordsX = () => {
-        const x = style.left
-          ? parseInt(style.left.replace('px', ''))
-          : coords[0];
-        return x === coords[0]
-          ? coords[0] + contextMenuWidth
-          : x + contextMenuWidth;
-      };
+      setRootPositions({
+        top: hasSpaceY ? `${yPos}px` : `${yPos - contextMenuHeight}px`,
+        left: hasSpaceX ? `${xPos}px` : `${xPos - contextMenuWidth}px`,
+        right: 'auto',
+        bottom: 'auto',
+      });
 
-      const coordsY = () => {
-        return coords[1] + contextMenuHeight;
-      };
-
-      const hasEnoughSpaceWidth =
-        coordsX() + menuContainerMaxWidth < contextContaner.width;
-      const hasEnoughSpaceHeight = coordsY() < contextContaner.height;
-
-      setSubMenuPositionStyles({
-        right: hasEnoughSpaceWidth ? '-100%' : 'auto',
-        left: !hasEnoughSpaceWidth ? '-100%' : 'auto',
-        top: hasEnoughSpaceHeight ? '-3px' : 'auto',
-        bottom: !hasEnoughSpaceHeight ? '-3px' : 'auto',
+      setSubMenuPositions({
+        left: !hasSpaceForSubMenuX ? '-100%' : 'auto',
+        top: hasSpaceForSubMenuY ? '-3px' : 'auto',
+        right: hasSpaceForSubMenuX ? '-100%' : 'auto',
+        bottom: !hasSpaceForSubMenuY ? '-3px' : 'auto',
       });
     }
-  }, [data, coords, bindMenu]);
+  }, [contextMenu, outerRef]);
+
+  useEffect(() => {
+    window.addEventListener('click', handleClick);
+    return () => {
+      window.removeEventListener('click', handleClick);
+    };
+  });
+
+  if (!contextMenu) {
+    return <></>;
+  }
 
   return (
-    <StyledContextMenu {...bindMenu} onMouseOver={onMouseOver} className="menu">
+    <StyledContextMenu
+      ref={ref}
+      positions={rootPositions}
+      onMouseOver={onMouseOver}
+      className="menu"
+      onContextMenu={e => e.preventDefault()}
+    >
       {contextMenuItems.map(item => {
         const { action, ...restItem } = item;
         return (
           <StyledContextMenuItem
             key={item.label}
-            {...bindMenuAction}
             {...restItem}
-            subMenuStyles={subMenuPositionStyles}
             onClick={handleMenuItemClick(item)}
             className="menu__item"
           >
             <span className="menu__item__text ">{item.label}</span>
             {hovering === item.label && item.subMenu && (
-              <StyledContextMenu>
+              <StyledContextMenu positions={subMenuPositions}>
                 {item.subMenu.map(subMenuItem => {
                   const { action, ...restSubMenuItem } = subMenuItem;
 
@@ -97,7 +126,7 @@ export default function ContextMenu(props) {
                     <StyledContextMenuItem
                       key={subMenuItem.label}
                       onClick={handleMenuItemClick(subMenuItem)}
-                      subMenuStyles={subMenuPositionStyles}
+                      subMenuStyles={subMenuPositions}
                       {...restSubMenuItem}
                     >
                       <span>{subMenuItem.label}</span>
@@ -111,12 +140,12 @@ export default function ContextMenu(props) {
       })}
     </StyledContextMenu>
   );
-}
+});
+
 const menuContainerMaxWidth = 140;
 
 const getAdditionalStyles = props => {
-  const { disabled, separator, subMenu, subMenuStyles } = props;
-  const { top, bottom, left, right } = subMenuStyles;
+  const { disabled, separator, subMenu } = props;
 
   const subMenuArrowStyles = subMenu
     ? ` &:before {
@@ -162,13 +191,6 @@ const getAdditionalStyles = props => {
       ${subMenuArrowStyles}
       ${disabledStyles}
       ${separatorStyles}
-      ${StyledContextMenu} {
-        position: absolute;
-        top: ${top};
-        bottom: ${bottom};
-        right: ${right};
-        left: ${left};
-      }
     `;
 };
 
@@ -183,9 +205,31 @@ const StyledContextMenu = styled('ul')`
   margin: 0;
   border: 1px solid #a7a394;
   box-shadow: 2px 2px 4px rgba(0, 0, 0, 0.5);
+  visibility: hidden;
+  animation: 0.2s fadeIn;
+  animation-fill-mode: forwards;
+
+  ${props => {
+    const { top, bottom, right, left } = props.positions;
+    return `
+      top: ${top};
+      bottom: ${bottom};
+      right: ${right};
+      left: ${left};
+  `;
+  }}
 
   &&:focus {
     outline: none;
+  }
+
+  @keyframes fadeIn {
+    99% {
+      visibility: hidden;
+    }
+    100% {
+      visibility: visible;
+    }
   }
 `;
 
