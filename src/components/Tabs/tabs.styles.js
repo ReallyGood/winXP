@@ -32,18 +32,31 @@ export const StyledTab = styled('span')`
   overflow: hidden;
 
   ${props => {
-    const { isActive } = props;
+    const { isActive, disabled } = props;
 
-    const activeTabStyles = `
+    const activeTabStyles = isActive
+      ? `
         margin-bottom: -1px;
         box-shadow: 0 -1px 1px rgba(195,127,0, 0.9), -1px -1px 1px rgba(0,0,0,0.1), 1px -1px 1px rgba(0,0,0,0.1);
         background-image: none;
         background-color: #fafbfc;
         padding-bottom: 3px;
         border-top: 2px solid orange;
-    `;
 
-    return isActive ? activeTabStyles : '';
+      `
+      : '';
+
+    const disabledStyles = disabled
+      ? `
+        opacity: 0.6;
+        pointer-events: none;
+      `
+      : '';
+
+    return `
+      ${activeTabStyles}
+      ${disabledStyles}
+    `;
   }}
 `;
 

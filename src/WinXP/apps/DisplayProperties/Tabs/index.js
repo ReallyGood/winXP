@@ -18,11 +18,11 @@ export default memo(function PropertiesTabs(props) {
       <Tabs initialValue="tab-desktop">
         <TabList>
           {tabs.map(tab => {
-            const { title } = tab;
+            const { title, disabled } = tab;
             const name = `tab-${getTabName(title)}`;
 
             return (
-              <Tab key={name} name={name}>
+              <Tab key={name} name={name} disabled={disabled}>
                 {title}
               </Tab>
             );

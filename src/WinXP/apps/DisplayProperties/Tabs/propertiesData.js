@@ -8,6 +8,7 @@ import reallyGoodBackground from '../../../../assets/displayProperties/backgroun
 
 const themes = {
   title: 'Themes',
+  disabled: true,
   component: ThemesTab,
   data: {
     id: 'themes',
@@ -22,6 +23,7 @@ export const desktopBackgroundData = {
 
 const desktop = {
   title: 'Desktop',
+  disabled: false,
   component: DesktopTab,
   data: {
     id: 'desktop',
@@ -81,6 +83,7 @@ const desktop = {
 
 const screenSaver = {
   title: 'Screen Saver',
+  disabled: true,
   component: ScreenSaverTab,
   data: {
     id: 'screen-saver',
@@ -89,6 +92,7 @@ const screenSaver = {
 
 const appearance = {
   title: 'Appearance',
+  disabled: true,
   component: AppearanceTab,
   data: {
     id: 'appearance',
@@ -97,6 +101,7 @@ const appearance = {
 
 const settings = {
   title: 'Settings',
+  disabled: true,
   component: SettingsTab,
   data: {
     id: 'settings',
