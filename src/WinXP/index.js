@@ -185,9 +185,9 @@ function WinXP() {
   const [state, dispatch] = useReducer(reducer, initState);
   const ref = useRef(null);
   const mouse = useMouse(ref);
-  const [contextMenuData, setContextMenuData] = useState(null);
+  const [contextMenu, setContextMenu] = useState(null);
   const hideContextMenu = () => {
-    setContextMenuData(null);
+    setContextMenu(null);
   };
 
   const focusedAppId = getFocusedAppId();
@@ -273,7 +273,7 @@ function WinXP() {
   function onMouseDownDesktop(e) {
     const isRightClick = e.which === 3 || e.button === 2;
 
-    if (!contextMenuData && !isRightClick && e.target === e.currentTarget) {
+    if (!contextMenu && !isRightClick && e.target === e.currentTarget) {
       dispatch({
         type: START_SELECT,
         payload: { x: mouse.docX, y: mouse.docY },
@@ -282,7 +282,7 @@ function WinXP() {
   }
   function onMouseUpDesktop(e) {
     const isRightClick = e.which === 3 || e.button === 2;
-    if (!contextMenuData && !isRightClick) {
+    if (!contextMenu && !isRightClick) {
       dispatch({ type: END_SELECT });
     }
   }
@@ -306,10 +306,11 @@ function WinXP() {
       dispatch(newState);
     }
   }
+
   function onConextMenuDesktop(e) {
     if (e.target === e.currentTarget) {
       e.preventDefault();
-      setContextMenuData({ xPos: e.pageX, yPos: e.pageY, isVisible: true });
+      setContextMenu({ xPos: e.pageX, yPos: e.pageY });
     }
   }
 
@@ -321,15 +322,14 @@ function WinXP() {
       state={state.powerState}
       onContextMenu={onConextMenuDesktop}
     >
-      {contextMenuItems && (
-        <ContextMenu
-          outerRef={ref}
-          onClickContextMenuItem={handleClickedContextMenuItem}
-          contextMenuItems={contextMenuItems}
-          contextMenuData={contextMenuData}
-          onHide={hideContextMenu}
-        />
-      )}
+      <ContextMenu
+        outerRef={ref}
+        onClickContextMenuItem={handleClickedContextMenuItem}
+        contextMenuItems={contextMenuItems}
+        contextMenu={contextMenu}
+        onHide={hideContextMenu}
+        isVisible={Boolean(contextMenu)}
+      />
       <Icons
         icons={state.icons}
         onMouseDown={onMouseDownIcon}

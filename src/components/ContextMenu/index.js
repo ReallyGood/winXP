@@ -1,23 +1,40 @@
 import React, { useState, memo, useEffect, useRef } from 'react';
 import styled from 'styled-components';
+const defaultRootPositions = {
+  top: 0,
+  right: 0,
+  left: 'auto',
+  bottom: 'auto',
+};
+
+const defaultSubMenuPositions = {
+  right: '-100%',
+  left: 'auto',
+  top: '-3px',
+  bottom: 'auto',
+};
 
 export default memo(function ContextMenu(props) {
   const {
     contextMenuItems,
     outerRef,
-    contextMenuData,
+    contextMenu,
     onClickContextMenuItem,
     onHide,
   } = props;
-
   const ref = useRef(null);
   const [hovering, setHovering] = useState('');
+  const [rootPositions, setRootPositions] = useState(defaultRootPositions);
+  const [subMenuPositions, setSubMenuPositions] = useState(
+    defaultSubMenuPositions,
+  );
 
   useEffect(() => {
-    if (!contextMenuData) {
+    if (!contextMenu) {
       setHovering('');
+      setRootPositions(defaultRootPositions);
     }
-  }, [contextMenuData]);
+  }, [contextMenu]);
 
   function handleClick(e) {
     e.preventDefault();
@@ -26,35 +43,6 @@ export default memo(function ContextMenu(props) {
       onHide();
     }
   }
-
-  useEffect(() => {
-    window.addEventListener('click', handleClick);
-    return () => {
-      window.removeEventListener('click', handleClick);
-    };
-  });
-
-  const rootPositionsStyles = {
-    left:
-      (contextMenuData &&
-        Boolean(contextMenuData.xPos) &&
-        `${contextMenuData.xPos}px`) ||
-      0,
-    top:
-      (contextMenuData &&
-        Boolean(contextMenuData.yPos) &&
-        `${contextMenuData.yPos}px`) ||
-      0,
-    right: 'auto',
-    bottom: 'auto',
-  };
-
-  const subMenuPositionStyles = {
-    right: '-100%',
-    left: 'auto',
-    top: '-3px',
-    bottom: 'auto',
-  };
 
   const handleMenuItemClick = menuItem => () => {
     onClickContextMenuItem(menuItem);
@@ -67,49 +55,57 @@ export default memo(function ContextMenu(props) {
     setHovering(item.querySelector('.menu__item__text').textContent);
   };
 
-  //   useEffect(() => {
-  //     if (data && bindMenu) {
-  //       const { style, ref } = bindMenu;
-  //       const { contextContaner } = data;
-  //       const contextMenuWidth = ref.current.offsetWidth;
-  //       const contextMenuHeight = ref.current.offsetHeight;
+  useEffect(() => {
+    setHovering('');
 
-  //       const coordsX = () => {
-  //         const x = style.left
-  //           ? parseInt(style.left.replace('px', ''))
-  //           : coords[0];
-  //         return x === coords[0]
-  //           ? coords[0] + contextMenuWidth
-  //           : x + contextMenuWidth;
-  //       };
+    if (contextMenu) {
+      const { xPos, yPos } = contextMenu;
+      const outerRefWidth = outerRef.current && outerRef.current.offsetWidth;
+      const outerRefHeight = outerRef.current && outerRef.current.offsetHeight;
+      const contextMenuWidth = ref.current && ref.current.offsetWidth;
+      const contextMenuHeight = ref.current && ref.current.offsetHeight;
+      const hasSpaceX = xPos + contextMenuWidth < outerRefWidth;
+      const hasSpaceY = yPos + contextMenuHeight < outerRefHeight;
+      const hasSpaceForSubMenuX =
+        hasSpaceX ||
+        xPos + contextMenuWidth + menuContainerMaxWidth < outerRefWidth;
+      const hasSpaceForSubMenuY =
+        hasSpaceY || yPos + contextMenuHeight < outerRefHeight;
 
-  //       const coordsY = () => {
-  //         return coords[1] + contextMenuHeight;
-  //       };
+      setRootPositions({
+        top: hasSpaceY ? `${yPos}px` : `${yPos - contextMenuHeight}px`,
+        left: hasSpaceX ? `${xPos}px` : `${xPos - contextMenuWidth}px`,
+        right: 'auto',
+        bottom: 'auto',
+      });
 
-  //       const hasEnoughSpaceWidth =
-  //         coordsX() + menuContainerMaxWidth < contextContaner.width;
-  //       const hasEnoughSpaceHeight = coordsY() < contextContaner.height;
+      setSubMenuPositions({
+        left: !hasSpaceForSubMenuX ? '-100%' : 'auto',
+        top: hasSpaceForSubMenuY ? '-3px' : 'auto',
+        right: hasSpaceForSubMenuX ? '-100%' : 'auto',
+        bottom: !hasSpaceForSubMenuY ? '-3px' : 'auto',
+      });
+    }
+  }, [contextMenu, outerRef]);
 
-  //       setSubMenuPositionStyles({
-  //         right: hasEnoughSpaceWidth ? '-100%' : 'auto',
-  //         left: !hasEnoughSpaceWidth ? '-100%' : 'auto',
-  //         top: hasEnoughSpaceHeight ? '-3px' : 'auto',
-  //         bottom: !hasEnoughSpaceHeight ? '-3px' : 'auto',
-  //       });
-  //     }
-  //   }, [data, coords, bindMenu]);
+  useEffect(() => {
+    window.addEventListener('click', handleClick);
+    return () => {
+      window.removeEventListener('click', handleClick);
+    };
+  });
 
-  if (!contextMenuData) {
+  if (!contextMenu) {
     return <></>;
   }
 
   return (
     <StyledContextMenu
       ref={ref}
-      positions={rootPositionsStyles}
+      positions={rootPositions}
       onMouseOver={onMouseOver}
       className="menu"
+      onContextMenu={e => e.preventDefault()}
     >
       {contextMenuItems.map(item => {
         const { action, ...restItem } = item;
@@ -121,24 +117,24 @@ export default memo(function ContextMenu(props) {
             className="menu__item"
           >
             <span className="menu__item__text ">{item.label}</span>
-            {/* {hovering === item.label && item.subMenu && (
-                <StyledContextMenu positions={rootPositionsStyles}>
-                  {item.subMenu.map(subMenuItem => {
-                    const { action, ...restSubMenuItem } = subMenuItem;
+            {hovering === item.label && item.subMenu && (
+              <StyledContextMenu positions={subMenuPositions}>
+                {item.subMenu.map(subMenuItem => {
+                  const { action, ...restSubMenuItem } = subMenuItem;
 
-                    return (
-                      <StyledContextMenuItem
-                        key={subMenuItem.label}
-                        onClick={handleMenuItemClick(subMenuItem)}
-                        subMenuStyles={subMenuPositionStyles}
-                        {...restSubMenuItem}
-                      >
-                        <span>{subMenuItem.label}</span>
-                      </StyledContextMenuItem>
-                    );
-                  })}
-                </StyledContextMenu>
-              )} */}
+                  return (
+                    <StyledContextMenuItem
+                      key={subMenuItem.label}
+                      onClick={handleMenuItemClick(subMenuItem)}
+                      subMenuStyles={subMenuPositions}
+                      {...restSubMenuItem}
+                    >
+                      <span>{subMenuItem.label}</span>
+                    </StyledContextMenuItem>
+                  );
+                })}
+              </StyledContextMenu>
+            )}
           </StyledContextMenuItem>
         );
       })}
@@ -209,6 +205,7 @@ const StyledContextMenu = styled('ul')`
   margin: 0;
   border: 1px solid #a7a394;
   box-shadow: 2px 2px 4px rgba(0, 0, 0, 0.5);
+
   ${props => {
     const { top, bottom, right, left } = props.positions;
     return `
