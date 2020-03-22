@@ -1,7 +1,6 @@
-import React, { useReducer, useRef, useCallback } from 'react';
+import React, { useReducer, useRef, useCallback, useState } from 'react';
 import styled, { keyframes } from 'styled-components';
 import useMouse from 'react-use/lib/useMouse';
-import useContextMenu from 'react-use-context-menu';
 import ga from 'react-ga';
 
 import {
@@ -25,7 +24,7 @@ import Footer from './Footer';
 import Windows from './Windows';
 import Icons from './Icons';
 import { DashedBox } from 'components';
-import ContextMenu from '../components/ContextMenu/ContextMenu';
+import ContextMenu from '../components/ContextMenu';
 import { contextMenuItems } from './WinXPContextMenuUtils';
 
 const initState = {
@@ -36,6 +35,11 @@ const initState = {
   icons: defaultIconState,
   selecting: false,
   powerState: POWER_STATE.START,
+};
+const initialContextMenuData = {
+  xPos: 0,
+  yPos: 0,
+  isVisible: false,
 };
 const reducer = (state, action = { type: '' }) => {
   ga.event({
@@ -185,25 +189,12 @@ function WinXP() {
   const [state, dispatch] = useReducer(reducer, initState);
   const ref = useRef(null);
   const mouse = useMouse(ref);
-  const [
-    bindMenu,
-    bindMenuItem,
-    useContextTrigger,
-    { data, coords, setVisible, isVisible },
-  ] = useContextMenu();
-  const [bindTrigger] = useContextTrigger({
-    collect: () => {
-      return {
-        contextContaner: {
-          root: ref.current,
-          height: ref.current.offsetHeight,
-          width: ref.current.offsetWidth,
-        },
-      };
-    },
-  });
-
-  const hideMenu = () => setVisible(false);
+  const [contextMenuData, setContextMenuData] = useState(
+    initialContextMenuData,
+  );
+  const hideContextMenu = () => {
+    setContextMenuData(initialContextMenuData);
+  };
 
   const focusedAppId = getFocusedAppId();
   const onFocusApp = useCallback(id => {
@@ -286,14 +277,23 @@ function WinXP() {
       });
   }
   function onMouseDownDesktop(e) {
-    if (e.target === e.currentTarget)
+    const isRightClick = e.which === 3 || e.button === 2;
+
+    if (!isRightClick && e.target === e.currentTarget) {
+      hideContextMenu();
       dispatch({
         type: START_SELECT,
         payload: { x: mouse.docX, y: mouse.docY },
       });
+    }
   }
   function onMouseUpDesktop(e) {
-    dispatch({ type: END_SELECT });
+    const isRightClick = e.which === 3 || e.button === 2;
+
+    if (!isRightClick) {
+      hideContextMenu();
+      dispatch({ type: END_SELECT });
+    }
   }
   function onIconsSelected(iconIds) {
     dispatch({ type: SELECT_ICONS, payload: iconIds });
@@ -315,6 +315,12 @@ function WinXP() {
       dispatch(newState);
     }
   }
+  function onConextMenuDesktop(e) {
+    if (e.target === e.currentTarget) {
+      e.preventDefault();
+      setContextMenuData({ xPos: e.pageX, yPos: e.pageY, isVisible: true });
+    }
+  }
 
   return (
     <Container
@@ -322,19 +328,14 @@ function WinXP() {
       onMouseUp={onMouseUpDesktop}
       onMouseDown={onMouseDownDesktop}
       state={state.powerState}
+      onContextMenu={onConextMenuDesktop}
     >
-      <ContextMenuArea className="context-menu-area" {...bindTrigger}>
-        <ContextMenu
-          bindMenu={bindMenu}
-          data={data}
-          bindMenuItem={bindMenuItem}
-          coords={coords}
-          onClickContextMenuItem={handleClickedContextMenuItem}
-          hideMenu={hideMenu}
-          contextMenuItems={contextMenuItems}
-          isVisible={isVisible}
-        />
-      </ContextMenuArea>
+      <ContextMenu
+        outerRef={ref}
+        onClickContextMenuItem={handleClickedContextMenuItem}
+        contextMenuItems={contextMenuItems}
+        contextMenuData={contextMenuData}
+      />
       <Icons
         icons={state.icons}
         onMouseDown={onMouseDownIcon}
