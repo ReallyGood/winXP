@@ -77,7 +77,7 @@ export default function DesktopTab({ tab, dataChanged }) {
           >
             Browse...
           </BrowseButton>
-          <PositionSelection>
+          <PositionSelection disabled={true}>
             <span className="header">Position:</span>
             <div className="position-select">
               <StyledSelect

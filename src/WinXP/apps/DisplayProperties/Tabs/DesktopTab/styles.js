@@ -112,6 +112,8 @@ export const PositionSelection = styled('div')`
   grid-area: 2 / 1 / 2 / 3;
 
   .position-select {
+    opacity: ${props => `${props.disabled ? '0.6' : '1'}`};
+    pointer-events: ${props => `${props.disabled ? 'none' : 'auto'}`};
     position: relative;
     border: 1px solid #a6a6a6;
     height: 22px;
