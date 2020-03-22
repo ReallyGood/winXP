@@ -1,4 +1,4 @@
-import React, { useState, memo, useEffect } from 'react';
+import React, { useState, memo, useEffect, useRef } from 'react';
 import styled from 'styled-components';
 
 export default memo(function ContextMenu(props) {
@@ -7,14 +7,44 @@ export default memo(function ContextMenu(props) {
     outerRef,
     contextMenuData,
     onClickContextMenuItem,
+    onHide,
   } = props;
-  const { xPos, yPos, isVisible } = contextMenuData;
 
+  const ref = useRef(null);
   const [hovering, setHovering] = useState('');
 
+  useEffect(() => {
+    if (!contextMenuData) {
+      setHovering('');
+    }
+  }, [contextMenuData]);
+
+  function handleClick(e) {
+    e.preventDefault();
+    const isRightClick = e.which === 3 || e.button === 2;
+    if (!isRightClick || e.target !== ref.current) {
+      onHide();
+    }
+  }
+
+  useEffect(() => {
+    window.addEventListener('click', handleClick);
+    return () => {
+      window.removeEventListener('click', handleClick);
+    };
+  });
+
   const rootPositionsStyles = {
-    left: `${xPos}px`,
-    top: `${yPos}px`,
+    left:
+      (contextMenuData &&
+        Boolean(contextMenuData.xPos) &&
+        `${contextMenuData.xPos}px`) ||
+      0,
+    top:
+      (contextMenuData &&
+        Boolean(contextMenuData.yPos) &&
+        `${contextMenuData.yPos}px`) ||
+      0,
     right: 'auto',
     bottom: 'auto',
   };
@@ -28,6 +58,7 @@ export default memo(function ContextMenu(props) {
 
   const handleMenuItemClick = menuItem => () => {
     onClickContextMenuItem(menuItem);
+    onHide();
   };
 
   const onMouseOver = e => {
@@ -35,12 +66,6 @@ export default memo(function ContextMenu(props) {
     if (!item) return;
     setHovering(item.querySelector('.menu__item__text').textContent);
   };
-
-  useEffect(() => {
-    if (!isVisible) {
-      setHovering('');
-    }
-  }, [isVisible]);
 
   //   useEffect(() => {
   //     if (data && bindMenu) {
@@ -74,24 +99,29 @@ export default memo(function ContextMenu(props) {
   //       });
   //     }
   //   }, [data, coords, bindMenu]);
-  if (contextMenuData.isVisible) {
-    return (
-      <StyledContextMenu
-        positions={rootPositionsStyles}
-        onMouseOver={onMouseOver}
-        className="menu"
-      >
-        {contextMenuItems.map(item => {
-          const { action, ...restItem } = item;
-          return (
-            <StyledContextMenuItem
-              key={item.label}
-              {...restItem}
-              onClick={handleMenuItemClick(item)}
-              className="menu__item"
-            >
-              <span className="menu__item__text ">{item.label}</span>
-              {/* {hovering === item.label && item.subMenu && (
+
+  if (!contextMenuData) {
+    return <></>;
+  }
+
+  return (
+    <StyledContextMenu
+      ref={ref}
+      positions={rootPositionsStyles}
+      onMouseOver={onMouseOver}
+      className="menu"
+    >
+      {contextMenuItems.map(item => {
+        const { action, ...restItem } = item;
+        return (
+          <StyledContextMenuItem
+            key={item.label}
+            {...restItem}
+            onClick={handleMenuItemClick(item)}
+            className="menu__item"
+          >
+            <span className="menu__item__text ">{item.label}</span>
+            {/* {hovering === item.label && item.subMenu && (
                 <StyledContextMenu positions={rootPositionsStyles}>
                   {item.subMenu.map(subMenuItem => {
                     const { action, ...restSubMenuItem } = subMenuItem;
@@ -109,14 +139,11 @@ export default memo(function ContextMenu(props) {
                   })}
                 </StyledContextMenu>
               )} */}
-            </StyledContextMenuItem>
-          );
-        })}
-      </StyledContextMenu>
-    );
-  } else {
-    return <></>;
-  }
+          </StyledContextMenuItem>
+        );
+      })}
+    </StyledContextMenu>
+  );
 });
 
 const menuContainerMaxWidth = 140;

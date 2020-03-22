@@ -36,11 +36,7 @@ const initState = {
   selecting: false,
   powerState: POWER_STATE.START,
 };
-const initialContextMenuData = {
-  xPos: 0,
-  yPos: 0,
-  isVisible: false,
-};
+
 const reducer = (state, action = { type: '' }) => {
   ga.event({
     category: 'XP interaction',
@@ -189,11 +185,9 @@ function WinXP() {
   const [state, dispatch] = useReducer(reducer, initState);
   const ref = useRef(null);
   const mouse = useMouse(ref);
-  const [contextMenuData, setContextMenuData] = useState(
-    initialContextMenuData,
-  );
+  const [contextMenuData, setContextMenuData] = useState(null);
   const hideContextMenu = () => {
-    setContextMenuData(initialContextMenuData);
+    setContextMenuData(null);
   };
 
   const focusedAppId = getFocusedAppId();
@@ -279,8 +273,7 @@ function WinXP() {
   function onMouseDownDesktop(e) {
     const isRightClick = e.which === 3 || e.button === 2;
 
-    if (!isRightClick && e.target === e.currentTarget) {
-      hideContextMenu();
+    if (!contextMenuData && !isRightClick && e.target === e.currentTarget) {
       dispatch({
         type: START_SELECT,
         payload: { x: mouse.docX, y: mouse.docY },
@@ -289,9 +282,7 @@ function WinXP() {
   }
   function onMouseUpDesktop(e) {
     const isRightClick = e.which === 3 || e.button === 2;
-
-    if (!isRightClick) {
-      hideContextMenu();
+    if (!contextMenuData && !isRightClick) {
       dispatch({ type: END_SELECT });
     }
   }
@@ -330,12 +321,15 @@ function WinXP() {
       state={state.powerState}
       onContextMenu={onConextMenuDesktop}
     >
-      <ContextMenu
-        outerRef={ref}
-        onClickContextMenuItem={handleClickedContextMenuItem}
-        contextMenuItems={contextMenuItems}
-        contextMenuData={contextMenuData}
-      />
+      {contextMenuItems && (
+        <ContextMenu
+          outerRef={ref}
+          onClickContextMenuItem={handleClickedContextMenuItem}
+          contextMenuItems={contextMenuItems}
+          contextMenuData={contextMenuData}
+          onHide={hideContextMenu}
+        />
+      )}
       <Icons
         icons={state.icons}
         onMouseDown={onMouseDownIcon}
@@ -402,16 +396,6 @@ const Container = styled.div`
   *:not(input):not(textarea) {
     user-select: none;
   }
-`;
-
-const ContextMenuArea = styled.div`
-  width: 100%;
-  height: 100%;
-  position: absolute;
-  top: 0;
-  right: 0;
-  left: 0;
-  bottom: 0;
 `;
 
 export default WinXP;
