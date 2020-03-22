@@ -68,6 +68,7 @@ export default function DesktopTab({ tab, dataChanged }) {
         </BackgroundSelection>
         <BackgroundActions>
           <BrowseButton
+            disabled
             minWidth={'50px'}
             padding={'2px 12px'}
             handleOnClick={action => {
