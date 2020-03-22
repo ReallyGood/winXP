@@ -8,6 +8,7 @@ import { SAVE_DISPLAY_PROPERTIES } from '../../constants/actions';
 export default function DisplayProperties(props) {
   const { onSave, onClose, tabs } = props;
   const [propertiesData, setPropertiesData] = useState(tabs);
+  const [dataChanged, setDataChanged] = useState(false);
 
   const handleActionClicked = action => {
     if (action) {
@@ -27,7 +28,7 @@ export default function DisplayProperties(props) {
     {
       label: 'OK',
       onClick: { apply: true, close: true },
-      disabled: false,
+      disabled: !dataChanged,
     },
     {
       label: 'Cancel',
@@ -37,7 +38,7 @@ export default function DisplayProperties(props) {
     {
       label: 'Apply',
       onClick: { apply: true, close: false },
-      disabled: false,
+      disabled: !dataChanged,
     },
   ];
 
@@ -46,6 +47,7 @@ export default function DisplayProperties(props) {
       return tab.data.id === newTab.data.id ? newTab : tab;
     });
     setPropertiesData(updated);
+    setDataChanged(true);
   };
 
   return (
@@ -60,6 +62,7 @@ export default function DisplayProperties(props) {
             key={action.label}
             handleOnClick={handleActionClicked}
             action={action.onClick}
+            disabled={action.disabled}
           >
             {action.label}
           </FooterAction>
