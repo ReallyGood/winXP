@@ -205,6 +205,9 @@ const StyledContextMenu = styled('ul')`
   margin: 0;
   border: 1px solid #a7a394;
   box-shadow: 2px 2px 4px rgba(0, 0, 0, 0.5);
+  visibility: hidden;
+  animation: 0.2s fadeIn;
+  animation-fill-mode: forwards;
 
   ${props => {
     const { top, bottom, right, left } = props.positions;
@@ -218,6 +221,15 @@ const StyledContextMenu = styled('ul')`
 
   &&:focus {
     outline: none;
+  }
+
+  @keyframes fadeIn {
+    99% {
+      visibility: hidden;
+    }
+    100% {
+      visibility: visible;
+    }
   }
 `;
 

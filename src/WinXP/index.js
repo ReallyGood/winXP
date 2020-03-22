@@ -328,7 +328,6 @@ function WinXP() {
         contextMenuItems={contextMenuItems}
         contextMenu={contextMenu}
         onHide={hideContextMenu}
-        isVisible={Boolean(contextMenu)}
       />
       <Icons
         icons={state.icons}
