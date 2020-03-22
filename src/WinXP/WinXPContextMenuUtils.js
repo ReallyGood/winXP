@@ -30,7 +30,6 @@ export const contextMenuItems = [
         label: 'Name',
         disabled: false,
         action: state => {
-          console.log('User pressed on Arrange Icons By Name');
           return arrangeIconsBy('title', state);
         },
       },
@@ -71,7 +70,6 @@ export const contextMenuItems = [
     disabled: false,
     separator: true,
     action: state => {
-      console.log('User pressed on Refresh');
       return {
         state,
         config: { type: FOCUS_DESKTOP },
@@ -102,7 +100,6 @@ export const contextMenuItems = [
     label: 'Properties',
     disabled: false,
     action: state => {
-      console.log('User pressed on Properties');
       return {
         state,
         config: {

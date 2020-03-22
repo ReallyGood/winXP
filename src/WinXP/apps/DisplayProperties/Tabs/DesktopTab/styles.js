@@ -1,7 +1,6 @@
 import styled from 'styled-components';
 import Button from 'components/Button';
 import arrowDown from '../../../../../assets/displayProperties/icons/arrowDown.png';
-import arrowUp from '../../../../../assets/displayProperties/icons/arrowUp.png';
 
 export const StyledSelect = styled('select')`
   -webkit-appearance: none;
@@ -194,5 +193,3 @@ export const BackgroundActions = styled('div')`
   grid-template-columns: 1fr;
   grid-template-rows: 30px 1fr 1fr;
 `;
-
-
