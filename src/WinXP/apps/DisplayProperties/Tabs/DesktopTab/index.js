@@ -15,7 +15,7 @@ import {
   PositionSelection,
   StyledSelect,
   SelectOption,
-  BrowseButton,
+  StyledButton,
   ColorSelection,
 } from './styles';
 
@@ -67,7 +67,7 @@ export default function DesktopTab({ tab, dataChanged }) {
           </StyledSelect>
         </BackgroundSelection>
         <BackgroundActions>
-          <BrowseButton
+          <StyledButton
             disabled
             minWidth={'50px'}
             padding={'2px 12px'}
@@ -76,7 +76,7 @@ export default function DesktopTab({ tab, dataChanged }) {
             }}
           >
             Browse...
-          </BrowseButton>
+          </StyledButton>
           <PositionSelection disabled={true}>
             <span className="header">Position:</span>
             <div className="position-select">
@@ -107,6 +107,17 @@ export default function DesktopTab({ tab, dataChanged }) {
             </div>
           </ColorSelection>
         </BackgroundActions>
+        <div className="customize-desktop">
+          <StyledButton
+            disabled
+            padding={'2px 15px'}
+            handleOnClick={action => {
+              console.log('user pressed Browse... ', action);
+            }}
+          >
+            Customize Desktop...
+          </StyledButton>
+        </div>
       </DisplaySettings>
     </Container>
   );

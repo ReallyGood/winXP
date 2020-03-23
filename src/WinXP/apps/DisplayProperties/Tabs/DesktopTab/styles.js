@@ -103,7 +103,7 @@ export const BackgroundSelection = styled('div')`
   grid-template-rows: 20px 1fr;
 `;
 
-export const BrowseButton = styled(Button)`
+export const StyledButton = styled(Button)`
   grid-area: 1 / 1 / 1 / 3;
   height: max-content;
 `;
@@ -194,4 +194,5 @@ export const BackgroundActions = styled('div')`
   display: grid;
   grid-template-columns: 1fr;
   grid-template-rows: 30px 1fr 1fr;
+  margin-bottom: 12px;
 `;
