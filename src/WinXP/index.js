@@ -34,6 +34,7 @@ import { DashedBox } from 'components';
 import ContextMenu from '../components/ContextMenu';
 import { contextMenuItems } from './WinXPContextMenuUtils';
 import {
+  BACKGROUND_DESKTOP_LOCAL_STORAGE_PROP_NAME,
   defaultPropertiesTabs,
   desktopBackgroundData,
 } from './apps/DisplayProperties/Tabs/propertiesData';
@@ -336,17 +337,25 @@ function WinXP() {
     });
   }
 
+  function updateDesktopBackgroundData(updated) {
+    localStorage.setItem(
+      BACKGROUND_DESKTOP_LOCAL_STORAGE_PROP_NAME,
+      JSON.stringify(updated),
+    );
+    setDesktopBackground(updated);
+  }
+
   useEffect(() => {
     const desktopTab = displayProperties.find(
       prop => prop.data.id === 'desktop',
     );
     const { imageSrc, imagePosition, solidColor } = desktopTab.data;
-    setDesktopBackground({
+    updateDesktopBackgroundData({
       imageSrc,
       imagePosition,
       solidColor,
     });
-  }, [displayProperties, setDesktopBackground]);
+  }, [displayProperties]);
 
   function onConextMenuDesktop(e) {
     if (e.target === e.currentTarget) {

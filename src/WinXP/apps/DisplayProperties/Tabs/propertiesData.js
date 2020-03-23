@@ -6,6 +6,20 @@ import SettingsTab from './SettingsTab';
 import defaultBackground from '../../../../assets/displayProperties/backgrounds/default.jpg';
 import reallyGoodBackground from '../../../../assets/displayProperties/backgrounds/really-good.png';
 
+export const BACKGROUND_DESKTOP_LOCAL_STORAGE_PROP_NAME = 'backgroundDesktop';
+
+const bgDesktopLocalStorage = localStorage.getItem(
+  BACKGROUND_DESKTOP_LOCAL_STORAGE_PROP_NAME,
+);
+
+export const desktopBackgroundData = Boolean(bgDesktopLocalStorage)
+  ? JSON.parse(bgDesktopLocalStorage)
+  : {
+      imageSrc: defaultBackground,
+      imagePosition: 'top',
+      solidColor: '#2c2a94',
+    };
+
 const themes = {
   title: 'Themes',
   disabled: true,
@@ -13,12 +27,6 @@ const themes = {
   data: {
     id: 'themes',
   },
-};
-
-export const desktopBackgroundData = {
-  imageSrc: defaultBackground,
-  imagePosition: 'top',
-  solidColor: '#2c2a94',
 };
 
 const desktop = {
