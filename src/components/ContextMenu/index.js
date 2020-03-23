@@ -43,7 +43,6 @@ export default memo(function ContextMenu(props) {
   }, [contextMenu]);
 
   function handleClick(e) {
-    e.preventDefault();
     const isRightClick = e.which === 3 || e.button === 2;
     if (!isRightClick || e.target !== ref.current) {
       onHide();
