@@ -122,7 +122,7 @@ function DesktopTab({ state: { desktop }, dispatch }) {
           </div>
           <div className="options">
             <button>Browse...</button>
-            <div>
+            <div className={disablePosition ? 'disabled' : ''}>
               <img className="arrow-down" src={arrowDown} alt="arrow down" />
               <label htmlFor="position">Position:</label>
               <select
@@ -130,9 +130,9 @@ function DesktopTab({ state: { desktop }, dispatch }) {
                 id="position"
                 onChange={handleChange}
               >
-                <option value="fill">Stretch</option>
-                <option value="contain">Fill</option>
-                <option value="cover">Fit</option>
+                <option value="center">Center</option>
+                <option value="repeat">Tile</option>
+                <option value="cover">Stretch</option>
               </select>
             </div>
             <div>
@@ -207,6 +207,11 @@ const Desktop = styled.div`
       border: 1px dotted grey;
     }
   }
+
+  .disabled {
+    color: #9d9d9d;
+  }
+
   .options {
     position: relative;
     display: flex;
@@ -234,6 +239,12 @@ const Desktop = styled.div`
     & #position {
       border-radius: 0;
       border-color: grey;
+      &:focus {
+        color: #fff;
+        background-color: #2f71cd;
+        box-shadow: 0px 0px 0px 2px #fff inset;
+        outline: none;
+      }
     }
 
     & #color {
