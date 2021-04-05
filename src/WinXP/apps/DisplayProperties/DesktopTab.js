@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import styled from 'styled-components';
 
 import arrowDown from '../../../assets/properties/displayProperties/icons/arrowDown.png';
@@ -35,8 +35,16 @@ function DesktopTab({ state: { desktop }, dispatch }) {
   const [imagePosition, setImagePosition] = useState(desktop.size);
   const [disablePosition, setDisablePosition] = useState(false);
 
-  // Convert all these handle functions to one function that dispaches every change to DisplayProperties state
-  // or keep separate function for each?
+  const refs = backgrounds.reduce((acc, item) => {
+    acc[item.id] = React.createRef();
+    return acc;
+  }, {});
+
+  useEffect(() => {
+    refs[desktop.id].current.scrollIntoView({
+      block: 'end',
+    });
+  },[]);
   const handleClick = (e, id, background) => {
     setActiveLi(id);
 
@@ -102,7 +110,7 @@ function DesktopTab({ state: { desktop }, dispatch }) {
           <div className="List">
             <ul>
               {backgrounds.map(({ title, id, background }) => (
-                <li key={id}>
+                <li key={id} ref={refs[id]}>
                   <img
                     className="icon"
                     src={id === 1 ? iconNone : iconImage}
