@@ -30,7 +30,7 @@ import { contextMenuData } from '../components/ContextMenu/utils';
 
 import { DashedBox } from 'components';
 
-export const Context = React.createContext();
+export const AppContext = React.createContext();
 
 const initState = {
   apps: defaultAppState,
@@ -41,12 +41,14 @@ const initState = {
   selecting: false,
   contextMenuPosition: null,
   powerState: POWER_STATE.START,
-  background: {
-    id: 6,
-    type: 'url',
-    size: 'cover',
-    image: '/static/media/bliss.bf876f9a.jpeg',
-    color: '#2f71cd',
+  displayProperties: {
+    desktop: {
+      id: 6,
+      type: 'url',
+      size: 'cover',
+      image: '/static/media/bliss.bf876f9a.jpeg',
+      color: '#2f71cd',
+    },
   },
 };
 const reducer = (state, action = { type: '' }) => {
@@ -198,10 +200,13 @@ const reducer = (state, action = { type: '' }) => {
         powerState: POWER_STATE.START,
       };
     case 'DISPLAY_PROPERTIES':
-      if (action.payload.desktop) setLocalStorage('background', action.payload);
+      if (action.payload) {
+        const displayProperties = { ...action.payload };
+        setLocalStorage('display properties', displayProperties);
+      }
       return {
         ...state,
-        background: action.payload.desktop,
+        displayProperties: action.payload,
       };
 
     default:
@@ -213,8 +218,9 @@ function WinXP() {
   const [state, dispatch] = useReducer(reducer, initState);
 
   useEffect(() => {
-    const desktop = getLocalStorage('background');
-    if (desktop) dispatch({ type: 'DISPLAY_PROPERTIES', payload: desktop });
+    const displayProperties = getLocalStorage('display properties');
+    if (displayProperties)
+      dispatch({ type: 'DISPLAY_PROPERTIES', payload: displayProperties });
   }, []);
 
   const ref = useRef(null);
@@ -331,7 +337,7 @@ function WinXP() {
   }
   return (
     <Container
-      background={state.background}
+      background={state.displayProperties.desktop}
       ref={ref}
       onMouseUp={onMouseUpDesktop}
       onMouseDown={onMouseDownDesktop}
@@ -349,7 +355,7 @@ function WinXP() {
         setSelectedIcons={onIconsSelected}
       />
       <DashedBox startPos={state.selecting} mouse={mouse} />
-      <Context.Provider value={{ state, dispatch }}>
+      <AppContext.Provider value={{ state, dispatch }}>
         <Windows
           apps={state.apps}
           onMouseDown={onFocusApp}
@@ -358,7 +364,7 @@ function WinXP() {
           onMaximize={onMaximizeWindow}
           focusedAppId={focusedAppId}
         />
-      </Context.Provider>
+      </AppContext.Provider>
       <Footer
         apps={state.apps}
         onMouseDownApp={onMouseDownFooterApp}

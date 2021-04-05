@@ -1,5 +1,5 @@
 import React, { useReducer, useContext } from 'react';
-import { Context as AppContext } from './../../../WinXP';
+import { AppContext } from './../../../WinXP';
 
 import TabsMenu from '../TabsMenu';
 import ThemeTab from './ThemeTab';
@@ -19,7 +19,7 @@ const tabs = [
 
 function DisplayProperties({ onClose }) {
   const appContext = useContext(AppContext);
-  const { background } = appContext.state;
+  const { desktop } = appContext.state.displayProperties;
 
   const reducer = (state, { type, payload }) => {
     switch (type) {
@@ -36,11 +36,11 @@ function DisplayProperties({ onClose }) {
 
   const initialState = {
     desktop: {
-      id: background.id,
-      type: background.type,
-      size: background.size,
-      image: background.image,
-      color: background.color,
+      id: desktop.id,
+      type: desktop.type,
+      size: desktop.size,
+      image: desktop.image,
+      color: desktop.color,
     },
   };
   const [state, dispatch] = useReducer(reducer, initialState);
