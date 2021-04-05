@@ -73,8 +73,6 @@ function DesktopTab({ state: { desktop }, dispatch }) {
 
   const handleColorChange = e => {
     setOverlayColor(e.target.value);
-    setActiveLi(1);
-    setDisablePosition(true);
     dispatch({
       type: 'DESKTOP',
       payload: { type: 'color', color: e.target.value, id: 1 },
