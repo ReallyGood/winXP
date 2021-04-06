@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import styled from 'styled-components';
 
+import BackgroundView from 'components/BackgroundView';
 import arrowDown from '../../../assets/properties/displayProperties/icons/arrowDown.png';
 import iconNone from '../../../assets/properties/displayProperties/icons/none.png';
 import iconImage from '../../../assets/properties/displayProperties/icons/image.png';
@@ -8,11 +9,15 @@ import display from '../../../assets/properties/displayProperties/display.png';
 import { backgrounds } from './utils';
 
 function DesktopTab({ state: { desktop }, dispatch }) {
-  const [activeLi, setActiveLi] = useState(desktop.id);
-  const [overlayColor, setOverlayColor] = useState(desktop.color);
-  const [overlayImage, setOverlayImage] = useState(desktop.image);
-  const [imagePosition, setImagePosition] = useState(desktop.size);
   const [disablePosition, setDisablePosition] = useState(false);
+  const [desktopState, setDesktopState] = useState({
+    id: desktop.id,
+    position: desktop.position,
+    image: desktop.image,
+    color: desktop.color,
+  });
+
+  console.log('desktop state: ', desktopState);
 
   const refs = backgrounds.reduce((acc, item) => {
     acc[item.id] = React.createRef();
@@ -25,64 +30,39 @@ function DesktopTab({ state: { desktop }, dispatch }) {
     });
   }, []);
 
-  const handleClick = (e, id, background) => {
-    setActiveLi(id);
+  const handleBackgroundClick = (e, id, background) => {
+    setDesktopState(prev => ({ ...prev, id }));
 
     if (e.target.innerText === '(None)') {
       setDisablePosition(true);
-      setOverlayImage(null);
-      dispatch({
-        type: 'DESKTOP',
-        payload: { type: 'color', color: overlayColor, id: id },
-      });
+      setDesktopState(prev => ({ ...prev, image: null }));
+      dispatch({ type: 'DESKTOP', payload: desktopState });
       return;
     }
-    setDisablePosition(false);
-    setOverlayImage(background);
 
-    dispatch({
-      type: 'DESKTOP',
-      payload: {
-        type: 'url',
-        size: imagePosition,
-        image: background,
-        id: id,
-      },
-    });
+    setDisablePosition(false);
+    setDesktopState(prev => ({ ...prev, image: background }));
+    dispatch({ type: 'DESKTOP', payload: desktopState });
   };
 
-  const handleChange = e => {
-    setImagePosition(e.target.value);
-    dispatch({
-      type: 'DESKTOP',
-      payload: { size: imagePosition },
-    });
+  const handleSelectChange = e => {
+    setDesktopState(prev => ({ ...prev, position: e.target.value }));
+    dispatch({ type: 'DESKTOP', payload: desktopState });
   };
 
   const handleColorChange = e => {
-    setOverlayColor(e.target.value);
-    dispatch({
-      type: 'DESKTOP',
-      payload: { type: 'color', color: e.target.value, id: 1 },
-    });
+    e.persist();
+    setDesktopState(prev => ({ ...prev, color: e.target.value }));
+    dispatch({ type: 'DESKTOP', payload: desktopState });
   };
 
   return (
     <Desktop>
       <div className="preview">
         <img src={display} alt="display" />
-        {activeLi === 1 && (
-          <div
-            className="display-overlay color"
-            style={{ backgroundColor: overlayColor }}
-          />
-        )}
-        <img
-          src={overlayImage}
-          className="display-overlay"
-          alt="background"
-          style={{ objectFit: imagePosition, backgroundColor: overlayColor }}
-        />
+        <div className="display-overlay">
+          <BackgroundView background={desktopState} />
+        </div>
       </div>
       <div className="settings">
         <div>Background:</div>
@@ -97,8 +77,8 @@ function DesktopTab({ state: { desktop }, dispatch }) {
                     alt="icon"
                   />
                   <span
-                    className={activeLi === id ? 'active' : ''}
-                    onClick={e => handleClick(e, id, background)}
+                    className={desktopState.id === id ? 'active' : ''}
+                    onClick={e => handleBackgroundClick(e, id, background)}
                   >
                     {title}
                   </span>
@@ -114,8 +94,8 @@ function DesktopTab({ state: { desktop }, dispatch }) {
               <select
                 disabled={disablePosition}
                 id="position"
-                onChange={handleChange}
-                value={backgrounds[activeLi - 1].position}
+                onChange={handleSelectChange}
+                // value={backgrounds[activeLi - 1].position}
               >
                 <option value="center">Center</option>
                 <option value="repeat">Tile</option>
@@ -128,7 +108,7 @@ function DesktopTab({ state: { desktop }, dispatch }) {
                 id="color"
                 type="color"
                 onChange={e => handleColorChange(e)}
-                value={overlayColor}
+                value={desktopState.color}
               />
             </div>
           </div>

@@ -37,13 +37,15 @@ function DisplayProperties({ onClose }) {
   const initialState = {
     desktop: {
       id: desktop.id,
-      type: desktop.type,
-      size: desktop.size,
+      position: desktop.position,
       image: desktop.image,
       color: desktop.color,
     },
   };
+
   const [state, dispatch] = useReducer(reducer, initialState);
+
+  console.log('display properties: ', state);
 
   const handleCancel = () => {
     onClose();
