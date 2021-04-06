@@ -27,6 +27,7 @@ import Windows from './Windows';
 import Icons from './Icons';
 import ContextMenu from '../components/ContextMenu';
 import { contextMenuData } from '../components/ContextMenu/utils';
+import BackgroundView from '../components/BackgroundView';
 
 import { DashedBox } from 'components';
 
@@ -337,7 +338,6 @@ function WinXP() {
   }
   return (
     <Container
-      background={state.displayProperties.desktop}
       ref={ref}
       onMouseUp={onMouseUpDesktop}
       onMouseDown={onMouseDownDesktop}
@@ -387,6 +387,7 @@ function WinXP() {
           onClick={onDoubleClickIcon}
         />
       )}
+      <BackgroundView background={state.displayProperties.desktop} />
     </Container>
   );
 }
@@ -414,13 +415,6 @@ const Container = styled.div`
   height: 100%;
   overflow: hidden;
   position: relative;
-  ${({ background }) =>
-    background.type === 'url'
-      ? `background-image: url(${background.image});`
-      : `background-color: ${background.color};`}
-  background-repeat: no-repeat;
-  background-position: center;
-  background-size: ${({ background }) => background.size};
   animation: ${({ state }) => animation[state]} 5s forwards;
   *:not(input):not(textarea) {
     user-select: none;
