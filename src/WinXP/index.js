@@ -45,8 +45,7 @@ const initState = {
   displayProperties: {
     desktop: {
       id: 6,
-      type: 'url',
-      size: 'cover',
+      position: 'center',
       image: '/static/media/bliss.bf876f9a.jpeg',
       color: '#2f71cd',
     },
