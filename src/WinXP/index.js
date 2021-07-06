@@ -1,4 +1,10 @@
-import React, { useReducer, useRef, useCallback } from 'react';
+import React, {
+  useReducer,
+  useRef,
+  useCallback,
+  useEffect,
+  useState,
+} from 'react';
 import styled, { keyframes } from 'styled-components';
 import useMouse from 'react-use/lib/useMouse';
 import ga from 'react-ga';
@@ -16,6 +22,7 @@ import {
   END_SELECT,
   POWER_OFF,
   CANCEL_POWER_OFF,
+  SAVE_DISPLAY_PROPERTIES,
 } from './constants/actions';
 import { FOCUSING, POWER_STATE } from './constants';
 import { defaultIconState, defaultAppState, appSettings } from './apps';
@@ -24,6 +31,13 @@ import Footer from './Footer';
 import Windows from './Windows';
 import Icons from './Icons';
 import { DashedBox } from 'components';
+import ContextMenu from '../components/ContextMenu';
+import { contextMenuItems } from './WinXPContextMenuUtils';
+import {
+  BACKGROUND_DESKTOP_LOCAL_STORAGE_PROP_NAME,
+  defaultPropertiesTabs,
+  desktopBackgroundData,
+} from './apps/DisplayProperties/Tabs/propertiesData';
 
 const initState = {
   apps: defaultAppState,
@@ -33,7 +47,9 @@ const initState = {
   icons: defaultIconState,
   selecting: false,
   powerState: POWER_STATE.START,
+  displayProperties: defaultPropertiesTabs,
 };
+
 const reducer = (state, action = { type: '' }) => {
   ga.event({
     category: 'XP interaction',
@@ -44,6 +60,7 @@ const reducer = (state, action = { type: '' }) => {
       const app = state.apps.find(
         _app => _app.component === action.payload.component,
       );
+
       if (action.payload.multiInstance || !app) {
         return {
           ...state,
@@ -174,14 +191,30 @@ const reducer = (state, action = { type: '' }) => {
         ...state,
         powerState: POWER_STATE.START,
       };
+    case SAVE_DISPLAY_PROPERTIES:
+      const updated = Object.assign({}, state);
+      updated.displayProperties = action.payload;
+      return {
+        ...state,
+        displayProperties: action.payload,
+      };
     default:
       return state;
   }
 };
 function WinXP() {
   const [state, dispatch] = useReducer(reducer, initState);
+  const { displayProperties } = state;
+  const [desktopBackground, setDesktopBackground] = useState(
+    desktopBackgroundData,
+  );
   const ref = useRef(null);
   const mouse = useMouse(ref);
+  const [contextMenu, setContextMenu] = useState(null);
+  const hideContextMenu = () => {
+    setContextMenu(null);
+  };
+
   const focusedAppId = getFocusedAppId();
   const onFocusApp = useCallback(id => {
     dispatch({ type: FOCUS_APP, payload: id });
@@ -263,14 +296,20 @@ function WinXP() {
       });
   }
   function onMouseDownDesktop(e) {
-    if (e.target === e.currentTarget)
+    const isRightClick = e.which === 3 || e.button === 2;
+
+    if (!contextMenu && !isRightClick && e.target === e.currentTarget) {
       dispatch({
         type: START_SELECT,
         payload: { x: mouse.docX, y: mouse.docY },
       });
+    }
   }
   function onMouseUpDesktop(e) {
-    dispatch({ type: END_SELECT });
+    const isRightClick = e.which === 3 || e.button === 2;
+    if (!contextMenu && !isRightClick) {
+      dispatch({ type: END_SELECT });
+    }
   }
   function onIconsSelected(iconIds) {
     dispatch({ type: SELECT_ICONS, payload: iconIds });
@@ -285,13 +324,62 @@ function WinXP() {
   function onModalClose() {
     dispatch({ type: CANCEL_POWER_OFF });
   }
+  function handleClickedContextMenuItem(menuItem) {
+    if (menuItem.action) {
+      const action = menuItem.action(state);
+      dispatch(action.config);
+    }
+  }
+  function onSave(data) {
+    dispatch({
+      type: data.action,
+      payload: data.stateData,
+    });
+  }
+
+  function updateDesktopBackgroundData(updated) {
+    localStorage.setItem(
+      BACKGROUND_DESKTOP_LOCAL_STORAGE_PROP_NAME,
+      JSON.stringify(updated),
+    );
+    setDesktopBackground(updated);
+  }
+
+  useEffect(() => {
+    const desktopTab = displayProperties.find(
+      prop => prop.data.id === 'desktop',
+    );
+    const { imageSrc, imagePosition, solidColor } = desktopTab.data;
+    updateDesktopBackgroundData({
+      imageSrc,
+      imagePosition,
+      solidColor,
+    });
+  }, [displayProperties]);
+
+  function onConextMenuDesktop(e) {
+    if (e.target === e.currentTarget) {
+      e.preventDefault();
+      setContextMenu({ xPos: e.pageX, yPos: e.pageY });
+    }
+  }
+
   return (
     <Container
       ref={ref}
       onMouseUp={onMouseUpDesktop}
       onMouseDown={onMouseDownDesktop}
       state={state.powerState}
+      desktopBackground={desktopBackground}
+      onContextMenu={onConextMenuDesktop}
     >
+      <ContextMenu
+        outerRef={ref}
+        onClickContextMenuItem={handleClickedContextMenuItem}
+        contextMenuItems={contextMenuItems}
+        contextMenu={contextMenu}
+        onHide={hideContextMenu}
+      />
       <Icons
         icons={state.icons}
         onMouseDown={onMouseDownIcon}
@@ -310,6 +398,7 @@ function WinXP() {
         onMinimize={onMinimizeWindow}
         onMaximize={onMaximizeWindow}
         focusedAppId={focusedAppId}
+        onSave={onSave}
       />
       <Footer
         apps={state.apps}
@@ -352,7 +441,14 @@ const Container = styled.div`
   height: 100%;
   overflow: hidden;
   position: relative;
-  background: url(https://i.imgur.com/Zk6TR5k.jpg) no-repeat center center fixed;
+  background-color: ${props => props.desktopBackground.solidColor};
+  background-image: ${props =>
+    Boolean(props.desktopBackground.imageSrc)
+      ? `url(${props.desktopBackground.imageSrc})`
+      : 'none'};
+  background-repeat: no-repeat;
+  background-position: center center;
+  background-attachment: fixed;
   background-size: cover;
   animation: ${({ state }) => animation[state]} 5s forwards;
   *:not(input):not(textarea) {

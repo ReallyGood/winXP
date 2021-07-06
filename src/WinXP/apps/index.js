@@ -16,6 +16,7 @@ import notepadLarge from 'assets/windowsIcons/327(32x32).png';
 import winamp from 'assets/windowsIcons/winamp.png';
 import paintLarge from 'assets/windowsIcons/680(32x32).png';
 import paint from 'assets/windowsIcons/680(16x16).png';
+import DisplayProperties from './DisplayProperties';
 
 const gen = () => {
   let id = -1;
@@ -291,6 +292,25 @@ export const appSettings = {
     minimized: false,
     maximized: window.innerWidth < 800,
     multiInstance: true,
+  },
+  Properties: {
+    header: {
+      title: 'Display Properties',
+      buttons: ['close'],
+    },
+    component: DisplayProperties,
+    defaultSize: {
+      width: 438,
+      height: 465,
+    },
+    defaultOffset: {
+      x: 600,
+      y: 40,
+    },
+    resizable: false,
+    minimized: false,
+    maximized: false,
+    multiInstance: false,
   },
 };
 

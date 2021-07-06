@@ -1,7 +1,7 @@
-import React, { useState, useRef, useEffect } from 'react';
+import React, { memo, useState, useRef, useEffect } from 'react';
 import styled from 'styled-components';
 
-function Icons({
+export default memo(function Icons({
   icons,
   onMouseDown,
   onDoubleClick,
@@ -43,7 +43,7 @@ function Icons({
       ))}
     </IconsContainer>
   );
-}
+});
 
 function Icon({
   title,
@@ -139,5 +139,3 @@ const StyledIcon = styled(Icon)`
       isFocus && displayFocus ? 0.5 : 1};
   }
 `;
-
-export default Icons;

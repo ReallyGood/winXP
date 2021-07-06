@@ -12,22 +12,26 @@ function Windows({
   onMinimize,
   onMaximize,
   focusedAppId,
+  onSave = () => {},
 }) {
   return (
     <div style={{ position: 'relative', zIndex: 0 }}>
-      {apps.map(app => (
-        <StyledWindow
-          show={!app.minimized}
-          key={app.id}
-          id={app.id}
-          onMouseDown={onMouseDown}
-          onMouseUpClose={onClose}
-          onMouseUpMinimize={onMinimize}
-          onMouseUpMaximize={onMaximize}
-          isFocus={focusedAppId === app.id} // for styledWindow
-          {...app}
-        />
-      ))}
+      {apps.map(app => {
+        return (
+          <StyledWindow
+            show={!app.minimized}
+            key={app.id}
+            id={app.id}
+            onMouseDown={onMouseDown}
+            onMouseUpClose={onClose}
+            onMouseUpMinimize={onMinimize}
+            onMouseUpMaximize={onMaximize}
+            isFocus={focusedAppId === app.id} // for styledWindow
+            onSave={onSave}
+            {...app}
+          />
+        );
+      })}
     </div>
   );
 }
@@ -47,6 +51,7 @@ const Window = memo(function({
   component,
   zIndex,
   isFocus,
+  onSave = () => {},
   className,
 }) {
   function _onMouseDown() {
@@ -103,11 +108,13 @@ const Window = memo(function({
     >
       <div className="header__bg" />
       <header className="app__header" ref={dragRef}>
-        <img
-          src={header.icon}
-          alt={header.title}
-          className="app__header__icon"
-        />
+        {header.icon && (
+          <img
+            src={header.icon}
+            alt={header.title}
+            className="app__header__icon"
+          />
+        )}
         <div className="app__header__title">{header.title}</div>
         <HeaderButtons
           buttons={header.buttons}
@@ -124,6 +131,7 @@ const Window = memo(function({
           onClose: _onMouseUpClose,
           onMinimize: _onMouseUpMinimize,
           isFocus,
+          onSave: onSave,
           ...injectProps,
         })}
       </div>
@@ -206,6 +214,7 @@ const StyledWindow = styled(Window)`
     overflow: hidden;
     white-space: nowrap;
     text-overflow: ellipsis;
+    margin-left: 1px;
   }
   .app__content {
     flex: 1;
