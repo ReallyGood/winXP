@@ -11470,6 +11470,11 @@ xmlchars@^2.1.1:
   resolved "https://registry.yarnpkg.com/xmlchars/-/xmlchars-2.2.0.tgz#060fe1bcb7f9c76fe2a17db86a9bc3ab894210cb"
   integrity sha512-JZnDKK8B0RCDw84FNdDAIpZK+JuJw+s7Lz8nksI7SIuU3UXJJslUthsi+uWBUYOwPFwW7W7PRLRfUKpxjtjFCw==
 
+xp.css@^0.2.4:
+  version "0.2.4"
+  resolved "https://registry.yarnpkg.com/xp.css/-/xp.css-0.2.4.tgz#c233a8fbe18016411038e45ab90d0d1d1a33a232"
+  integrity sha512-Ys78J7QYojkN9ZHOeuDvIcVZL34liCybU7csRyj886P+ZmyLxydSnSsk4jV9+xCyMoWtNPiPptwS07DKmp4Fyw==
+
 xregexp@4.0.0:
   version "4.0.0"
   resolved "https://registry.yarnpkg.com/xregexp/-/xregexp-4.0.0.tgz#e698189de49dd2a18cc5687b05e17c8e43943020"

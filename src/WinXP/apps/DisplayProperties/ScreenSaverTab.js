@@ -10,6 +10,8 @@ function ScreenSaverTab() {
         <img src={display} alt="display" />
         <div className="display-overlay"></div>
       </div>
+      <div class="title-bar-text">a</div>
+      <input checked type="checkbox" id="example2" />
       <form className="config">
         <fieldset>
           <legend>Screen saver</legend>

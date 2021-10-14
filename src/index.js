@@ -1,6 +1,8 @@
 import React from 'react';
 import ReactDOM from 'react-dom';
 
+import 'xp.css/dist/XP.css';
+
 import './index.css';
 import 'assets/clear.css';
 import 'assets/font.css';
