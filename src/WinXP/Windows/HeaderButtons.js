@@ -68,7 +68,6 @@ export default styled(HeaderButtons)`
   margin-top: -1px;
   margin-right: 1px;
   .header__button {
-    margin-right: 1px;
     position: relative;
     width: 22px;
     height: 22px;

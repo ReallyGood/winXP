@@ -116,12 +116,13 @@ const Div = styled.div`
     }
   }
   .balloon__close {
+    all: unset;
     outline: none;
     position: absolute;
     right: 4px;
     top: 4px;
-    width: 14px;
-    height: 14px;
+    width: 12px;
+    height: 13px;
     border: 1px solid rgba(0, 0, 0, 0.1);
     border-radius: 3px;
     background-color: transparent;
