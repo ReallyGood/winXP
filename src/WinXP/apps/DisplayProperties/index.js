@@ -114,23 +114,23 @@ function DisplayProperties({ onClose }) {
         appContext={appContext}
       />
       <Buttons>
-        <Button
+        <button
           onClick={handleOk}
           style={{
             marginRight: 4,
           }}
         >
           OK
-        </Button>
-        <Button
+        </button>
+        <button
           onClick={handleCancel}
           style={{
             marginRight: 4,
           }}
         >
           Cancel
-        </Button>
-        <Button
+        </button>
+        <button
           onClick={handleApply}
           style={{
             width: 70,
@@ -138,7 +138,7 @@ function DisplayProperties({ onClose }) {
           disabled={!state.firstChange}
         >
           Apply
-        </Button>
+        </button>
       </Buttons>
     </Properties>
   );

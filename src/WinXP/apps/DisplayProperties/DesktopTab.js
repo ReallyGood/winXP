@@ -97,7 +97,7 @@ function DesktopTab({ state, dispatch }) {
             </ul>
           </div>
           <div className="options">
-            <Button>Browse...</Button>
+            <button>Browse...</button>
             <div className={isBackgroundNone ? 'disabled' : ''}>
               <img className="arrow-down" src={arrowDown} alt="arrow down" />
               <label>Position:</label>
@@ -138,7 +138,7 @@ function DesktopTab({ state, dispatch }) {
             </div>
           </div>
         </div>
-        <Button style={{ width: 146 }}>Customize Desktop...</Button>
+        <button style={{ width: 146 }}>Customize Desktop...</button>
       </div>
     </Desktop>
   );
@@ -260,10 +260,10 @@ const Desktop = styled.div`
     & .color-box {
       position: relative;
       right: 1px;
-      bottom: 1px;
+      bottom: 0px;
       border: none;
-      width: 60px;
-      height: 20px;
+      width: 61px;
+      height: 21px;
     }
 
     & label {

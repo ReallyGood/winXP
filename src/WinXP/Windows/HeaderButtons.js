@@ -75,7 +75,7 @@ export default styled(HeaderButtons)`
     border: 1px solid #fff;
     border-radius: 3px;
     &:hover {
-      filter: brightness(120%);
+      filter: brightness(115%);
     }
     &:hover:active {
       filter: brightness(90%);
@@ -198,8 +198,8 @@ export default styled(HeaderButtons)`
     &:before {
       content: '?';
       position: absolute;
-      left: 5px;
-      top: -3px;
+      left: 4px;
+      top: 0px;
       color: white;
       font-size: 18px;
       font-weight: bold;

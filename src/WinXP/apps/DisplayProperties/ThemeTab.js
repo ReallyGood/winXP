@@ -70,15 +70,15 @@ function ThemeTab({ state, dispatch }) {
           </select>
         </div>
         <div className="buttons">
-          <Button
+          <button
             style={{
               marginLeft: 4,
               width: 78,
             }}
           >
             Save As...
-          </Button>
-          <Button
+          </button>
+          <button
             style={{
               marginLeft: 4,
               width: 78,
@@ -86,7 +86,7 @@ function ThemeTab({ state, dispatch }) {
             disabled
           >
             Delete
-          </Button>
+          </button>
         </div>
       </div>
       <div className="sample">

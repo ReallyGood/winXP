@@ -48,14 +48,14 @@ function ColorSwatches({
       </section>
       <hr />
       <section className="inline-grid">
-        <Button>
+        <button>
           <input
             type="color"
             className="customColorPicker"
             onChange={e => handleColorSelect(e.target.value)}
           />
           Other...
-        </Button>
+        </button>
         {customColor && (
           <SampleBox
             sampleColor={customColor}
@@ -98,7 +98,10 @@ const Swatches = styled.div`
   }
 
   &&& button {
-    width: 63px;
+    min-width: 65px;
+    max-width: 65px;
+    min-height: 22px;
+    max-height: 22px;
     margin: 1px 2px 0px 2px;
   }
 `;

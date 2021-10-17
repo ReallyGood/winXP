@@ -115,6 +115,7 @@ const Window = memo(function({
         )}
         <div className="app__header__title">{header.title}</div>
         <HeaderButtons
+          className="title-bar-controls"
           buttons={header.buttons}
           onMaximize={_onMouseUpMaximize}
           onMinimize={_onMouseUpMinimize}

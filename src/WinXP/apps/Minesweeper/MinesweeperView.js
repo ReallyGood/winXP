@@ -375,9 +375,11 @@ export default styled(MineSweeperView)`
     border-top: 1px solid rgb(128, 128, 128);
     border-left: 1px solid rgb(128, 128, 128);
     border-radius: 2px;
-    transform: translateX(1px);
+    transform: translateX(0.5px);
   }
+
   .mine__face {
+    all: inherit;
     border-radius: 2px;
     height: 100%;
     width: 100%;
