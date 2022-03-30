@@ -54,9 +54,11 @@ function Pipes3DProperties({ onClose }) {
     setPipes3DState(prev => ({ ...prev, [field]: value }));
   };
 
-  const handleBooleanChange = (value, field) => {
-    let booleanValue = value === 'true' ? true : false;
-    setPipes3DState(prev => ({ ...prev, [field]: booleanValue }));
+  const handleVarianceChange = (value, field) => {
+    setPipes3DState(prev => ({
+      ...prev,
+      [field]: value === 'single' ? false : true,
+    }));
   };
 
   const handleSpeedChange = (value, field) => {
@@ -81,7 +83,7 @@ function Pipes3DProperties({ onClose }) {
               groupName="multiple"
               /// groupName correlates with the properties (multiple, joints etc.)
               options={getVarianceOptions(pipes3DState.multiple)}
-              cb={handleBooleanChange}
+              cb={handleVarianceChange}
             />
           </LegendFieldset>
           <LegendFieldset>

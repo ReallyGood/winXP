@@ -161,13 +161,13 @@ export const getVarianceOptions = isMulti => [
   {
     label: 'Single',
     id: 'single',
-    value: false,
+    value: 'single',
     checked: !isMulti,
   },
   {
-    label: 'Multi',
+    label: 'Multiple',
     id: 'multi',
-    value: true,
+    value: 'multi',
     checked: isMulti,
   },
 ];
