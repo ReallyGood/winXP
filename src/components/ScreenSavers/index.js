@@ -1,4 +1,4 @@
-import React, { useEffect } from 'react';
+import React from 'react';
 import Blank from './Blank';
 import None from './None';
 import WindowsXP from './WindowsXP';
