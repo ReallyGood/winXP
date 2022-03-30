@@ -12,7 +12,7 @@ import { DISPLAY_PROPERTIES } from '../../constants/actions';
 import {
   MAX_SPEED,
   MIN_SPEED,
-  getColorOptions,
+  getVarianceOptions,
   getTexturePathOptions,
   jointTypeOptions,
 } from './utils';
@@ -80,7 +80,7 @@ function Pipes3DProperties({ onClose }) {
             <RadioGroup
               groupName="multiple"
               /// groupName correlates with the properties (multiple, joints etc.)
-              options={getColorOptions(pipes3DState.multiple)}
+              options={getVarianceOptions(pipes3DState.multiple)}
               cb={handleBooleanChange}
             />
           </LegendFieldset>

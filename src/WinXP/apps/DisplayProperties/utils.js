@@ -157,7 +157,7 @@ export const getTexturePathOptions = isSolid => [
   },
 ];
 
-export const getColorOptions = isMulti => [
+export const getVarianceOptions = isMulti => [
   {
     label: 'Single',
     id: 'single',
