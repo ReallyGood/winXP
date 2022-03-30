@@ -2,10 +2,6 @@
 # yarn lockfile v1
 
 
-"3d-pipes@github:1j01/pipes":
-  version "0.1.0"
-  resolved "git+ssh://git@github.com/1j01/pipes.git#86e8eb1418f937ef43f9acbd871085c5160714fc"
-
 "@babel/code-frame@7.5.5", "@babel/code-frame@^7.0.0", "@babel/code-frame@^7.5.5":
   version "7.5.5"
   resolved "https://registry.npmjs.org/@babel/code-frame/-/code-frame-7.5.5.tgz"
