@@ -442,9 +442,7 @@ function updateFromParametersInURL() {
   }
 }
 
-window.addEventListener("hashchange", () => {
-  updateFromParametersInURL();
-});
+window.addEventListener("hashchange", updateFromParametersInURL);
 
 /**************\
 |boring helpers|
