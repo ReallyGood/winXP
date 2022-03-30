@@ -141,6 +141,8 @@ export const jointTypeOptions = [
   { label: 'Cycle', value: 'cycle' },
 ];
 
+const defaultTexturePath = 'images/textures/chocolate.jpeg';
+
 export const getTexturePathOptions = isSolid => [
   {
     label: 'Solid',
@@ -152,7 +154,7 @@ export const getTexturePathOptions = isSolid => [
     label: 'Textured',
     id: 'textured',
     /// TODO: change value to path string after fixing bug
-    value: '',
+    value: defaultTexturePath,
     checked: !isSolid,
   },
 ];
