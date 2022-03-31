@@ -18,6 +18,7 @@ function RadioGroup({ groupName, options, cb }) {
               type="radio"
               name={groupName}
               checked={option.checked}
+              onChange={e => {}}
             />
             <span className="checkmark"></span>
           </label>
