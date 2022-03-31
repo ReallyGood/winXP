@@ -51,12 +51,9 @@ function ScreenSaverTab({ state, dispatch, appContext }) {
   };
 
   const handleSettingsOpen = e => {
-    /// Currently only supported for 3D pipes
-    /// TODO: make a switch case in the future when there are more setting options
-    if (value !== 'Pipes3D') return;
     appContext.dispatch({
       type: ADD_APP,
-      payload: appSettings.Pipes3D,
+      payload: appSettings[value],
     });
   };
 
@@ -89,10 +86,12 @@ function ScreenSaverTab({ state, dispatch, appContext }) {
 
             <div className="button-group">
               <Button
-                disabled={isNone}
                 type="button"
                 style={{ marginLeft: 7 }}
                 onClick={handleSettingsOpen}
+                disabled={
+                  !state.displayProperties.screenSaversSettings[value] || isNone
+                }
               >
                 Settings
               </Button>
