@@ -1,9 +1,11 @@
 import React from 'react';
 import styled from 'styled-components';
 
+import radioIndicatior from 'assets/radioIndicator.svg';
+
 function RadioGroup({ groupName, options, cb }) {
   return (
-    <StyledRadioGroup>
+    <StyledRadioGroup radioIndicatior={radioIndicatior}>
       <form
         onChange={e => {
           cb(e.target.value, groupName);
@@ -88,9 +90,17 @@ const StyledRadioGroup = styled.div`
     width: 5px;
     height: 5px;
     border-radius: 50%;
-    /* background: url('public/radioIndicatior.svg'); */
-    /* TODO: change to svg */
-    background: linear-gradient(90deg, rgb(77 207 67) 0%, rgb(39 129 27) 90%);
+    background: linear-gradient(
+      90deg,
+      rgb(77 207 67) 0%,
+      rgb(39 129 27) 90%
+    ); ///Fallback
+    ${({ radioIndicatior }) => {
+      return `
+      background-image: url(${radioIndicatior});
+     
+    `;
+    }}
   }
 `;
 
