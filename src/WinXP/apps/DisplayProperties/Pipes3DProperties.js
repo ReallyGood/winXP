@@ -73,6 +73,14 @@ function Pipes3DProperties({ onClose }) {
     }));
   };
 
+  const handleFileUpload = async file => {
+    const reader = new FileReader();
+    reader.readAsDataURL(file);
+    reader.addEventListener('load', () => {
+      setPipes3DState(prev => ({ ...prev, texturePath: reader.result }));
+    });
+  };
+
   return (
     <>
       <Properties>
@@ -107,11 +115,17 @@ function Pipes3DProperties({ onClose }) {
             <div className="surface-style-wrapper">
               <RadioGroup
                 groupName="texturePath"
-                options={getTexturePathOptions(!pipes3DState.texturePath)}
+                options={getTexturePathOptions(pipes3DState.texturePath)}
                 cb={handleChange}
               />
               <Button disabled={!pipes3DState.texturePath}>
-                Choose Texture...
+                <label>
+                  Choose texture...
+                  <input
+                    type="file"
+                    onChange={e => handleFileUpload(e.target.files[0])}
+                  />
+                </label>
               </Button>
             </div>
           </LegendFieldset>
@@ -177,6 +191,10 @@ const Properties = styled.div`
 
   .surface-style-wrapper {
     position: relative;
+    input[type='file'] {
+      display: none;
+    }
+
     button {
       position: absolute;
       font-size: 12px;

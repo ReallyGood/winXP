@@ -128,6 +128,7 @@ export const CHANGE = 'CHANGE';
 export const FIRST_CHANGE = 'FIRST_CHANGE';
 export const RESET_FIRST_CHANGE = 'RESET_FIRST_CHANGE';
 export const SCREEN_SAVER = 'SCREEN_SAVER';
+export const SCREEN_SAVERS_SETTINGS = 'SCREEN_SAVERS_SETTINGS';
 
 /* Pipes3DProperties */
 
@@ -141,24 +142,22 @@ export const jointTypeOptions = [
   { label: 'Cycle', value: 'cycle' },
 ];
 
-const defaultTexturePath = 'images/textures/chocolate.jpeg';
+const defaultTexturePath = 'images/textures/candycane.png';
 
-export const getTexturePathOptions = isSolid => [
+export const getTexturePathOptions = texturePath => [
   {
     label: 'Solid',
     id: 'solid',
     value: '',
-    checked: isSolid,
+    checked: !texturePath,
   },
   {
     label: 'Textured',
     id: 'textured',
-    /// TODO: change value to path string after fixing bug
-    value: defaultTexturePath,
-    checked: !isSolid,
+    value: texturePath || defaultTexturePath,
+    checked: texturePath,
   },
 ];
-
 export const getVarianceOptions = isMulti => [
   {
     label: 'Single',

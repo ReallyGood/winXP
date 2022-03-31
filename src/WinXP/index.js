@@ -66,7 +66,7 @@ const initState = {
         multiple: false,
         joints: 'elbow',
         interval: [16, 24],
-        texturePath: 'images/textures/chocolate.jpeg',
+        texturePath: '',
       },
     },
   },
