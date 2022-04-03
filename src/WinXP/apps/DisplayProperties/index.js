@@ -17,6 +17,7 @@ import {
   FIRST_CHANGE,
   RESET_FIRST_CHANGE,
   SCREEN_SAVER,
+  SCREEN_SAVERS_SETTINGS,
 } from './utils';
 
 import { DISPLAY_PROPERTIES } from '../../constants/actions';
@@ -72,6 +73,17 @@ function DisplayProperties({ onClose }) {
             },
           },
         };
+      case SCREEN_SAVERS_SETTINGS:
+        return {
+          ...state,
+          displayProperties: {
+            ...displayProperties,
+            screenSaversSettings: {
+              ...state.displayProperties.screenSaversSettings,
+              ...payload,
+            },
+          },
+        };
       default:
         break;
     }
@@ -116,6 +128,14 @@ function DisplayProperties({ onClose }) {
     handleApply();
     onClose();
   };
+
+  useEffect(() => {
+    dispatch({
+      type: SCREEN_SAVERS_SETTINGS,
+      payload: appContext.state.displayProperties.screenSaversSettings,
+    });
+  }, [appContext.state.displayProperties.screenSaversSettings]);
+
   return (
     <Properties>
       <TabsMenu

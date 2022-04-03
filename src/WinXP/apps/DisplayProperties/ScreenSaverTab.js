@@ -1,19 +1,29 @@
-import React, { useState, useEffect, useRef } from 'react';
+import React, { useState, useEffect } from 'react';
 import styled from 'styled-components';
 
 import display from 'assets/properties/displayProperties/display.png';
-import arrowDown from 'assets/properties/displayProperties/icons/arrowDown.png';
 import Button from 'components/Button';
+import LegendFieldset from 'components/LegendFieldset';
+import SelectInput from 'components/SelectInput';
+
 import NumberInput from 'components/NumberInput';
 import CheckBox from 'components/CheckBox';
 import ScreenSaver from 'components/ScreenSavers';
 import { SCREEN_SAVER } from './utils';
-import { SCREEN_SAVER_PREVIEW } from 'WinXP/constants/actions';
+import { ADD_APP, SCREEN_SAVER_PREVIEW } from 'WinXP/constants/actions';
+import { appSettings } from '../';
 
 function ScreenSaverTab({ state, dispatch, appContext }) {
   const { value, wait } = state.displayProperties.screenSaver;
   const [screenSaverState, setScreenSaverState] = useState({ value, wait });
   const [isNone, setIsNone] = useState(false);
+
+  const screenSaverOptions = [
+    { value: '(None)', label: '(None)' },
+    { value: 'Blank', label: 'Blank' },
+    { value: 'WindowsXP', label: 'Windows XP' },
+    { value: 'Pipes3D', label: '3D Pipes' },
+  ];
 
   useEffect(() => {
     dispatch({ type: SCREEN_SAVER, payload: screenSaverState });
@@ -23,23 +33,35 @@ function ScreenSaverTab({ state, dispatch, appContext }) {
     setIsNone(screenSaverState.value === '(None)');
   }, [screenSaverState.value]);
 
-  const handleSelectChange = e => {
-    setScreenSaverState(prev => ({ ...prev, value: e.target.value }));
+  const handleSelectChange = value => {
+    setScreenSaverState(prev => ({ ...prev, value }));
   };
 
   const handleWaitingTime = wait => {
     setScreenSaverState(prev => ({ ...prev, wait }));
   };
 
-  const selectorRef = useRef(null);
-
   const handlePreviewOpen = e => {
     appContext.dispatch({
       type: SCREEN_SAVER_PREVIEW,
       payload: value,
     });
-    selectorRef.current.focus();
+    // @todo: make SelectInput focus
+    // selectorRef.current.focus();
   };
+
+  const handleSettingsOpen = e => {
+    appContext.dispatch({
+      type: ADD_APP,
+      payload: appSettings[value],
+    });
+  };
+
+  // TODO: Find a suiting place for it like a utils file
+  const isAppOpen = appName =>
+    !!appContext.state.apps.find(app => {
+      return app.component.name === appName;
+    });
 
   return (
     <ScreenSaverSettings>
@@ -47,72 +69,83 @@ function ScreenSaverTab({ state, dispatch, appContext }) {
         <img src={display} alt="display" />
         <div className="display-overlay">
           <ScreenSaver
-            selectedScreenSaver={value}
+            /// TODO: make more general- should be if any screensaver setting is open
+            selectedScreenSaver={
+              isAppOpen('Pipes3DProperties') ? '(None)' : value
+            }
+            state={appContext.state}
             previewScreen
-            state={state}
           />
         </div>
       </div>
       <Config>
-        <SelectionSettings height="80px">
+        <LegendFieldset>
           <legend>Screen saver</legend>
-          <img className="arrow-down" src={arrowDown} alt="arrow down" />
-          <label htmlFor="screen-saver">
-            <select
+          <SelectionSettings height="65px">
+            <SelectInput
+              options={screenSaverOptions}
+              cb={handleSelectChange}
               value={value}
-              id="screen-saver"
-              className="position-input"
-              onChange={handleSelectChange}
-              ref={selectorRef}
-              onKeyPress={e => e.preventDefault()}
-              autoFocus
-            >
-              <option value="(None)">(None)</option>
-              <option value="Blank">Blank</option>
-              <option value="WindowsXP">Windows XP</option>
-            </select>
-          </label>
-          <div className="button-group">
-            <Button disabled={isNone} type="button" style={{ marginLeft: 7 }}>
-              Settings
-            </Button>
-            <Button
-              disabled={isNone}
-              type="button"
-              style={{ marginLeft: 9 }}
-              onClick={handlePreviewOpen}
-            >
-              Preview
-            </Button>
-          </div>
-          <div className={`quick-settings ${isNone ? 'disabled-text' : ''}`}>
-            <label className="wait-label">Wait:</label>
-            <NumberInput
-              value={wait}
-              onChange={handleWaitingTime}
-              disabled={isNone}
             />
-            <p>minutes</p>
-            <CheckBox
-              value={screenSaverState.value}
-              className="check-box"
-              label="On resume, password protect"
-            />
-          </div>
-        </SelectionSettings>
-        <SelectionSettings height="87.5px" marginTop="4px">
+
+            <div className="button-group">
+              <Button
+                type="button"
+                style={{ marginLeft: 7 }}
+                onClick={handleSettingsOpen}
+                disabled={
+                  !state.displayProperties.screenSaversSettings[value] || isNone
+                }
+              >
+                Settings
+              </Button>
+              <Button
+                disabled={isNone}
+                type="button"
+                style={{ marginLeft: 9 }}
+                onClick={handlePreviewOpen}
+              >
+                Preview
+              </Button>
+            </div>
+            <div className={`quick-settings ${isNone ? 'disabled-text' : ''}`}>
+              <label className="wait-label">Wait:</label>
+              <NumberInput
+                value={wait}
+                onChange={handleWaitingTime}
+                disabled={isNone}
+              />
+              <p>minutes</p>
+              <CheckBox
+                value={screenSaverState.value}
+                className="check-box"
+                label="On resume, password protect"
+              />
+            </div>
+          </SelectionSettings>
+        </LegendFieldset>
+        <LegendFieldset>
           <legend>Monitor power</legend>
-          <p>To adjust monitor power settings and save energy, click Power.</p>
-          <Button type="button" className="power-button">
-            Power...
-          </Button>
-        </SelectionSettings>
+          <SelectionSettings height="65px" marginTop="4px">
+            <p>
+              To adjust monitor power settings and save energy, click Power.
+            </p>
+            <Button type="button" className="power-button">
+              Power...
+            </Button>
+          </SelectionSettings>
+        </LegendFieldset>
       </Config>
     </ScreenSaverSettings>
   );
 }
 
 const ScreenSaverSettings = styled.div`
+  legend {
+    font-size: 11px;
+    margin-left: 9px;
+  }
+
   .preview {
     position: relative;
     display: flex;
@@ -131,42 +164,15 @@ const ScreenSaverSettings = styled.div`
 `;
 
 const Config = styled.form`
+  fieldset {
+    margin-bottom: 5px;
+  }
   margin-top: 4.5px;
-
-  legend {
-    margin-left: 9px;
-    color: #1a66c4;
-  }
-
-  .position-input {
-    border-radius: 0;
-    border-color: grey;
-    font-size: 12px;
-    margin-left: 9px;
-    margin-top: 6.5px;
-    width: 167px;
-    height: 22px;
-    &:focus {
-      color: #fff;
-      background-color: #2f71cd;
-      box-shadow: inset 0px 0px 0px 2px #fff;
-      outline: none;
-    }
-  }
-
-  .arrow-down {
-    position: absolute;
-    left: 159px;
-    top: 7px;
-    width: 16px;
-    height: 20px;
-    pointer-events: none;
-  }
 
   .button-group {
     display: inline-block;
     position: absolute;
-    top: 5px;
+    top: 6px;
   }
 
   .quick-settings {
@@ -194,14 +200,16 @@ const Config = styled.form`
   }
 `;
 
-const SelectionSettings = styled.fieldset`
+const SelectionSettings = styled.div`
   position: relative;
-  border: 1px solid #e1e1d4;
-  border-radius: 5px;
   font-size: 11px;
   height: ${props => props.height};
   margin-top: ${props => props.marginTop};
 
+  .select-wrapper {
+    margin-top: 6px;
+    margin-left: 10px;
+  }
   & p {
     margin-left: 82px;
     margin-top: 7px;
@@ -210,7 +218,7 @@ const SelectionSettings = styled.fieldset`
   & .power-button {
     position: absolute;
     right: 9px;
-    top: 45px;
+    top: 37px;
   }
 `;
 

@@ -128,3 +128,47 @@ export const CHANGE = 'CHANGE';
 export const FIRST_CHANGE = 'FIRST_CHANGE';
 export const RESET_FIRST_CHANGE = 'RESET_FIRST_CHANGE';
 export const SCREEN_SAVER = 'SCREEN_SAVER';
+export const SCREEN_SAVERS_SETTINGS = 'SCREEN_SAVERS_SETTINGS';
+
+/* Pipes3DProperties */
+
+export const MAX_SPEED = 32;
+export const MIN_SPEED = 6;
+
+export const jointTypeOptions = [
+  { label: 'Elbow', value: 'elbow' },
+  { label: 'Ball', value: 'ball' },
+  { label: 'Mixed', value: 'mixed' },
+  { label: 'Cycle', value: 'cycle' },
+];
+
+const defaultTexturePath = 'images/textures/candycane.png';
+
+export const getTexturePathOptions = texturePath => [
+  {
+    label: 'Solid',
+    id: 'solid',
+    value: '',
+    checked: !texturePath,
+  },
+  {
+    label: 'Textured',
+    id: 'textured',
+    value: texturePath || defaultTexturePath,
+    checked: texturePath,
+  },
+];
+export const getVarianceOptions = isMulti => [
+  {
+    label: 'Single',
+    id: 'single',
+    value: 'single',
+    checked: !isMulti,
+  },
+  {
+    label: 'Multiple',
+    id: 'multi',
+    value: 'multi',
+    checked: isMulti,
+  },
+];

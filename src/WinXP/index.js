@@ -61,6 +61,14 @@ const initState = {
     desktop: defaultDesktop,
     screenSaver: defaultScreenSaver,
     screenSaverPreview: false,
+    screenSaversSettings: {
+      Pipes3D: {
+        multiple: false,
+        joints: 'elbow',
+        interval: [16, 24],
+        texturePath: '',
+      },
+    },
   },
 };
 const reducer = (state, action = { type: '' }) => {
@@ -401,6 +409,15 @@ function WinXP() {
     throttledFunc(screenSaverIdleTimer);
   };
 
+  window.addEventListener(
+    'message',
+    event => {
+      if (event.data === 'pipesMouseMove' || event.message === 'pipesMouseMove')
+        resetScreenSaver();
+    },
+    false,
+  );
+
   return (
     <Container
       ref={ref}
@@ -459,7 +476,8 @@ function WinXP() {
       {isScreenSaverActive && (
         <ScreenSaver
           selectedScreenSaver={state.displayProperties.screenSaver.value}
-          activatePreview={state.displayProperties.screenSaverPreview}
+          activePreview={state.displayProperties.screenSaverPreview}
+          state={state}
         />
       )}
     </Container>
