@@ -62,14 +62,14 @@ function Pipes3DProperties({ onClose }) {
   };
 
   const handleSpeedChange = (value, field) => {
-    // 'interval' is an array of 2 numbers that represents a range of seconds between fade-outs
-    // The 2nd number is 1.5 * the first one
-    // The default one is [16, 24]
-    // Values of the slider ranges from
-    // Becuase we want the slider to go from "slow" to "fast", we'd have to deduct the selected value from 32
+    // Deducting the selected value from the max speed
+    // Because we need the slider to range in opposite direction -
+    // From a higher value to lower value (of seconds)
+    const seconds = MAX_SPEED - value;
     setPipes3DState(prev => ({
       ...prev,
-      [field]: [MAX_SPEED - value, (MAX_SPEED - value) * 1.5],
+      [field]: [seconds, seconds * 1.5],
+      /// "interval" field represents a range of seconds between fadeouts
     }));
   };
 
