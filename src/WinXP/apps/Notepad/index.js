@@ -1,25 +1,17 @@
-import React, { useState, useEffect, useRef } from 'react';
+import React, { useState, useRef } from 'react';
 import styled from 'styled-components';
 
 import { WindowDropDowns } from 'components';
-import originalDropDownData from './dropDownData';
+import { getDropDownData } from './dropDownData';
 
 export default function Notepad({ onClose }) {
   const [docText, setDocText] = useState('');
   const [wordWrap, setWordWrap] = useState(false);
   const [selectedText, setSelectedText] = useState('');
   const [caretPos, setCaretPos] = useState([0, 0]);
-  const [dropDownData, setDropDownData] = useState(originalDropDownData);
 
+  const dropDownData = getDropDownData({ selectedText, docText });
   const textareaRef = useRef();
-
-  useEffect(() => {
-    dropDownData.Edit.forEach(option => {
-      if (['Cut', 'Copy', 'Delete'].includes(option.text))
-        option.disable = !selectedText;
-    });
-    setDropDownData(dropDownData => dropDownData);
-  }, [selectedText, dropDownData.Edit]);
 
   function onClickOptionItem(item) {
     switch (item) {
