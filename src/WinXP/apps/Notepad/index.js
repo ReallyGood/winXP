@@ -1,8 +1,12 @@
-import React, { useState, useRef } from 'react';
+import React, { useState, useRef, useContext, useEffect } from 'react';
 import styled from 'styled-components';
 
 import { WindowDropDowns } from 'components';
 import { getDropDownData } from './dropDownData';
+
+import { Context as AppContext } from '../../index';
+import { ADD_APP } from '../../constants/actions';
+import { appSettings } from '../index';
 
 export default function Notepad({ onClose }) {
   const [docText, setDocText] = useState('');
@@ -10,8 +14,31 @@ export default function Notepad({ onClose }) {
   const [selectedText, setSelectedText] = useState('');
   const [caretPos, setCaretPos] = useState([0, 0]);
 
+  const [findSettings, setFindSettings] = useState({
+    searchWord: '',
+    replaceWith: '',
+    caseSensitive: false,
+    searchDirection: 1,
+  });
+
+  const appContext = useContext(AppContext);
+
   const dropDownData = getDropDownData({ selectedText, docText });
   const textareaRef = useRef();
+
+  function selectText(start, end) {
+    textareaRef.current.focus();
+    requestAnimationFrame(() => {
+      textareaRef.current.setSelectionRange(start, end);
+    });
+  }
+
+  useEffect(() => {
+    //// Preserve text selection on blur
+    textareaRef.current.addEventListener('blur', () => {
+      selectText(caretPos[0], caretPos[1]);
+    });
+  }, [textareaRef, caretPos]);
 
   function onClickOptionItem(item) {
     switch (item) {
@@ -44,6 +71,10 @@ export default function Notepad({ onClose }) {
       case 'Delete':
         onDeleteText();
         break;
+      case 'Find...':
+        focusCaret(selectedText.length);
+        onOpenFind();
+        break;
       default:
     }
   }
@@ -68,12 +99,8 @@ export default function Notepad({ onClose }) {
   function focusCaret(insertedTextLength) {
     const insteadOfText = caretPos[0] + insertedTextLength;
     const afterText = caretPos[1] + insertedTextLength;
-    textareaRef.current.focus();
-    requestAnimationFrame(() => {
-      selectedText
-        ? textareaRef.current.setSelectionRange(insteadOfText, insteadOfText)
-        : textareaRef.current.setSelectionRange(afterText, afterText);
-    });
+    const range = selectedText ? insteadOfText : afterText;
+    selectText(range, range);
   }
 
   function onDeleteText() {
@@ -91,11 +118,42 @@ export default function Notepad({ onClose }) {
     }
   }
 
+  function onOpenFind() {
+    // appContext.dispatch({
+    //   type: ADD_APP,
+    //   payload: {
+    //     ...appSettings.FindDialog,
+    //     injectProps: { findSettings, onFindNext },
+    //   },
+    // });
+  }
+
+  const onFindNext = newSettings => {
+    let settings;
+
+    if (newSettings) {
+      settings = { ...findSettings, ...newSettings };
+      /// Apply the settings in state for later
+      setFindSettings(settings);
+    } else settings = findSettings;
+
+    /// Conduct the search with "settings"
+    console.log(caretPos);
+
+    const searchPart = docText.slice(caretPos[1]);
+    console.log('searchPart', searchPart);
+  };
+
   return (
     <Div>
       <section className="np__toolbar">
-        <WindowDropDowns items={dropDownData} onClickItem={onClickOptionItem} />
+        <WindowDropDowns
+          items={dropDownData}
+          onClickItem={onClickOptionItem}
+          onClick={e => console.log(e)}
+        />
       </section>
+
       <StyledTextarea
         ref={textareaRef}
         wordWrap={wordWrap}
