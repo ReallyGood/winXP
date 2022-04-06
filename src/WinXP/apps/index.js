@@ -3,6 +3,7 @@ import Minesweeper from './Minesweeper';
 import ErrorBox from './ErrorBox';
 import MyComputer from './MyComputer';
 import Notepad from './Notepad';
+import FindDialog from './Notepad/FindDialog';
 import Winamp from './Winamp';
 import Paint from './Paint';
 import DisplayProperties from './DisplayProperties';
@@ -334,6 +335,25 @@ export const appSettings = {
     defaultOffset: {
       x: 100,
       y: 110,
+    },
+    resizable: false,
+    minimized: false,
+    maximized: false,
+    multiInstance: false,
+  },
+  FindDialog: {
+    header: {
+      title: 'Find',
+      buttons: ['help', 'close'],
+    },
+    component: FindDialog,
+    defaultSize: {
+      width: 400,
+      height: 150,
+    },
+    defaultOffset: {
+      x: 200,
+      y: 200,
     },
     resizable: false,
     minimized: false,
