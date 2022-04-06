@@ -5,6 +5,7 @@ import MyComputer from './MyComputer';
 import Notepad from './Notepad';
 import FindDialog from './Notepad/FindDialog';
 import ReplaceDialog from './Notepad/ReplaceDialog';
+import NotepadErrorDialog from './Notepad/NotepadErrorDialog';
 import Winamp from './Winamp';
 import Paint from './Paint';
 import DisplayProperties from './DisplayProperties';
@@ -374,6 +375,25 @@ export const appSettings = {
     defaultOffset: {
       x: 200,
       y: 200,
+    },
+    resizable: false,
+    minimized: false,
+    maximized: false,
+    multiInstance: false,
+  },
+  NotepadErrorDialog: {
+    header: {
+      title: 'Notepad',
+      buttons: ['close'],
+    },
+    component: NotepadErrorDialog,
+    defaultSize: {
+      width: 200,
+      height: 150,
+    },
+    defaultOffset: {
+      x: 600,
+      y: 150,
     },
     resizable: false,
     minimized: false,

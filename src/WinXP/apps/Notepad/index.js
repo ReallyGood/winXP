@@ -183,7 +183,7 @@ export default function Notepad({ onClose }) {
     /// Conduct the search with "settings"
     const index = getIndex(settings);
     if (index !== -1) selectText(index, index + settings.searchWord.length);
-    else focusCaret(0); /// TODO: show error message
+    else alertError(settings.searchWord);
   };
 
   const getIndex = ({ forwardSearch, searchWord, caseSensitive }) => {
@@ -197,6 +197,16 @@ export default function Notepad({ onClose }) {
     return forwardSearch
       ? searchStr.indexOf(searchWord, caretEnd.current)
       : searchStr.lastIndexOf(searchWord, caretStart.current - 1);
+  };
+
+  const alertError = searchWord => {
+    appContext.dispatch({
+      type: ADD_APP,
+      payload: {
+        ...appSettings.NotepadErrorDialog,
+        injectProps: { searchWord },
+      },
+    });
   };
 
   return (
