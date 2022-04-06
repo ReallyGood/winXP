@@ -13,28 +13,35 @@ import { appSettings } from '../index';
 export default function Notepad({ onClose }) {
   const [docText, setDocText] = useState('');
   const [wordWrap, setWordWrap] = useState(false);
-  const [selectedText, setSelectedText] = useState('');
   const [findSettings, setFindSettings] = useState({
     searchWord: '',
     replaceWith: '',
     caseSensitive: false,
     forwardSearch: true,
   });
+
+  const selectedText = useRef('');
   const caretStart = useRef(0);
   const caretEnd = useRef(0);
 
   const appContext = useContext(AppContext);
 
-  const dropDownData = getDropDownData({ selectedText, docText });
+  const dropDownData = getDropDownData({
+    selectedText: selectedText.current,
+    docText,
+  });
   const textareaRef = useRef();
 
   function selectText(start, end) {
     caretStart.current = start;
     caretEnd.current = end;
+
     textareaRef.current.focus();
     requestAnimationFrame(() => {
       textareaRef.current.setSelectionRange(start, end);
     });
+
+    selectedText.current = docText.slice(start, end);
   }
 
   function onClickOptionItem(item) {
@@ -69,15 +76,17 @@ export default function Notepad({ onClose }) {
         onDeleteText();
         break;
       case 'Find...':
-        focusCaret(selectedText.length);
         onOpenFind();
+        break;
+      case 'Replace...':
+        onOpenReplace();
         break;
       default:
     }
   }
 
   function onCopyText() {
-    navigator.clipboard.writeText(selectedText);
+    navigator.clipboard.writeText(selectedText.current);
   }
 
   async function onPasteText() {
@@ -98,13 +107,31 @@ export default function Notepad({ onClose }) {
   function focusCaret(insertedTextLength) {
     const insteadOfText = caretStart.current + insertedTextLength;
     const afterText = caretEnd.current + insertedTextLength;
-    const range = selectedText ? insteadOfText : afterText;
+    const range = selectedText.current ? insteadOfText : afterText;
     selectText(range, range);
   }
 
   function onDeleteText() {
     insertOrReplace('');
     focusCaret(0);
+  }
+
+  function onReplace(newSettings) {
+    if (selectedText.current) insertOrReplace(newSettings.replaceWith);
+    onFindNext(newSettings);
+  }
+
+  function onReplaceAll(newSettings) {
+    setFindSettings(newSettings);
+    focusCaret(0);
+
+    const regexFlags = newSettings.caseSensitive ? 'i' : 'gi';
+    var regex = new RegExp(newSettings.searchWord, regexFlags);
+
+    /// Using textareaRef.current.value to get the latest actual value
+    setDocText(
+      textareaRef.current.value.replace(regex, newSettings.replaceWith),
+    );
   }
 
   function onTextAreaKeyDown(e) {
@@ -129,6 +156,18 @@ export default function Notepad({ onClose }) {
     selectText(caretStart.current, caretEnd.current);
   }
 
+  function onOpenReplace() {
+    appContext.dispatch({
+      type: ADD_APP,
+      payload: {
+        ...appSettings.ReplaceDialog,
+        injectProps: { findSettings, onFindNext, onReplace, onReplaceAll },
+      },
+    });
+    /// Reselect text
+    selectText(caretStart.current, caretEnd.current);
+  }
+
   const onFindNext = newSettings => {
     let settings;
 
@@ -140,10 +179,11 @@ export default function Notepad({ onClose }) {
     /// Conduct the search with "settings"
     const index = getIndex(settings);
     if (index !== -1) selectText(index, index + settings.searchWord.length);
+    else focusCaret(0); /// TODO: show error message
   };
 
   const getIndex = ({ forwardSearch, searchWord, caseSensitive }) => {
-    let searchStr = docText;
+    let searchStr = textareaRef.current.value;
 
     if (!caseSensitive) {
       searchStr = docText.toLowerCase();
@@ -169,7 +209,7 @@ export default function Notepad({ onClose }) {
           onKeyDown={onTextAreaKeyDown}
           onSelect={e => {
             const { selectionStart, selectionEnd, value } = e.target;
-            setSelectedText(value.substring(selectionStart, selectionEnd));
+            selectedText.current = value.slice(selectionStart, selectionEnd);
             caretStart.current = selectionStart;
             caretEnd.current = selectionEnd;
           }}

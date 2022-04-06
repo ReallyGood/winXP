@@ -85,7 +85,7 @@ export const getDropDownData = ({ selectedText, docText }) => {
       },
       {
         type: 'item',
-        disable: true,
+        disable: !docText,
         text: 'Replace...',
       },
       {

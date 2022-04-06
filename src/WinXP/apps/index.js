@@ -4,6 +4,7 @@ import ErrorBox from './ErrorBox';
 import MyComputer from './MyComputer';
 import Notepad from './Notepad';
 import FindDialog from './Notepad/FindDialog';
+import ReplaceDialog from './Notepad/ReplaceDialog';
 import Winamp from './Winamp';
 import Paint from './Paint';
 import DisplayProperties from './DisplayProperties';
@@ -72,27 +73,27 @@ export const defaultAppState = [
     id: genId(),
     zIndex: genIndex(),
   },
-  {
-    component: Winamp,
-    header: {
-      title: 'Winamp',
-      icon: winamp,
-      invisible: true,
-    },
-    defaultSize: {
-      width: 0,
-      height: 0,
-    },
-    defaultOffset: {
-      x: 0,
-      y: 0,
-    },
-    resizable: false,
-    minimized: false,
-    maximized: false,
-    id: genId(),
-    zIndex: genIndex(),
-  },
+  // {
+  //   component: Winamp,
+  //   header: {
+  //     title: 'Winamp',
+  //     icon: winamp,
+  //     invisible: true,
+  //   },
+  //   defaultSize: {
+  //     width: 0,
+  //     height: 0,
+  //   },
+  //   defaultOffset: {
+  //     x: 0,
+  //     y: 0,
+  //   },
+  //   resizable: false,
+  //   minimized: false,
+  //   maximized: false,
+  //   id: genId(),
+  //   zIndex: genIndex(),
+  // },
   {
     component: MyComputer,
     header: {
@@ -350,6 +351,25 @@ export const appSettings = {
     defaultSize: {
       width: 400,
       height: 150,
+    },
+    defaultOffset: {
+      x: 200,
+      y: 200,
+    },
+    resizable: false,
+    minimized: false,
+    maximized: false,
+    multiInstance: false,
+  },
+  ReplaceDialog: {
+    header: {
+      title: 'Replace',
+      buttons: ['help', 'close'],
+    },
+    component: ReplaceDialog,
+    defaultSize: {
+      width: 400,
+      height: 300,
     },
     defaultOffset: {
       x: 200,
