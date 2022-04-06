@@ -1,4 +1,6 @@
-import React, { useState, useRef, useContext, useEffect } from 'react';
+import React, { useState, useRef, useContext } from 'react';
+import Frame from 'react-frame-component';
+
 import styled from 'styled-components';
 
 import { WindowDropDowns } from 'components';
@@ -12,14 +14,14 @@ export default function Notepad({ onClose }) {
   const [docText, setDocText] = useState('');
   const [wordWrap, setWordWrap] = useState(false);
   const [selectedText, setSelectedText] = useState('');
-  const [caretPos, setCaretPos] = useState([0, 0]);
-
   const [findSettings, setFindSettings] = useState({
     searchWord: '',
     replaceWith: '',
     caseSensitive: false,
-    searchDirection: 1,
+    forwardSearch: true,
   });
+  const caretStart = useRef(0);
+  const caretEnd = useRef(0);
 
   const appContext = useContext(AppContext);
 
@@ -27,18 +29,13 @@ export default function Notepad({ onClose }) {
   const textareaRef = useRef();
 
   function selectText(start, end) {
+    caretStart.current = start;
+    caretEnd.current = end;
     textareaRef.current.focus();
     requestAnimationFrame(() => {
       textareaRef.current.setSelectionRange(start, end);
     });
   }
-
-  useEffect(() => {
-    //// Preserve text selection on blur
-    textareaRef.current.addEventListener('blur', () => {
-      selectText(caretPos[0], caretPos[1]);
-    });
-  }, [textareaRef, caretPos]);
 
   function onClickOptionItem(item) {
     switch (item) {
@@ -92,13 +89,15 @@ export default function Notepad({ onClose }) {
   function insertOrReplace(text) {
     const { value } = textareaRef.current;
     setDocText(
-      value.substring(0, caretPos[0]) + text + value.substring(caretPos[1]),
+      value.substring(0, caretStart.current) +
+        text +
+        value.substring(caretEnd.current),
     );
   }
 
   function focusCaret(insertedTextLength) {
-    const insteadOfText = caretPos[0] + insertedTextLength;
-    const afterText = caretPos[1] + insertedTextLength;
+    const insteadOfText = caretStart.current + insertedTextLength;
+    const afterText = caretEnd.current + insertedTextLength;
     const range = selectedText ? insteadOfText : afterText;
     selectText(range, range);
   }
@@ -119,13 +118,15 @@ export default function Notepad({ onClose }) {
   }
 
   function onOpenFind() {
-    // appContext.dispatch({
-    //   type: ADD_APP,
-    //   payload: {
-    //     ...appSettings.FindDialog,
-    //     injectProps: { findSettings, onFindNext },
-    //   },
-    // });
+    appContext.dispatch({
+      type: ADD_APP,
+      payload: {
+        ...appSettings.FindDialog,
+        injectProps: { findSettings, onFindNext },
+      },
+    });
+    /// Reselect text
+    selectText(caretStart.current, caretEnd.current);
   }
 
   const onFindNext = newSettings => {
@@ -133,40 +134,49 @@ export default function Notepad({ onClose }) {
 
     if (newSettings) {
       settings = { ...findSettings, ...newSettings };
-      /// Apply the settings in state for later
       setFindSettings(settings);
     } else settings = findSettings;
 
     /// Conduct the search with "settings"
-    console.log(caretPos);
+    const index = getIndex(settings);
+    if (index !== -1) selectText(index, index + settings.searchWord.length);
+  };
 
-    const searchPart = docText.slice(caretPos[1]);
-    console.log('searchPart', searchPart);
+  const getIndex = ({ forwardSearch, searchWord, caseSensitive }) => {
+    let searchStr = docText;
+
+    if (!caseSensitive) {
+      searchStr = docText.toLowerCase();
+      searchWord = searchWord.toLowerCase();
+    }
+
+    return forwardSearch
+      ? searchStr.indexOf(searchWord, caretEnd.current)
+      : searchStr.lastIndexOf(searchWord, caretStart.current - 1);
   };
 
   return (
     <Div>
       <section className="np__toolbar">
-        <WindowDropDowns
-          items={dropDownData}
-          onClickItem={onClickOptionItem}
-          onClick={e => console.log(e)}
-        />
+        <WindowDropDowns items={dropDownData} onClickItem={onClickOptionItem} />
       </section>
-
-      <StyledTextarea
-        ref={textareaRef}
-        wordWrap={wordWrap}
-        value={docText}
-        onChange={e => setDocText(e.target.value)}
-        onKeyDown={onTextAreaKeyDown}
-        onSelect={e => {
-          const { selectionStart, selectionEnd, value } = e.target;
-          setSelectedText(value.substring(selectionStart, selectionEnd));
-          setCaretPos([selectionStart, selectionEnd]);
-        }}
-        spellCheck={false}
-      />
+      <Frame>
+        <StyledTextarea
+          ref={textareaRef}
+          wordWrap={wordWrap}
+          value={docText}
+          onChange={e => setDocText(e.target.value)}
+          onKeyDown={onTextAreaKeyDown}
+          onSelect={e => {
+            const { selectionStart, selectionEnd, value } = e.target;
+            setSelectedText(value.substring(selectionStart, selectionEnd));
+            caretStart.current = selectionStart;
+            caretEnd.current = selectionEnd;
+          }}
+          onBlur={() => selectText(caretStart.current, caretEnd.current)}
+          spellCheck={false}
+        />
+      </Frame>
     </Div>
   );
 }
@@ -196,4 +206,9 @@ const StyledTextarea = styled.textarea`
   ${props => (props.wordWrap ? '' : 'white-space: nowrap; overflow-x: scroll;')}
   overflow-y: scroll;
   border: 1px solid #96abff;
+
+  &::selection {
+    background-color: #4f74bf;
+    color: white;
+  }
 `;
