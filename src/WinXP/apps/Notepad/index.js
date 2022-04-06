@@ -20,6 +20,7 @@ export default function Notepad({ onClose }) {
     forwardSearch: true,
   });
 
+  const textareaRef = useRef();
   const selectedText = useRef('');
   const caretStart = useRef(0);
   const caretEnd = useRef(0);
@@ -30,7 +31,6 @@ export default function Notepad({ onClose }) {
     selectedText: selectedText.current,
     docText,
   });
-  const textareaRef = useRef();
 
   function selectText(start, end) {
     caretStart.current = start;
@@ -148,30 +148,6 @@ export default function Notepad({ onClose }) {
     }
   }
 
-  function onOpenFind() {
-    appContext.dispatch({
-      type: ADD_APP,
-      payload: {
-        ...appSettings.FindDialog,
-        injectProps: { findSettings, onFindNext },
-      },
-    });
-    /// Reselect text
-    selectText(caretStart.current, caretEnd.current);
-  }
-
-  function onOpenReplace() {
-    appContext.dispatch({
-      type: ADD_APP,
-      payload: {
-        ...appSettings.ReplaceDialog,
-        injectProps: { findSettings, onFindNext, onReplace, onReplaceAll },
-      },
-    });
-    /// Reselect text
-    selectText(caretStart.current, caretEnd.current);
-  }
-
   const onFindNext = newSettings => {
     let settings;
 
@@ -183,7 +159,7 @@ export default function Notepad({ onClose }) {
     /// Conduct the search with "settings"
     const index = getIndex(settings);
     if (index !== -1) selectText(index, index + settings.searchWord.length);
-    else alertError(settings.searchWord);
+    else openApp('NotepadErrorDialog', { searchWord: settings.searchWord });
   };
 
   const getIndex = ({ forwardSearch, searchWord, caseSensitive }) => {
@@ -199,15 +175,30 @@ export default function Notepad({ onClose }) {
       : searchStr.lastIndexOf(searchWord, caretStart.current - 1);
   };
 
-  const alertError = searchWord => {
+  function openApp(app, props) {
     appContext.dispatch({
       type: ADD_APP,
       payload: {
-        ...appSettings.NotepadErrorDialog,
-        injectProps: { searchWord },
+        ...appSettings[app],
+        injectProps: props,
       },
     });
-  };
+    /// Reselect text
+    selectText(caretStart.current, caretEnd.current);
+  }
+
+  function onOpenFind() {
+    openApp('FindDialog', { findSettings, onFindNext });
+  }
+
+  function onOpenReplace() {
+    openApp('ReplaceDialog', {
+      findSettings,
+      onFindNext,
+      onReplace,
+      onReplaceAll,
+    });
+  }
 
   return (
     <Div>
