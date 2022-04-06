@@ -81,6 +81,10 @@ export default function Notepad({ onClose }) {
       case 'Replace...':
         onOpenReplace();
         break;
+      case 'Find Next':
+        if (!findSettings.searchWord) onOpenFind();
+        else onFindNext();
+        break;
       default:
     }
   }
