@@ -3,7 +3,7 @@ import styled from 'styled-components';
 
 import Button from 'components/Button';
 
-function ReplaceDialog({ findSettings, onFindNext, onReplace, onReplaceAll }) {
+function ReplaceDialog({ findSettings, findNext, onReplace, onReplaceAll }) {
   /// Make copy of the findSettings properties
   const [findSettingsState, setFindSettingsState] = useState({
     ...findSettings,
@@ -38,7 +38,7 @@ function ReplaceDialog({ findSettings, onFindNext, onReplace, onReplaceAll }) {
       </div>
       <Button
         disabled={!findSettingsState.searchWord}
-        onClick={() => onFindNext(findSettingsState)}
+        onClick={() => findNext(findSettingsState)}
       >
         Find next
       </Button>

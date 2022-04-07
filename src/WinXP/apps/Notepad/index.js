@@ -83,7 +83,7 @@ export default function Notepad({ onClose }) {
         break;
       case 'Find Next':
         if (!findSettings.searchWord) onOpenFind();
-        else onFindNext();
+        else findNext();
         break;
       default:
     }
@@ -122,7 +122,7 @@ export default function Notepad({ onClose }) {
 
   function onReplace(newSettings) {
     if (selectedText.current) insertOrReplace(newSettings.replaceWith);
-    onFindNext(newSettings);
+    findNext(newSettings);
   }
 
   function onReplaceAll(newSettings) {
@@ -148,15 +148,16 @@ export default function Notepad({ onClose }) {
     }
   }
 
-  const onFindNext = newSettings => {
-    let settings;
+  const updateSettings = newSettings => {
+    setFindSettings({ ...findSettings, ...newSettings });
+  };
 
-    if (newSettings) {
-      settings = { ...findSettings, ...newSettings };
+  const findNext = settings => {
+    if (settings) {
       setFindSettings(settings);
-    } else settings = findSettings;
-
-    /// Conduct the search with "settings"
+      settings = { ...findSettings, ...settings };
+    }
+    /// Conduct the search
     const index = getIndex(settings);
     if (index !== -1) selectText(index, index + settings.searchWord.length);
     else openApp('NotepadErrorDialog', { searchWord: settings.searchWord });
@@ -188,15 +189,16 @@ export default function Notepad({ onClose }) {
   }
 
   function onOpenFind() {
-    openApp('FindDialog', { findSettings, onFindNext });
+    openApp('FindDialog', { findSettings, findNext, updateSettings });
   }
 
   function onOpenReplace() {
     openApp('ReplaceDialog', {
       findSettings,
-      onFindNext,
+      findNext,
       onReplace,
       onReplaceAll,
+      updateSettings,
     });
   }
 
