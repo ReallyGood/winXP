@@ -1,6 +1,7 @@
 import React, { useState, useRef, useEffect, useCallback } from 'react';
 import styled from 'styled-components';
 
+import DialogInner from './DialogInner';
 import Button from 'components/Button';
 import RadioGroup from 'components/RadioGroup';
 import LegendFieldset from 'components/LegendFieldset';
@@ -29,7 +30,7 @@ function FindDialog({ findSettings, findNext, updateSettings, onClose }) {
   }, [updateSettings, directionChange]);
 
   return (
-    <InnerWindow>
+    <DialogInner>
       <div>
         <div>
           <label htmlFor="searchWord">Find what: </label>
@@ -74,7 +75,7 @@ function FindDialog({ findSettings, findNext, updateSettings, onClose }) {
           </LegendFieldset>
         </ControllersWrapper>
       </div>
-      <Buttons>
+      <div className="buttons-wrapper">
         <Button
           disabled={!findSettingsState.searchWord}
           onClick={() => findNext(findSettingsState)}
@@ -82,49 +83,10 @@ function FindDialog({ findSettings, findNext, updateSettings, onClose }) {
           Find next
         </Button>
         <Button onClick={onClose}>Cancel</Button>
-      </Buttons>
-    </InnerWindow>
+      </div>
+    </DialogInner>
   );
 }
-
-const InnerWindow = styled.div`
-  height: 100%;
-  background-color: rgb(236, 233, 218);
-  padding: 10px;
-  display: flex;
-  justify-content: space-between;
-
-  /* TODO: reusable input comopnent or class (also used in replace dialog ) */
-  input[type='text'] {
-    padding: 2px;
-    outline: none;
-    border: 1px solid #a9c4f7;
-    width: 215px;
-  }
-
-  fieldset {
-    width: fit-content;
-    padding: 5px;
-    legend {
-      margin-bottom: 10px;
-      right: -5px;
-    }
-    form {
-      display: flex;
-      label {
-        margin-right: 5px;
-      }
-    }
-  }
-`;
-
-const Buttons = styled.div`
-  display: flex;
-  flex-direction: column;
-  button {
-    margin-bottom: 7px;
-  }
-`;
 
 const ControllersWrapper = styled.div`
   display: flex;

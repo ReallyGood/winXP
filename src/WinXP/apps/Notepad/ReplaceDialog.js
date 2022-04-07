@@ -1,7 +1,7 @@
 import React, { useState, useRef } from 'react';
-import styled from 'styled-components';
 
 import Button from 'components/Button';
+import DialogInner from './DialogInner';
 
 function ReplaceDialog({ findSettings, findNext, onReplace, onReplaceAll }) {
   /// Make copy of the findSettings properties
@@ -17,54 +17,51 @@ function ReplaceDialog({ findSettings, findNext, onReplace, onReplaceAll }) {
   };
 
   return (
-    <InnerWindow>
+    <DialogInner>
       <div>
-        <label>Find what: </label>
-        <input
-          type="text"
-          value={findSettingsState.searchWord}
-          ref={searchInputRef}
-          onChange={e => handleChange('searchWord', e.target.value)}
-          autoFocus
-        ></input>
+        <div>
+          <label>Find what: </label>
+          <input
+            type="text"
+            value={findSettingsState.searchWord}
+            ref={searchInputRef}
+            onChange={e => handleChange('searchWord', e.target.value)}
+            autoFocus
+          ></input>
+        </div>
 
-        <label>Replace with: </label>
-        <input
-          type="text"
-          value={findSettingsState.replaceWith}
-          ref={replaceInputRef}
-          onChange={e => handleChange('replaceWith', e.target.value)}
-        ></input>
+        <div>
+          <label>Replace with: </label>
+          <input
+            type="text"
+            value={findSettingsState.replaceWith}
+            ref={replaceInputRef}
+            onChange={e => handleChange('replaceWith', e.target.value)}
+          ></input>
+        </div>
       </div>
-      <Button
-        disabled={!findSettingsState.searchWord}
-        onClick={() => findNext(findSettingsState)}
-      >
-        Find next
-      </Button>
-      <Button
-        disabled={!findSettingsState.searchWord}
-        onClick={() => onReplace(findSettingsState)}
-      >
-        Replace
-      </Button>
-      <Button
-        disabled={!findSettingsState.searchWord}
-        onClick={() => onReplaceAll(findSettingsState)}
-      >
-        Replace All
-      </Button>
-    </InnerWindow>
+      <div className="buttons-wrapper">
+        <Button
+          disabled={!findSettingsState.searchWord}
+          onClick={() => findNext(findSettingsState)}
+        >
+          Find next
+        </Button>
+        <Button
+          disabled={!findSettingsState.searchWord}
+          onClick={() => onReplace(findSettingsState)}
+        >
+          Replace
+        </Button>
+        <Button
+          disabled={!findSettingsState.searchWord}
+          onClick={() => onReplaceAll(findSettingsState)}
+        >
+          Replace All
+        </Button>
+      </div>
+    </DialogInner>
   );
 }
-
-const InnerWindow = styled.div`
-  height: 100%;
-  background-color: rgb(236, 233, 218);
-  padding: 10px;
-
-  /* input[type='text'] {
-  } */
-`;
 
 export default ReplaceDialog;
