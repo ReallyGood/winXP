@@ -163,6 +163,7 @@ export default function Notepad({ onClose }) {
       settings = { ...settings, ...newSettings };
     }
     /// Conduct the search
+
     const index = getIndex(settings);
     if (index !== -1) selectText(index, index + settings.searchWord.length);
     else
@@ -170,7 +171,7 @@ export default function Notepad({ onClose }) {
         'InfoDialog',
         { info: `Cannot find "${settings.searchWord}"` },
         {
-          header: { ...appSettings.InfoDialog.hedaer, title: 'Notepad' },
+          header: { ...appSettings.InfoDialog.header, title: 'Notepad' },
         },
       );
   };
@@ -189,6 +190,7 @@ export default function Notepad({ onClose }) {
   };
 
   function openApp(app, props, customAppSettings) {
+    console.log('customAppSettings', customAppSettings);
     appContext.dispatch({
       type: ADD_APP,
       payload: {
