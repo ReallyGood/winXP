@@ -200,15 +200,48 @@ export default function Notepad({ onClose }) {
     });
   }
 
+  const frameInitialContent = `
+  <!DOCTYPE html><html>
+  <head>
+  <style>
+  html, div, body, textarea {
+    height: 100%;
+    width: 100%;
+    margin: 0;
+  }
+  html, body {
+    overflow: hidden;
+  }
+  textarea {
+    flex: auto;
+    outline: none;
+    font-family: 'Lucida Console', monospace;
+    font-size: 13px;
+    line-height: 14px;
+    resize: none;
+    padding: 2px;
+    ${wordWrap ? '' : 'white-space: nowrap; overflow-x: scroll;'}
+    overflow-y: scroll;
+    border: 1px solid #96abff;
+  }
+
+  textarea::selection {
+    background-color: #1660e8;
+    color: white;
+  }
+  </style>
+  </head>
+  <body><div></div></body></html>`;
+
   return (
     <Div>
       <section className="np__toolbar">
         <WindowDropDowns items={dropDownData} onClickItem={onClickOptionItem} />
       </section>
-      <Frame>
-        <StyledTextarea
+
+      <Frame initialContent={frameInitialContent}>
+        <textarea
           ref={textareaRef}
-          wordWrap={wordWrap}
           value={docText}
           onChange={e => setDocText(e.target.value)}
           onKeyDown={onTextAreaKeyDown}
@@ -220,7 +253,7 @@ export default function Notepad({ onClose }) {
           }}
           onBlur={() => selectText(caretStart.current, caretEnd.current)}
           spellCheck={false}
-        />
+        ></textarea>
       </Frame>
     </Div>
   );
@@ -232,28 +265,16 @@ const Div = styled.div`
   display: flex;
   flex-direction: column;
   align-items: stretch;
+
+  iframe {
+    height: 100%;
+    width: 100%;
+    margin: 0;
+  }
   .np__toolbar {
     position: relative;
     height: 21px;
     flex-shrink: 0;
     border-bottom: 1px solid white;
-  }
-`;
-
-const StyledTextarea = styled.textarea`
-  flex: auto;
-  outline: none;
-  font-family: 'Lucida Console', monospace;
-  font-size: 13px;
-  line-height: 14px;
-  resize: none;
-  padding: 2px;
-  ${props => (props.wordWrap ? '' : 'white-space: nowrap; overflow-x: scroll;')}
-  overflow-y: scroll;
-  border: 1px solid #96abff;
-
-  &::selection {
-    background-color: #4f74bf;
-    color: white;
   }
 `;

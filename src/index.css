@@ -1,3 +1,9 @@
 #root {
   height: 100%;
 }
+
+input::selection,
+textarea::selection {
+  background-color: #1660e8;
+  color: white;
+}
