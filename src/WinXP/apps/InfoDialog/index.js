@@ -3,10 +3,10 @@ import styled from 'styled-components';
 
 import Button from 'components/Button';
 
-function NotepadErrorDialog({ searchWord, onClose }) {
+function InfoDialog({ info, onClose }) {
   return (
     <InnerWindow>
-      <div>Cannot find "{searchWord}"</div>
+      <div>{info}</div>
       <Button onClick={onClose}>OK</Button>
     </InnerWindow>
   );
@@ -18,4 +18,4 @@ const InnerWindow = styled.div`
   padding: 10px;
 `;
 
-export default NotepadErrorDialog;
+export default InfoDialog;

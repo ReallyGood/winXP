@@ -165,7 +165,14 @@ export default function Notepad({ onClose }) {
     /// Conduct the search
     const index = getIndex(settings);
     if (index !== -1) selectText(index, index + settings.searchWord.length);
-    else openApp('NotepadErrorDialog', { searchWord: settings.searchWord });
+    else
+      openApp(
+        'InfoDialog',
+        { info: `Cannot find ${settings.searchWord}` },
+        {
+          header: { ...appSettings.InfoDialog.hedaer, title: 'Notepad' },
+        },
+      );
   };
 
   const getIndex = ({ forwardSearch, searchWord, caseSensitive }) => {
@@ -181,12 +188,13 @@ export default function Notepad({ onClose }) {
       : searchStr.lastIndexOf(searchWord, caretStart.current - 1);
   };
 
-  function openApp(app, props) {
+  function openApp(app, props, customAppSettings) {
     appContext.dispatch({
       type: ADD_APP,
       payload: {
         ...appSettings[app],
         injectProps: props,
+        customAppSettings,
       },
     });
     /// Reselect text

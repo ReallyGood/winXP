@@ -78,9 +78,11 @@ const reducer = (state, action = { type: '' }) => {
   });
   switch (action.type) {
     case ADD_APP:
+      const { customAppSettings } = action.payload;
       const app = state.apps.find(
         _app => _app.component === action.payload.component,
       );
+
       if (action.payload.multiInstance || !app) {
         return {
           ...state,
@@ -88,6 +90,7 @@ const reducer = (state, action = { type: '' }) => {
             ...state.apps,
             {
               ...action.payload,
+              ...customAppSettings,
               id: state.nextAppID,
               zIndex: state.nextZIndex,
             },
@@ -98,10 +101,16 @@ const reducer = (state, action = { type: '' }) => {
           contextMenuPosition: null,
         };
       }
+
       const apps = state.apps.map(app =>
         app.component === action.payload.component
-          ? { ...app, zIndex: state.nextZIndex, minimized: false }
-          : app,
+          ? {
+              ...app,
+              ...customAppSettings,
+              zIndex: state.nextZIndex,
+              minimized: false,
+            }
+          : { ...app, ...customAppSettings },
       );
       return {
         ...state,
