@@ -121,7 +121,10 @@ export default function Notepad({ onClose }) {
   }
 
   function onReplace(newSettings) {
-    if (selectedText.current) insertOrReplace(newSettings.replaceWith);
+    /// If the searchword is selected, replace
+    if (selectedText.current && selectedText.current === newSettings.searchWord)
+      insertOrReplace(newSettings.replaceWith);
+
     findNext(newSettings);
   }
 
@@ -152,10 +155,12 @@ export default function Notepad({ onClose }) {
     setFindSettings({ ...findSettings, ...newSettings });
   };
 
-  const findNext = settings => {
-    if (settings) {
-      setFindSettings(settings);
-      settings = { ...findSettings, ...settings };
+  const findNext = newSettings => {
+    let settings = findSettings;
+
+    if (newSettings) {
+      setFindSettings(newSettings);
+      settings = { ...settings, ...newSettings };
     }
     /// Conduct the search
     const index = getIndex(settings);

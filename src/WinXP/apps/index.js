@@ -370,7 +370,7 @@ export const appSettings = {
     component: ReplaceDialog,
     defaultSize: {
       width: 400,
-      height: 300,
+      height: 200,
     },
     defaultOffset: {
       x: 200,

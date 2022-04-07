@@ -32,7 +32,7 @@ function FindDialog({ findSettings, findNext, updateSettings, onClose }) {
   return (
     <DialogInner>
       <div>
-        <div>
+        <TextInput>
           <label htmlFor="searchWord">Find what: </label>
           <input
             type="text"
@@ -43,7 +43,7 @@ function FindDialog({ findSettings, findNext, updateSettings, onClose }) {
             autoFocus
             autoComplete="off"
           ></input>
-        </div>
+        </TextInput>
         <ControllersWrapper>
           <CheckBox
             label="Match case"
@@ -93,6 +93,12 @@ const ControllersWrapper = styled.div`
   justify-content: space-between;
   align-items: baseline;
   margin-top: 10px;
+`;
+
+const TextInput = styled.div`
+  input {
+    width: 215px;
+  }
 `;
 
 export default FindDialog;

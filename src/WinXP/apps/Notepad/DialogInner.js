@@ -20,7 +20,6 @@ const StyledDialogInner = styled.div`
     padding: 2px;
     outline: none;
     border: 1px solid #a9c4f7;
-    width: 215px;
   }
 
   .buttons-wrapper {
