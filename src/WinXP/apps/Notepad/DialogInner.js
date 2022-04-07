@@ -37,12 +37,6 @@ const StyledDialogInner = styled.div`
       margin-bottom: 10px;
       right: -5px;
     }
-    form {
-      display: flex;
-      label {
-        margin-right: 5px;
-      }
-    }
   }
 `;
 

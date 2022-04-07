@@ -93,6 +93,13 @@ const ControllersWrapper = styled.div`
   justify-content: space-between;
   align-items: baseline;
   margin-top: 10px;
+
+  fieldset div {
+    display: flex;
+    label {
+      margin-right: 5px;
+    }
+  }
 `;
 
 const TextInput = styled.div`

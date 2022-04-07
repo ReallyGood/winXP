@@ -6,26 +6,20 @@ import radioIndicatior from 'assets/radioIndicator.svg';
 function RadioGroup({ groupName, options, cb }) {
   return (
     <StyledRadioGroup radioIndicatior={radioIndicatior}>
-      <form
-        onChange={e => {
-          cb(e.target.value, groupName);
-        }}
-      >
-        {options.map(option => (
-          <label key={option.id} className="container">
-            {option.label}
-            <input
-              id={option.id}
-              value={option.value}
-              type="radio"
-              name={groupName}
-              checked={option.checked}
-              onChange={e => {}}
-            />
-            <span className="checkmark"></span>
-          </label>
-        ))}
-      </form>
+      {options.map(option => (
+        <label key={option.id} className="container">
+          {option.label}
+          <input
+            id={option.id}
+            value={option.value}
+            type="radio"
+            name={groupName}
+            checked={option.checked}
+            onChange={e => cb(e.target.value, groupName)}
+          />
+          <span className="checkmark"></span>
+        </label>
+      ))}
     </StyledRadioGroup>
   );
 }

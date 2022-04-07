@@ -190,7 +190,6 @@ export default function Notepad({ onClose }) {
   };
 
   function openApp(app, props, customAppSettings) {
-    console.log('customAppSettings', customAppSettings);
     appContext.dispatch({
       type: ADD_APP,
       payload: {
