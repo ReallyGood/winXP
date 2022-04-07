@@ -388,7 +388,7 @@ export const appSettings = {
     },
     component: InfoDialog,
     defaultSize: {
-      width: 200,
+      width: 'fit-content',
       height: 150,
     },
     defaultOffset: {

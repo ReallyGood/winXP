@@ -168,7 +168,7 @@ export default function Notepad({ onClose }) {
     else
       openApp(
         'InfoDialog',
-        { info: `Cannot find ${settings.searchWord}` },
+        { info: `Cannot find "${settings.searchWord}"` },
         {
           header: { ...appSettings.InfoDialog.hedaer, title: 'Notepad' },
         },
