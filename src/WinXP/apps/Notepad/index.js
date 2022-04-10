@@ -1,4 +1,4 @@
-import React, { useState, useRef, useContext } from 'react';
+import React, { useState, useRef, useContext, useEffect } from 'react';
 import Frame from 'react-frame-component';
 
 import styled from 'styled-components';
@@ -10,7 +10,7 @@ import { Context as AppContext } from '../../index';
 import { ADD_APP } from '../../constants/actions';
 import { appSettings } from '../index';
 
-export default function Notepad({ onClose }) {
+export default function Notepad({ onClose, isFocus }) {
   const [docText, setDocText] = useState('');
   const [wordWrap, setWordWrap] = useState(false);
   const [findSettings, setFindSettings] = useState({
@@ -20,6 +20,7 @@ export default function Notepad({ onClose }) {
     forwardSearch: true,
   });
 
+  const frameRef = useRef();
   const textareaRef = useRef();
   const selectedText = useRef('');
   const caretStart = useRef(0);
@@ -31,6 +32,13 @@ export default function Notepad({ onClose }) {
     selectedText: selectedText.current,
     docText,
   });
+
+  useEffect(() => {
+    /// Re-focus frame & text area
+    if (!isFocus) return;
+    frameRef.current && frameRef.current.focus();
+    textareaRef.current && textareaRef.current.focus();
+  }, [isFocus]);
 
   function selectText(start, end) {
     caretStart.current = start;
@@ -255,7 +263,7 @@ export default function Notepad({ onClose }) {
         <WindowDropDowns items={dropDownData} onClickItem={onClickOptionItem} />
       </section>
 
-      <Frame initialContent={frameInitialContent}>
+      <Frame initialContent={frameInitialContent} ref={frameRef} tabIndex={-1}>
         <textarea
           ref={textareaRef}
           value={docText}
