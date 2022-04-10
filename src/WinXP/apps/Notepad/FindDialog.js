@@ -7,7 +7,13 @@ import RadioGroup from 'components/RadioGroup';
 import LegendFieldset from 'components/LegendFieldset';
 import CheckBox from 'components/CheckBox';
 
-function FindDialog({ findSettings, findNext, updateSettings, onClose }) {
+function FindDialog({
+  findSettings,
+  findNext,
+  updateSettings,
+  onClose,
+  isFocus,
+}) {
   /// Make copy of the findSettings properties
   const [findSettingsState, setFindSettingsState] = useState({
     ...findSettings,
@@ -29,61 +35,69 @@ function FindDialog({ findSettings, findNext, updateSettings, onClose }) {
     updateSettings({ forwardSearch: true, caseSensitive: false });
   }, [updateSettings, directionChange]);
 
+  /// Re-focus when window is back on focus
+  useEffect(() => {
+    if (isFocus) inputRef.current.focus();
+  }, [isFocus]);
+
   return (
     <DialogInner>
-      <div>
-        <TextInput>
-          <label htmlFor="searchWord">Find what: </label>
-          <input
-            type="text"
-            id="searchWord"
-            value={findSettingsState.searchWord}
-            ref={inputRef}
-            onChange={e => handleChange('searchWord', e.target.value)}
-            autoFocus
-            autoComplete="off"
-          ></input>
-        </TextInput>
-        <ControllersWrapper>
-          <CheckBox
-            label="Match case"
-            cb={e =>
-              handleChange('caseSensitive', e.target.checked ? true : false)
-            }
-            checked={findSettingsState.caseSensitive}
-          />
-          <LegendFieldset>
-            <legend>Direction</legend>
-            <RadioGroup
-              groupName="direction"
-              options={[
-                {
-                  label: 'Up',
-                  value: 'up',
-                  id: 'up',
-                  checked: !findSettingsState.forwardSearch,
-                },
-                {
-                  label: 'Down',
-                  value: 'down',
-                  id: 'down',
-                  checked: findSettingsState.forwardSearch,
-                },
-              ]}
-              cb={directionChange}
+      <form onSubmit={e => e.preventDefault()}>
+        <div>
+          <TextInput>
+            <label htmlFor="searchWord">Find what: </label>
+            <input
+              type="text"
+              id="searchWord"
+              value={findSettingsState.searchWord}
+              ref={inputRef}
+              onChange={e => handleChange('searchWord', e.target.value)}
+              autoFocus
+              autoComplete="off"
+            ></input>
+          </TextInput>
+          <ControllersWrapper>
+            <CheckBox
+              label="Match case"
+              cb={e =>
+                handleChange('caseSensitive', e.target.checked ? true : false)
+              }
+              checked={findSettingsState.caseSensitive}
             />
-          </LegendFieldset>
-        </ControllersWrapper>
-      </div>
-      <div className="buttons-wrapper">
-        <Button
-          disabled={!findSettingsState.searchWord}
-          onClick={() => findNext(findSettingsState)}
-        >
-          Find next
-        </Button>
-        <Button onClick={onClose}>Cancel</Button>
-      </div>
+            <LegendFieldset>
+              <legend>Direction</legend>
+              <RadioGroup
+                groupName="direction"
+                options={[
+                  {
+                    label: 'Up',
+                    value: 'up',
+                    id: 'up',
+                    checked: !findSettingsState.forwardSearch,
+                  },
+                  {
+                    label: 'Down',
+                    value: 'down',
+                    id: 'down',
+                    checked: findSettingsState.forwardSearch,
+                  },
+                ]}
+                cb={directionChange}
+              />
+            </LegendFieldset>
+          </ControllersWrapper>
+        </div>
+        <div className="buttons-wrapper">
+          <Button
+            disabled={!findSettingsState.searchWord}
+            onClick={() => findNext(findSettingsState)}
+            type="submit"
+          >
+            Find next
+          </Button>
+          <Button onClick={onClose}>Cancel</Button>
+        </div>
+      </form>
     </DialogInner>
   );
 }

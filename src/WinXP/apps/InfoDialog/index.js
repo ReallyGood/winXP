@@ -1,12 +1,22 @@
-import React from 'react';
+import React, { useEffect, useRef } from 'react';
 import styled from 'styled-components';
 
 import Button from 'components/Button';
 import info_bubble from 'assets/info-bubble.png';
 
 function InfoDialog({ info, onClose }) {
+  const windowRef = useRef(null);
+  useEffect(() => {
+    /// Forcibly focus on the window
+    windowRef.current.focus();
+  }, []);
+
   return (
-    <InnerWindow>
+    <InnerWindow
+      tabIndex="-1"
+      ref={windowRef}
+      onKeyDown={e => e.key === 'Enter' && onClose()}
+    >
       <Information>
         <img src={info_bubble} alt="!" height={40} />
         <p>{info}</p>
@@ -25,6 +35,10 @@ const InnerWindow = styled.div`
   flex-direction: column;
   align-items: center;
   justify-content: space-around;
+
+  :focus-visible {
+    outline: none;
+  }
 `;
 
 const Information = styled.div`

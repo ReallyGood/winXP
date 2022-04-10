@@ -9,33 +9,36 @@ const StyledDialogInner = styled.div`
   height: 100%;
   background-color: rgb(236, 233, 218);
   padding: 10px;
-  display: flex;
-  justify-content: space-between;
 
-  label {
-    font-size: 12px;
-  }
-
-  input[type='text'] {
-    padding: 2px;
-    outline: none;
-    border: 1px solid #a9c4f7;
-  }
-
-  .buttons-wrapper {
+  form {
     display: flex;
-    flex-direction: column;
-    button {
-      margin-bottom: 7px;
-    }
-  }
+    justify-content: space-between;
 
-  fieldset {
-    width: fit-content;
-    padding: 5px;
-    legend {
-      margin-bottom: 10px;
-      right: -5px;
+    label {
+      font-size: 12px;
+    }
+
+    input[type='text'] {
+      padding: 2px;
+      outline: none;
+      border: 1px solid #a9c4f7;
+    }
+
+    .buttons-wrapper {
+      display: flex;
+      flex-direction: column;
+      button {
+        margin-bottom: 7px;
+      }
+    }
+
+    fieldset {
+      width: fit-content;
+      padding: 5px;
+      legend {
+        margin-bottom: 10px;
+        right: -5px;
+      }
     }
   }
 `;

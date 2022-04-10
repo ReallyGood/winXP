@@ -33,7 +33,6 @@ const StyledRadioGroup = styled.div`
     padding-left: 17px;
     margin-bottom: 12px;
 
-    cursor: pointer;
     -webkit-user-select: none;
     -moz-user-select: none;
     -ms-user-select: none;
@@ -44,7 +43,6 @@ const StyledRadioGroup = styled.div`
   .container input {
     position: absolute;
     opacity: 0;
-    cursor: pointer;
   }
 
   /* Create a custom radio button */

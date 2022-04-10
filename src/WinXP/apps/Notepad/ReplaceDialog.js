@@ -12,6 +12,7 @@ function ReplaceDialog({
   onReplaceAll,
   onClose,
   updateSettings,
+  isFocus,
 }) {
   /// Make copy of the findSettings properties
   const [findSettingsState, setFindSettingsState] = useState({
@@ -31,62 +32,70 @@ function ReplaceDialog({
     updateSettings({ forwardSearch: true, caseSensitive: false });
   }, [updateSettings]);
 
+  /// Re-focus when window is back on focus
+  useEffect(() => {
+    if (isFocus) searchInputRef.current.focus();
+  }, [isFocus]);
+
   return (
     <DialogInner>
-      <InputsWrapper>
-        <TextInput>
-          <label>Find what: </label>
-          <input
-            type="text"
-            value={findSettingsState.searchWord}
-            ref={searchInputRef}
-            onChange={e => handleChange('searchWord', e.target.value)}
-            autoFocus
-          ></input>
-        </TextInput>
+      <form onSubmit={e => e.preventDefault()}>
+        <InputsWrapper>
+          <TextInput>
+            <label>Find what: </label>
+            <input
+              type="text"
+              value={findSettingsState.searchWord}
+              ref={searchInputRef}
+              onChange={e => handleChange('searchWord', e.target.value)}
+              autoFocus
+            ></input>
+          </TextInput>
 
-        <TextInput>
-          <label>Replace with: </label>
-          <input
-            type="text"
-            value={findSettingsState.replaceWith}
-            ref={replaceInputRef}
-            onChange={e => handleChange('replaceWith', e.target.value)}
-          ></input>
-        </TextInput>
+          <TextInput>
+            <label>Replace with: </label>
+            <input
+              type="text"
+              value={findSettingsState.replaceWith}
+              ref={replaceInputRef}
+              onChange={e => handleChange('replaceWith', e.target.value)}
+            ></input>
+          </TextInput>
 
-        <div className="checkbox-wrapper">
-          <CheckBox
-            className="checkbox"
-            label="Match case"
-            cb={e =>
-              handleChange('caseSensitive', e.target.checked ? true : false)
-            }
-            checked={findSettingsState.caseSensitive}
-          />
+          <div className="checkbox-wrapper">
+            <CheckBox
+              className="checkbox"
+              label="Match case"
+              cb={e =>
+                handleChange('caseSensitive', e.target.checked ? true : false)
+              }
+              checked={findSettingsState.caseSensitive}
+            />
+          </div>
+        </InputsWrapper>
+        <div className="buttons-wrapper">
+          <Button
+            disabled={!findSettingsState.searchWord}
+            onClick={() => findNext(findSettingsState)}
+            type="submit"
+          >
+            Find next
+          </Button>
+          <Button
+            disabled={!findSettingsState.searchWord}
+            onClick={() => onReplace(findSettingsState)}
+          >
+            Replace
+          </Button>
+          <Button
+            disabled={!findSettingsState.searchWord}
+            onClick={() => onReplaceAll(findSettingsState)}
+          >
+            Replace All
+          </Button>
+          <Button onClick={onClose}>Cancel</Button>
         </div>
-      </InputsWrapper>
-      <div className="buttons-wrapper">
-        <Button
-          disabled={!findSettingsState.searchWord}
-          onClick={() => findNext(findSettingsState)}
-        >
-          Find next
-        </Button>
-        <Button
-          disabled={!findSettingsState.searchWord}
-          onClick={() => onReplace(findSettingsState)}
-        >
-          Replace
-        </Button>
-        <Button
-          disabled={!findSettingsState.searchWord}
-          onClick={() => onReplaceAll(findSettingsState)}
-        >
-          Replace All
-        </Button>
-        <Button onClick={onClose}>Cancel</Button>
-      </div>
+      </form>
     </DialogInner>
   );
 }
