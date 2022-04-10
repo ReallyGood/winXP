@@ -15,7 +15,7 @@ function InfoDialog({ info, onClose }) {
     <InnerWindow
       tabIndex="-1"
       ref={windowRef}
-      onKeyDown={e => e.key === 'Enter' && onClose()}
+      onKeyDown={e => (e.key === 'Enter' || e.key === 'Escape') && onClose()}
     >
       <Information>
         <img src={info_bubble} alt="!" height={40} />

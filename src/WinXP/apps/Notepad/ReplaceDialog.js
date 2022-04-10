@@ -38,7 +38,7 @@ function ReplaceDialog({
   }, [isFocus]);
 
   return (
-    <DialogInner>
+    <DialogInner onKeyDown={e => e.key === 'Escape' && onClose()}>
       <form onSubmit={e => e.preventDefault()}>
         <InputsWrapper>
           <TextInput>
