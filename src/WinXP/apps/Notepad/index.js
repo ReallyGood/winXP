@@ -192,6 +192,9 @@ export default function Notepad({ onClose, isFocus }) {
       searchWord = searchWord.toLowerCase();
     }
 
+    /// Reaching index 0 in 'up' search
+    if (!forwardSearch && caretStart.current === 0) return -1;
+
     return forwardSearch
       ? searchStr.indexOf(searchWord, caretEnd.current)
       : searchStr.lastIndexOf(searchWord, caretStart.current - 1);

@@ -29,8 +29,10 @@ function ReplaceDialog({
   /// Always set search direction to 'down' and case sensitivity to false on mount
   useEffect(() => {
     handleChange('caseSensitive', false);
+    handleChange('forwardSearch', true);
+
     updateSettings({ forwardSearch: true, caseSensitive: false });
-  }, [updateSettings]);
+  }, []);
 
   /// Re-focus when window is back on focus
   useEffect(() => {
