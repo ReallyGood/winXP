@@ -1,4 +1,4 @@
-export const getDropDownData = ({ selectedText, docText }) => {
+export const getDropDownData = ({ selectedText, docText, isWordWrap }) => {
   return {
     File: [
       {
@@ -107,6 +107,7 @@ export const getDropDownData = ({ selectedText, docText }) => {
     ],
     Format: [
       {
+        symbol: isWordWrap && 'check',
         type: 'item',
         text: 'Word Wrap',
       },

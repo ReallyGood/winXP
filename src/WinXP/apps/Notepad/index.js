@@ -31,6 +31,7 @@ export default function Notepad({ onClose, isFocus }) {
   const dropDownData = getDropDownData({
     selectedText: selectedText.current,
     docText,
+    isWordWrap: wordWrap,
   });
 
   useEffect(() => {
