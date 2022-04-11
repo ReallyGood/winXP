@@ -29,6 +29,7 @@ const StyledDialogInner = styled.div`
       flex-direction: column;
       button {
         margin-bottom: 7px;
+        width: 80px;
       }
     }
 

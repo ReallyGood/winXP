@@ -120,7 +120,7 @@ const InputsWrapper = styled.div`
   position: relative;
   .checkbox-wrapper {
     position: absolute;
-    bottom: 25px;
+    bottom: 5px;
   }
 `;
 
