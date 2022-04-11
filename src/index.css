@@ -2,8 +2,18 @@
   height: 100%;
 }
 
+textarea {
+  cursor: auto;
+}
+
 /* Scrollbar */
 
+/* CSS taken from: https://botoxparty.github.io/XP.css/ */
+
+::-webkit-scrollbar-track {
+  background-color: #f3f7f0;
+}
+
 ::-webkit-scrollbar {
   width: 16px;
 }
@@ -17,6 +27,7 @@
 ::-webkit-scrollbar:horizontal {
   height: 17px;
 }
+
 ::-webkit-scrollbar-corner {
   background: #dfdfdf;
 }
@@ -28,8 +39,20 @@
   background-size: 7px;
   border: 1px solid #fff;
   border-radius: 2px;
-  box-shadow: inset -3px 0 #bad1fc, inset 1px 1px #b7caf5;
+  box-shadow: inset -2px 0 #bad1fc, inset 1px 1px #b7caf5;
   background-image: url(./assets/scrollbar-track-vertical.svg);
+}
+
+::-webkit-scrollbar-thumb:hover {
+  filter: brightness(0.4);
+  background-color: #cbe4fb;
+  box-shadow: inset -2px 0 #ddeaf5, inset 1px 1px #ddeaf5;
+}
+
+::-webkit-scrollbar-thumb:active {
+  background-color: rgb(176, 193, 237);
+  box-shadow: inset -2px 0 #a6b7e6, inset 1px 1px #a6b7e6;
+  filter: brightness(0);
 }
 
 ::-webkit-scrollbar-thumb:horizontal {
@@ -42,6 +65,7 @@
 ::-webkit-scrollbar-button:vertical:end:increment {
   display: block;
 }
+
 ::-webkit-scrollbar-button:vertical:start {
   height: 17px;
   background-image: url(./assets/scrollbar-button-up.svg);
