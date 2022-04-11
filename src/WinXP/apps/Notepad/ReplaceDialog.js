@@ -32,7 +32,7 @@ function ReplaceDialog({
     handleChange('forwardSearch', true);
 
     updateSettings({ forwardSearch: true, caseSensitive: false });
-  }, []);
+  }, [updateSettings]);
 
   /// Re-focus when window is back on focus
   useEffect(() => {

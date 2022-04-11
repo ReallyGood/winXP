@@ -33,7 +33,7 @@ function FindDialog({
     directionChange('down');
     handleChange('caseSensitive', false);
     updateSettings({ forwardSearch: true, caseSensitive: false });
-  }, []);
+  }, [updateSettings, directionChange]);
 
   /// Re-focus when window is back on focus
   useEffect(() => {
