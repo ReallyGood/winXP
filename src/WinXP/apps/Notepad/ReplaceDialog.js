@@ -81,7 +81,7 @@ function ReplaceDialog({
             onClick={() => findNext(findSettingsState)}
             type="submit"
           >
-            Find next
+            Find Next
           </Button>
           <Button
             disabled={!findSettingsState.searchWord}
