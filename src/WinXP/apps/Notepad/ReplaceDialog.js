@@ -68,9 +68,7 @@ function ReplaceDialog({
             <CheckBox
               className="checkbox"
               label="Match case"
-              cb={e =>
-                handleChange('caseSensitive', e.target.checked ? true : false)
-              }
+              cb={e => handleChange('caseSensitive', e.target.checked)}
               checked={findSettingsState.caseSensitive}
             />
           </div>

@@ -25,7 +25,7 @@ function FindDialog({
   };
 
   const directionChange = useCallback(value => {
-    handleChange('forwardSearch', value === 'down' ? true : false);
+    handleChange('forwardSearch', value === 'down');
   }, []);
 
   /// Always set search direction to 'down' and case sensitivity to false on mount
@@ -59,9 +59,7 @@ function FindDialog({
           <ControllersWrapper>
             <CheckBox
               label="Match case"
-              cb={e =>
-                handleChange('caseSensitive', e.target.checked ? true : false)
-              }
+              cb={e => handleChange('caseSensitive', e.target.checked)}
               checked={findSettingsState.caseSensitive}
             />
             <LegendFieldset>
