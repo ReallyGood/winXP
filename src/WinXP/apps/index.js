@@ -360,7 +360,7 @@ export const appSettings = {
     resizable: false,
     minimized: false,
     maximized: false,
-    multiInstance: false,
+    multiInstance: true,
   },
   ReplaceDialog: {
     header: {
@@ -379,7 +379,7 @@ export const appSettings = {
     resizable: false,
     minimized: false,
     maximized: false,
-    multiInstance: false,
+    multiInstance: true,
   },
   InfoDialog: {
     header: {

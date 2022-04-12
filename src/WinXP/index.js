@@ -79,6 +79,7 @@ const reducer = (state, action = { type: '' }) => {
   switch (action.type) {
     case ADD_APP:
       const { customAppSettings } = action.payload;
+
       const app = state.apps.find(
         _app => _app.component === action.payload.component,
       );
@@ -110,7 +111,7 @@ const reducer = (state, action = { type: '' }) => {
               zIndex: state.nextZIndex,
               minimized: false,
             }
-          : { ...app, ...customAppSettings },
+          : app,
       );
       return {
         ...state,
