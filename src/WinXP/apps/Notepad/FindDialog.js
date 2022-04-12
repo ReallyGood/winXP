@@ -108,10 +108,19 @@ const ControllersWrapper = styled.div`
   align-items: baseline;
   margin-top: 10px;
 
-  fieldset div {
-    display: flex;
-    label {
-      margin-right: 5px;
+  fieldset {
+    width: fit-content;
+    padding: 5px;
+    legend {
+      margin-bottom: 4px;
+      right: -5px;
+    }
+    div {
+      display: flex;
+      label.container {
+        margin-right: 10px;
+        margin-bottom: 4px;
+      }
     }
   }
 `;

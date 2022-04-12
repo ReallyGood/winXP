@@ -351,7 +351,7 @@ export const appSettings = {
     component: FindDialog,
     defaultSize: {
       width: 400,
-      height: 150,
+      height: 140,
     },
     defaultOffset: {
       x: 200,

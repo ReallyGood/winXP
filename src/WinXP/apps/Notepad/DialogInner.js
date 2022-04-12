@@ -22,6 +22,7 @@ const StyledDialogInner = styled.div`
       padding: 2px;
       outline: none;
       border: 1px solid #a9c4f7;
+      height: 20px;
     }
 
     .buttons-wrapper {
@@ -30,15 +31,6 @@ const StyledDialogInner = styled.div`
       button {
         margin-bottom: 7px;
         width: 80px;
-      }
-    }
-
-    fieldset {
-      width: fit-content;
-      padding: 5px;
-      legend {
-        margin-bottom: 10px;
-        right: -5px;
       }
     }
   }
