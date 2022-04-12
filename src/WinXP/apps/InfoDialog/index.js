@@ -13,7 +13,7 @@ function InfoDialog({ info, onClose }) {
 
   return (
     <InnerWindow
-      tabIndex="-1"
+      tabIndex={-1}
       ref={windowRef}
       onKeyDown={e => (e.key === 'Enter' || e.key === 'Escape') && onClose()}
     >

@@ -175,8 +175,10 @@ export default function Notepad({ onClose, isFocus }) {
     /// Conduct the search
 
     const index = getIndex(settings);
-    if (index !== -1) selectText(index, index + settings.searchWord.length);
-    else
+
+    if (index !== -1) {
+      selectText(index, index + settings.searchWord.length);
+    } else {
       openApp(
         'InfoDialog',
         { info: `Cannot find "${settings.searchWord}"` },
@@ -184,6 +186,7 @@ export default function Notepad({ onClose, isFocus }) {
           header: { ...appSettings.InfoDialog.header, title: 'Notepad' },
         },
       );
+    }
   };
 
   const getIndex = ({ forwardSearch, searchWord, caseSensitive }) => {
@@ -282,7 +285,7 @@ export default function Notepad({ onClose, isFocus }) {
           }}
           onBlur={() => selectText(caretStart.current, caretEnd.current)}
           spellCheck={false}
-        ></textarea>
+        />
       </Frame>
     </Div>
   );

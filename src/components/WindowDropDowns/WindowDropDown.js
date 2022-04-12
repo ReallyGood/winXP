@@ -19,7 +19,7 @@ export function WindowDropDown({ items, position = {}, onClick }) {
                   key={item.text}
                   className={`drop-down__row${item.disable ? '--disable' : ''}`}
                   onMouseEnter={() => setOption(item.text)}
-                  onClick={item.disable ? () => {} : () => onClick(item.text)}
+                  onClick={() => !item.disable && onClick(item.text)}
                 >
                   <div className="drop-down__check">
                     <RowSymbol type={item.symbol} />

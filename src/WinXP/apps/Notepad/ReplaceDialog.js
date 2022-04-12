@@ -59,7 +59,7 @@ function ReplaceDialog({
               type="text"
               value={findSettingsState.replaceWith}
               onChange={e => handleChange('replaceWith', e.target.value)}
-            ></input>
+            />
           </TextInput>
 
           <div className="checkbox-wrapper">
