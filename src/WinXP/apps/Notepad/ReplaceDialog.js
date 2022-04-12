@@ -107,7 +107,7 @@ const TextInput = styled.div`
   margin-bottom: 10px;
 
   input {
-    width: 205px;
+    width: 200px;
   }
   label {
     margin-right: 10px;
@@ -115,6 +115,7 @@ const TextInput = styled.div`
 `;
 
 const InputsWrapper = styled.div`
+  margin-top: 2px;
   position: relative;
   .checkbox-wrapper {
     position: absolute;

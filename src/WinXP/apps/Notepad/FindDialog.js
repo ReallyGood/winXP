@@ -124,6 +124,7 @@ const ControllersWrapper = styled.div`
 `;
 
 const TextInput = styled.div`
+  margin-top: 2px;
   input {
     width: 215px;
   }
