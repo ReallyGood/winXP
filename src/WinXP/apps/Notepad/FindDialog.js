@@ -93,7 +93,7 @@ function FindDialog({
             onClick={() => findNext(findSettingsState)}
             type="submit"
           >
-            Find next
+            Find Next
           </Button>
           <Button onClick={onClose}>Cancel</Button>
         </div>
