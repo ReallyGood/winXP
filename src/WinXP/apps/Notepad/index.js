@@ -45,7 +45,9 @@ export default function Notepad({ onClose, isFocus }) {
     caretStart.current = start;
     caretEnd.current = end;
 
+    frameRef.current.focus();
     textareaRef.current.focus();
+
     requestAnimationFrame(() => {
       textareaRef.current.setSelectionRange(start, end);
     });
