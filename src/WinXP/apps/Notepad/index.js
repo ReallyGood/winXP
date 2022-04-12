@@ -144,9 +144,8 @@ export default function Notepad({ onClose, isFocus }) {
     focusCaret(0);
 
     const regexFlags = newSettings.caseSensitive ? 'i' : 'gi';
-    var regex = new RegExp(newSettings.searchWord, regexFlags);
+    const regex = new RegExp(newSettings.searchWord, regexFlags);
 
-    /// Using textareaRef.current.value to get the latest actual value
     setDocText(
       textareaRef.current.value.replace(regex, newSettings.replaceWith),
     );

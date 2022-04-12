@@ -2,7 +2,7 @@ import React, { useEffect, useRef } from 'react';
 import styled from 'styled-components';
 
 import Button from 'components/Button';
-import info_bubble from 'assets/info-bubble.png';
+import infoBubble from 'assets/info-bubble.png';
 
 function InfoDialog({ info, onClose }) {
   const windowRef = useRef(null);
@@ -18,7 +18,7 @@ function InfoDialog({ info, onClose }) {
       onKeyDown={e => (e.key === 'Enter' || e.key === 'Escape') && onClose()}
     >
       <Information>
-        <img src={info_bubble} alt="!" height={40} />
+        <img src={infoBubble} alt="!" height={40} />
         <p>{info}</p>
       </Information>
       <Button onClick={onClose}>OK</Button>

@@ -14,13 +14,12 @@ function ReplaceDialog({
   updateSettings,
   isFocus,
 }) {
-  /// Make copy of the findSettings properties
+  /// Make a copy of the findSettings properties
   const [findSettingsState, setFindSettingsState] = useState({
     ...findSettings,
   });
 
   const searchInputRef = useRef();
-  const replaceInputRef = useRef();
 
   const handleChange = (field, value) => {
     setFindSettingsState(prev => ({ ...prev, [field]: value }));
@@ -59,7 +58,6 @@ function ReplaceDialog({
             <input
               type="text"
               value={findSettingsState.replaceWith}
-              ref={replaceInputRef}
               onChange={e => handleChange('replaceWith', e.target.value)}
             ></input>
           </TextInput>

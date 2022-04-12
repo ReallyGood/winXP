@@ -14,7 +14,7 @@ function FindDialog({
   onClose,
   isFocus,
 }) {
-  /// Make copy of the findSettings properties
+  /// Make a copy of the findSettings properties
   const [findSettingsState, setFindSettingsState] = useState({
     ...findSettings,
   });
@@ -54,7 +54,7 @@ function FindDialog({
               onChange={e => handleChange('searchWord', e.target.value)}
               autoFocus
               autoComplete="off"
-            ></input>
+            />
           </TextInput>
           <ControllersWrapper>
             <CheckBox
@@ -125,6 +125,9 @@ const ControllersWrapper = styled.div`
 
 const TextInput = styled.div`
   margin-top: 2px;
+  label {
+    margin-right: 7px;
+  }
   input {
     width: 215px;
   }
