@@ -40,7 +40,7 @@ textarea {
   border: 1px solid #fff;
   border-radius: 2px;
   box-shadow: inset -2px 0 #bad1fc, inset 1px 1px #b7caf5;
-  background-image: url(./assets/scrollbar-track-vertical.svg);
+  background-image: url(./assets/scrollbar/track-vertical.svg);
 }
 
 ::-webkit-scrollbar-thumb:hover {
@@ -56,7 +56,7 @@ textarea {
 }
 
 ::-webkit-scrollbar-thumb:horizontal {
-  background-image: url(./assets/scrollbar-track-horizonal.svg);
+  background-image: url(./assets/scrollbar/track-horizonal.svg);
 }
 
 ::-webkit-scrollbar-button:horizontal:start:decrement,
@@ -68,17 +68,17 @@ textarea {
 
 ::-webkit-scrollbar-button:vertical:start {
   height: 17px;
-  background-image: url(./assets/scrollbar-button-up.svg);
+  background-image: url(./assets/scrollbar/button-up.svg);
 }
 ::-webkit-scrollbar-button:vertical:end {
   height: 17px;
-  background-image: url(./assets/scrollbar-button-down.svg);
+  background-image: url(./assets/scrollbar/button-down.svg);
 }
 ::-webkit-scrollbar-button:horizontal:start {
   width: 16px;
-  background-image: url(./assets/scrollbar-button-left.svg);
+  background-image: url(./assets/scrollbar/button-left.svg);
 }
 ::-webkit-scrollbar-button:horizontal:end {
   width: 16px;
-  background-image: url(./assets/scrollbar-button-right.svg);
+  background-image: url(./assets/scrollbar/button-right.svg);
 }
