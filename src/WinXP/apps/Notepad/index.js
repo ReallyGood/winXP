@@ -277,8 +277,8 @@ const Div = styled.div`
   align-items: stretch;
 
   iframe {
-    height: 100%;
-    width: 100%;
+    height: -webkit-fill-available;
+    width: -webkit-fill-available;
     margin: 0;
     border: 0;
   }

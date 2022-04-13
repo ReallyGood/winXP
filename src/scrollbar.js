@@ -1,4 +1,6 @@
 import buttonUp from 'assets/scrollbar/button-up.svg';
+import buttonUpLight from 'assets/scrollbar/button-up-light.svg';
+
 import buttonDown from 'assets/scrollbar/button-down.svg';
 import buttonRight from 'assets/scrollbar/button-right.svg';
 import buttonLeft from 'assets/scrollbar/button-left.svg';
@@ -64,14 +66,25 @@ export function getScrollbarCSS() {
     height: 17px;
     background-image: url(${buttonUp});
   }
+
+  ::-webkit-scrollbar-button:vertical:start:hover {
+    background-image: url(${buttonUpLight});
+  }
+
+  ::-webkit-scrollbar-button:vertical:start:active {
+    background: red;
+  }
+
   ::-webkit-scrollbar-button:vertical:end {
     height: 17px;
     background-image: url(${buttonDown});
   }
+
   ::-webkit-scrollbar-button:horizontal:start {
     width: 16px;
     background-image: url(${buttonLeft});
   }
+
   ::-webkit-scrollbar-button:horizontal:end {
     width: 16px;
     background-image: url(${buttonRight});
