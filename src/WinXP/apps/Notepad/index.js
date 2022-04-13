@@ -112,6 +112,7 @@ export default function Notepad({ onClose, isFocus }) {
 
   function insertOrReplace(text) {
     const { value } = textareaRef.current;
+
     setDocText(
       value.substring(0, caretStart.current) +
         text +
@@ -133,10 +134,18 @@ export default function Notepad({ onClose, isFocus }) {
 
   function onReplace(newSettings) {
     /// If the searchword is selected, replace
-    if (selectedText.current && selectedText.current === newSettings.searchWord)
+    if (
+      selectedText.current &&
+      selectedText.current.toLowerCase() ===
+        newSettings.searchWord.toLowerCase()
+    ) {
       insertOrReplace(newSettings.replaceWith);
+      focusCaret(newSettings.replaceWith.length);
+    }
 
-    findNext(newSettings);
+    requestAnimationFrame(() => {
+      findNext(newSettings);
+    });
   }
 
   function onReplaceAll(newSettings) {
@@ -172,6 +181,7 @@ export default function Notepad({ onClose, isFocus }) {
       setFindSettings(newSettings);
       settings = { ...settings, ...newSettings };
     }
+
     /// Conduct the search
 
     const index = getIndex(settings);
@@ -193,7 +203,7 @@ export default function Notepad({ onClose, isFocus }) {
     let searchStr = textareaRef.current.value;
 
     if (!caseSensitive) {
-      searchStr = docText.toLowerCase();
+      searchStr = searchStr.toLowerCase();
       searchWord = searchWord.toLowerCase();
     }
 
