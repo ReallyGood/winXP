@@ -3,6 +3,9 @@ import Minesweeper from './Minesweeper';
 import ErrorBox from './ErrorBox';
 import MyComputer from './MyComputer';
 import Notepad from './Notepad';
+import FindDialog from './Notepad/FindDialog';
+import ReplaceDialog from './Notepad/ReplaceDialog';
+import InfoDialog from './InfoDialog';
 import Winamp from './Winamp';
 import Paint from './Paint';
 import DisplayProperties from './DisplayProperties';
@@ -334,6 +337,63 @@ export const appSettings = {
     defaultOffset: {
       x: 100,
       y: 110,
+    },
+    resizable: false,
+    minimized: false,
+    maximized: false,
+    multiInstance: false,
+  },
+  FindDialog: {
+    header: {
+      title: 'Find',
+      buttons: ['help', 'close'],
+    },
+    component: FindDialog,
+    defaultSize: {
+      width: 400,
+      height: 138,
+    },
+    defaultOffset: {
+      x: 200,
+      y: 200,
+    },
+    resizable: false,
+    minimized: false,
+    maximized: false,
+    multiInstance: true,
+  },
+  ReplaceDialog: {
+    header: {
+      title: 'Replace',
+      buttons: ['help', 'close'],
+    },
+    component: ReplaceDialog,
+    defaultSize: {
+      width: 400,
+      height: 180,
+    },
+    defaultOffset: {
+      x: 200,
+      y: 200,
+    },
+    resizable: false,
+    minimized: false,
+    maximized: false,
+    multiInstance: true,
+  },
+  InfoDialog: {
+    header: {
+      title: 'Information',
+      buttons: ['close'],
+    },
+    component: InfoDialog,
+    defaultSize: {
+      width: 'fit-content',
+      height: 150,
+    },
+    defaultOffset: {
+      x: 600,
+      y: 150,
     },
     resizable: false,
     minimized: false,

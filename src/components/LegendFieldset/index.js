@@ -6,7 +6,7 @@ function LegendFieldset(props) {
 }
 
 const StyledLegendFieldset = styled.fieldset`
-  border: 1px solid #e1e1d4;
+  border: 1px solid #d3d3c0;
   border-radius: 5px;
 
   legend {
