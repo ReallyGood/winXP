@@ -10,6 +10,8 @@ function CheckBox(props) {
         type="checkbox"
         id="checkbox"
         className="checkbox"
+        onChange={props.cb}
+        checked={props.checked}
       />
       <label className="label" htmlFor="checkbox">
         {props.label}
@@ -28,6 +30,7 @@ const StyledCheckBox = styled.div`
     appearance: none;
     outline: 1px solid grey;
     box-shadow: inset 24px 26px 8px -27px rgb(0 0 0 / 22%);
+    background-color: white;
 
     &:hover:enabled {
       box-shadow: inset -2px -2px #f8b636, inset 2px 2px #fedf9c;

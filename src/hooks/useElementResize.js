@@ -7,7 +7,7 @@ function useElementResize(ref, options) {
     boundary,
     resizable = true,
     resizeThreshold = 10,
-    constraintSize = 200,
+    constraintSize = 210,
   } = options;
   const [offset, setOffset] = useState(defaultOffset);
   const [size, setSize] = useState(defaultSize);

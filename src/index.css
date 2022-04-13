@@ -6,6 +6,11 @@ textarea {
   cursor: auto;
 }
 
+::selection {
+  background-color: #1660e8;
+  color: white;
+}
+
 /* Scrollbar */
 
 /* CSS taken from: https://botoxparty.github.io/XP.css/ */

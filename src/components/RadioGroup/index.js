@@ -6,26 +6,20 @@ import radioIndicatior from 'assets/radioIndicator.svg';
 function RadioGroup({ groupName, options, cb }) {
   return (
     <StyledRadioGroup radioIndicatior={radioIndicatior}>
-      <form
-        onChange={e => {
-          cb(e.target.value, groupName);
-        }}
-      >
-        {options.map(option => (
-          <label key={option.id} className="container">
-            {option.label}
-            <input
-              id={option.id}
-              value={option.value}
-              type="radio"
-              name={groupName}
-              checked={option.checked}
-              onChange={e => {}}
-            />
-            <span className="checkmark"></span>
-          </label>
-        ))}
-      </form>
+      {options.map(option => (
+        <label key={option.id} className="container">
+          {option.label}
+          <input
+            id={option.id}
+            value={option.value}
+            type="radio"
+            name={groupName}
+            checked={option.checked}
+            onChange={e => cb(e.target.value, groupName)}
+          />
+          <span className="checkmark"></span>
+        </label>
+      ))}
     </StyledRadioGroup>
   );
 }
@@ -39,7 +33,6 @@ const StyledRadioGroup = styled.div`
     padding-left: 17px;
     margin-bottom: 12px;
 
-    cursor: pointer;
     -webkit-user-select: none;
     -moz-user-select: none;
     -ms-user-select: none;
@@ -50,7 +43,6 @@ const StyledRadioGroup = styled.div`
   .container input {
     position: absolute;
     opacity: 0;
-    cursor: pointer;
   }
 
   /* Create a custom radio button */
