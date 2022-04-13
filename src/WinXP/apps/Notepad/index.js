@@ -5,6 +5,7 @@ import styled from 'styled-components';
 
 import { WindowDropDowns } from 'components';
 import { getDropDownData } from './dropDownData';
+import { getNotepadIframeStyle } from './utils';
 
 import { Context as AppContext } from '../../index';
 import { ADD_APP } from '../../constants/actions';
@@ -242,46 +243,13 @@ export default function Notepad({ onClose, isFocus }) {
     });
   }
 
-  const frameInitialContent = `
-  <!DOCTYPE html><html>
-  <head>
-  <style>
-  html, div, body, textarea {
-    height: 100%;
-    width: 100%;
-    margin: 0;
-  }
-  html, body {
-    overflow: hidden;
-  }
-  textarea {
-    flex: auto;
-    outline: none;
-    font-family: 'Lucida Console', monospace;
-    font-size: 13px;
-    line-height: 14px;
-    resize: none;
-    padding: 2px;
-    ${wordWrap ? '' : 'white-space: nowrap; overflow-x: scroll;'}
-    overflow-y: scroll;
-    border: 1px solid #96abff;
-  }
-
-  textarea::selection {
-    background-color: #1660e8;
-    color: white;
-  }
-  </style>
-  </head>
-  <body><div></div></body></html>`;
-
   return (
     <Div>
       <section className="np__toolbar">
         <WindowDropDowns items={dropDownData} onClickItem={onClickOptionItem} />
       </section>
-
-      <Frame initialContent={frameInitialContent} ref={frameRef} tabIndex={-1}>
+      <Frame ref={frameRef} tabIndex={-1}>
+        <style>{getNotepadIframeStyle(wordWrap)}</style>
         <textarea
           ref={textareaRef}
           value={docText}
