@@ -4,8 +4,8 @@ export function getNotepadIframeStyle(wordWrap) {
   return `
 ${getScrollbarCSS()}
 html, div, body, textarea {
-height: -webkit-fill-available;
-width: -webkit-fill-available;
+  height: calc(100% - 1px);
+  width: calc(100% - 1px);
 margin: 0;
 }
 html, body {
