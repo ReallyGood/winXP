@@ -2,6 +2,7 @@ import React, { useState } from 'react';
 import styled from 'styled-components';
 
 import { WindowDropDowns, Google } from 'components';
+
 import dropDownData from './dropDownData';
 import ie from 'assets/windowsIcons/ie-paper.png';
 import printer from 'assets/windowsIcons/17(32x32).png';
@@ -27,6 +28,7 @@ function InternetExplorer({ onClose }) {
     route: 'main',
     query: '',
   });
+
   function onSearch(str) {
     if (str.length) {
       setState({

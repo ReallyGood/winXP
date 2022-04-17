@@ -66,6 +66,8 @@ const Window = memo(function({
   }
   const dragRef = useRef(null);
   const ref = useRef(null);
+  const innerWindowRef = useRef(null);
+
   const { width: windowWidth, height: windowHeight } = useWindowSize();
   const { offset, size } = useElementResize(ref, {
     dragRef,
@@ -92,6 +94,7 @@ const Window = memo(function({
     x = offset.x;
     y = offset.y;
   }
+
   return (
     <div
       className={className}
@@ -125,7 +128,7 @@ const Window = memo(function({
           isFocus={isFocus}
         />
       </header>
-      <div className="app__content">
+      <div className="app__content" ref={innerWindowRef}>
         {component({
           onClose: _onMouseUpClose,
           onMinimize: _onMouseUpMinimize,

@@ -11,6 +11,8 @@ import useMouse from 'react-use/lib/useMouse';
 import ga from 'react-ga';
 
 import { getLocalStorage, setLocalStorage, throttledFunc } from './utils';
+import { getScrollbarCSS } from '../scrollbar';
+
 import {
   defaultDesktop,
   defaultScreenSaver,
@@ -439,6 +441,7 @@ function WinXP() {
       state={state.powerState}
       tabIndex={0}
     >
+      <style>{getScrollbarCSS()}</style>
       <Icons
         icons={state.icons}
         onMouseDown={onMouseDownIcon}
