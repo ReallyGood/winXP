@@ -1,3 +1,4 @@
+/* eslint-disable react-hooks/exhaustive-deps */
 import React, { useState, useRef, useContext, useEffect } from 'react';
 import Frame from 'react-frame-component';
 
@@ -42,6 +43,16 @@ export default function Notepad({ onClose, isFocus }) {
     frameRef.current && frameRef.current.focus();
     textareaRef.current && textareaRef.current.focus();
   }, [isFocus]);
+
+  useEffect(() => {
+    applyScrollbarClass(
+      frameRef.current?.contentDocument.querySelector('.frame-content'),
+    );
+  }, [
+    textareaRef.current?.value?.length,
+    frameRef.current?.clientWidth,
+    frameRef.current?.clientHeight,
+  ]);
 
   function selectText(start, end) {
     caretStart.current = start;
@@ -243,10 +254,6 @@ export default function Notepad({ onClose, isFocus }) {
       updateSettings,
     });
   }
-
-  applyScrollbarClass(
-    frameRef.current?.contentDocument.querySelector('.frame-content'),
-  );
 
   return (
     <Div>
