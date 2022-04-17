@@ -6,6 +6,7 @@ import styled from 'styled-components';
 import { WindowDropDowns } from 'components';
 import { getDropDownData } from './dropDownData';
 import { getNotepadIframeStyle } from './utils';
+import { applyScrollbarClass } from 'scrollbar';
 
 import { Context as AppContext } from '../../index';
 import { ADD_APP } from '../../constants/actions';
@@ -242,6 +243,10 @@ export default function Notepad({ onClose, isFocus }) {
       updateSettings,
     });
   }
+
+  applyScrollbarClass(
+    frameRef.current?.contentDocument.querySelector('.frame-content'),
+  );
 
   return (
     <Div>

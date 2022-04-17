@@ -1,9 +1,23 @@
 import buttonUp from 'assets/scrollbar/button-up.svg';
 import buttonUpLight from 'assets/scrollbar/button-up-light.svg';
+import buttonUpDark from 'assets/scrollbar/button-up-dark.svg';
+import buttonUpDisabled from 'assets/scrollbar/button-up-disabled.svg';
 
 import buttonDown from 'assets/scrollbar/button-down.svg';
+import buttonDownLight from 'assets/scrollbar/button-down-light.svg';
+import buttonDownDark from 'assets/scrollbar/button-down-dark.svg';
+import buttonDownDisabled from 'assets/scrollbar/button-down-disabled.svg';
+
 import buttonRight from 'assets/scrollbar/button-right.svg';
+import buttonRightLight from 'assets/scrollbar/button-right-light.svg';
+import buttonRightDark from 'assets/scrollbar/button-right-dark.svg';
+import buttonRightDisabled from 'assets/scrollbar/button-right-disabled.svg';
+
 import buttonLeft from 'assets/scrollbar/button-left.svg';
+import buttonLeftLight from 'assets/scrollbar/button-left-light.svg';
+import buttonLeftDark from 'assets/scrollbar/button-left-dark.svg';
+import buttonLeftDisabled from 'assets/scrollbar/button-left-disabled.svg';
+
 import trackHorizonal from 'assets/scrollbar/track-horizonal.svg';
 import trackVertical from 'assets/scrollbar/track-vertical.svg';
 
@@ -72,7 +86,7 @@ export function getScrollbarCSS() {
   }
 
   ::-webkit-scrollbar-button:vertical:start:active {
-    background: red;
+    background-image: url(${buttonUpDark});
   }
 
   ::-webkit-scrollbar-button:vertical:end {
@@ -80,14 +94,74 @@ export function getScrollbarCSS() {
     background-image: url(${buttonDown});
   }
 
+  ::-webkit-scrollbar-button:vertical:end:hover {
+    background-image: url(${buttonDownLight});
+  }
+
+  ::-webkit-scrollbar-button:vertical:end:active {
+    background-image: url(${buttonDownDark});
+  }
+
   ::-webkit-scrollbar-button:horizontal:start {
     width: 16px;
     background-image: url(${buttonLeft});
+  }
+
+  ::-webkit-scrollbar-button:horizontal:start:hover {
+    background-image: url(${buttonLeftLight});
+  }
+
+  ::-webkit-scrollbar-button:horizontal:start:active {
+    background-image: url(${buttonLeftDark});
   }
 
   ::-webkit-scrollbar-button:horizontal:end {
     width: 16px;
     background-image: url(${buttonRight});
   }
+
+  ::-webkit-scrollbar-button:horizontal:end:hover {
+    background-image: url(${buttonRightLight});
+  }
+
+  ::-webkit-scrollbar-button:horizontal:end:active {
+    background-image: url(${buttonRightDark});
+  }
+
+  .disabled-scrollbar-vertical::-webkit-scrollbar-button:vertical:end {
+    background-image: url(${buttonDownDisabled});
+}
+
+.disabled-scrollbar-vertical::-webkit-scrollbar-button:vertical:start {
+  background-image: url(${buttonUpDisabled});
+}
+
+  .disabled-scrollbar-horizontal::-webkit-scrollbar-button:horizontal:start {
+    background-image: url(${buttonLeftDisabled});
+}
+
+.disabled-scrollbar-horizontal::-webkit-scrollbar-button:horizontal:end {
+  background-image: url(${buttonRightDisabled});
+}
 `;
+}
+
+export function applyScrollbarClass(element) {
+  if (!element) return;
+
+  const children = element.getElementsByTagName('*');
+
+  if (!children) return;
+
+  const childrenArr = Array.from(children);
+
+  childrenArr.forEach(child => {
+    const horizontalAction =
+      child.scrollWidth <= child.clientWidth ? 'add' : 'remove';
+    child.classList[horizontalAction]('disabled-scrollbar-horizontal');
+
+    const verticalAction =
+      child.scrollHeight <= child.clientHeight ? 'add' : 'remove';
+    child.classList[verticalAction]('disabled-scrollbar-vertical');
+  });
 }
