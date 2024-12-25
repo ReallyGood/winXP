@@ -1,4 +1,4 @@
-import React, { useState, useRef, useEffect, useCallback } from 'react';
+import React from 'react';
 import DialogInner from './DialogInner';
 
 function FindDialog({
